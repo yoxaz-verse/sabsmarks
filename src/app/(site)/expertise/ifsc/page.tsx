@@ -34,10 +34,10 @@ export default function IFSCPage() {
       
       <section className="mx-auto max-w-7xl px-6 py-20 md:py-32 w-full">
         <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#18395f] mb-6">Strategic Presence in India's Premier Financial Hub</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#18395f] mb-6">Strategic Presence in India&apos;s Premier Financial Hub</h2>
           <div className="h-1 w-24 bg-[#df8c20] mb-8"></div>
           <p className="text-lg text-stone-600 max-w-3xl leading-relaxed">
-            Gujarat International Finance Tec-City (GIFT City) is India's first operational smart city and International Financial Services Centre (IFSC). We provide specialized, end-to-end advisory services to help global and domestic entities capitalize on the unique regulatory and tax benefits offered within the IFSC framework.
+            Gujarat International Finance Tec-City (GIFT City) is India&apos;s first operational smart city and International Financial Services Centre (IFSC). We provide specialized, end-to-end advisory services to help global and domestic entities capitalize on the unique regulatory and tax benefits offered within the IFSC framework.
           </p>
         </div>
 

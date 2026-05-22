@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
   const pathname = usePathname();
-  const ordered = ["About", "Expertise", "Insights", "Career", "Contact"];
+  const ordered = ["About", "Services", "Leadership", "Location", "Contact"];
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
 
   return (
@@ -50,19 +50,12 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                 }`}
               >
                 {group}
-                {isHovered ? (
-                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={3} />
-                ) : (
-                  <ChevronDown className="h-3.5 w-3.5 opacity-60" strokeWidth={3} />
-                )}
+                {isHovered ? <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={3} /> : <ChevronDown className="h-3.5 w-3.5 opacity-60" strokeWidth={3} />}
               </button>
 
-              {/* Dropdown Menu */}
               <div
                 className={`absolute left-0 top-[100%] z-50 min-w-[240px] pt-2 transition-all duration-200 ease-out origin-top-left ${
-                  isHovered
-                    ? "pointer-events-auto translate-y-0 opacity-100 scale-100"
-                    : "pointer-events-none -translate-y-2 opacity-0 scale-95"
+                  isHovered ? "pointer-events-auto translate-y-0 opacity-100 scale-100" : "pointer-events-none -translate-y-2 opacity-0 scale-95"
                 }`}
               >
                 <div className="rounded bg-white p-3 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] ring-1 ring-black/5">
@@ -75,9 +68,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                           transitionDelay: isHovered ? `${index * 75 + 100}ms` : "0ms",
                         }}
                         className={`block rounded px-4 py-2.5 text-[14px] font-semibold text-[#333] hover:bg-stone-50 hover:text-[#df8c20] transition-all duration-300 ease-out ${
-                          isHovered
-                            ? "translate-x-0 opacity-100"
-                            : "-translate-x-4 opacity-0"
+                          isHovered ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
                         }`}
                       >
                         {item.label}

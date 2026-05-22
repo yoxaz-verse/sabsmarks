@@ -37,7 +37,7 @@ export default function UAEPage() {
           <h2 className="text-3xl md:text-4xl font-bold text-[#18395f] mb-6">Cross-Border & Regional Support</h2>
           <div className="h-1 w-24 bg-[#df8c20] mb-8"></div>
           <p className="text-lg text-stone-600 max-w-3xl leading-relaxed">
-            With a strong footprint in the United Arab Emirates, we provide seamless, integrated advisory and compliance services. We assist clients in navigating the UAE's evolving regulatory landscape, from initial market entry to complex cross-border structuring.
+            With a strong footprint in the United Arab Emirates, we provide seamless, integrated advisory and compliance services. We assist clients in navigating the UAE&apos;s evolving regulatory landscape, from initial market entry to complex cross-border structuring.
           </p>
         </div>
 

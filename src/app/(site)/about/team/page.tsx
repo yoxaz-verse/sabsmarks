@@ -1,5 +1,5 @@
 import { PageBanner } from "@/components/layout/page-banner";
-import Link from "next/link";
+import Image from "next/image";
 
 export default function TeamPage() {
   const team = [
@@ -64,10 +64,12 @@ export default function TeamPage() {
           {team.map((member, i) => (
             <div key={i} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-xl transition-all duration-300">
               <div className="aspect-[4/5] overflow-hidden relative">
-                <img 
-                  src={member.image} 
+                <Image
+                  src={member.image}
                   alt={member.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#18395f]/90 via-[#18395f]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 

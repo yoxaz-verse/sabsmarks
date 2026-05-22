@@ -1,25 +1,23 @@
 import Link from "next/link";
-import { ArrowRight, BarChart3, Building2, Calculator, FileText, Globe2, Briefcase, Users, Award } from "lucide-react";
+import { ArrowRight, BarChart3, Building2, Calculator, FileText, Globe2, Briefcase, Users } from "lucide-react";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* 1. Hero Section (Slider alternative) */}
       <section className="relative flex items-center justify-center min-h-[85vh] bg-stone-900 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#18395f]/90 to-[#20a447]/80 z-10" />
-        <div 
-          className="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center"
-        />
+        <div className="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center" />
         <div className="relative z-20 mx-auto max-w-7xl px-6 py-24 text-center md:text-left md:px-12 w-full flex flex-col md:flex-row items-center justify-between">
           <div className="max-w-3xl">
-            <p className="animate-[fadeIn_0.6s_ease-out] text-sm md:text-base font-bold tracking-[0.2em] text-white/90 uppercase mb-4">
-              Navigating Complexity
-            </p>
-            <h1 className="animate-[fadeIn_0.8s_ease-out] text-5xl md:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-              Global Reach. <br /> Local Depth.
+            <p className="animate-[fadeIn_0.6s_ease-out] text-sm md:text-base font-bold tracking-[0.2em] text-white/90 uppercase mb-4">Strategic Financial Advisory</p>
+            <h1 className="animate-[fadeIn_0.8s_ease-out] text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-6">
+              Looking for expert financial and business guidance?
             </h1>
-            <p className="animate-[fadeIn_1s_ease-out] text-lg md:text-xl text-stone-100 max-w-2xl mb-10 leading-relaxed">
-              We are a multi-disciplinary firm delivering practical, legally sound, and strategically robust solutions to domestic and multinational businesses.
+            <p className="animate-[fadeIn_1s_ease-out] text-lg md:text-xl text-stone-100 max-w-2xl mb-4 leading-relaxed">
+              Start building your growth strategy today.
+            </p>
+            <p className="animate-[fadeIn_1.1s_ease-out] text-base md:text-lg text-stone-100/95 max-w-2xl mb-10 leading-relaxed">
+              We provide strategic accounting, taxation, audit, compliance, and business advisory services tailored to help businesses grow with confidence.
             </p>
             <div className="animate-[fadeIn_1.2s_ease-out] flex flex-wrap gap-4 justify-center md:justify-start">
               <Link href="/practice-areas" className="rounded-full bg-white px-8 py-4 text-sm font-bold text-[#18395f] hover:bg-stone-100 transition-colors">
@@ -33,31 +31,32 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. About Section */}
       <section className="py-24 bg-white">
         <div className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-stone-900 mb-6 tracking-tight">A Legacy of Trust and Excellence.</h2>
+              <h2 className="text-4xl font-bold text-stone-900 mb-6 tracking-tight">About Us</h2>
               <div className="h-1 w-20 bg-[#20a447] mb-8"></div>
               <p className="text-lg text-stone-600 mb-6 leading-relaxed">
-                Sabs Marks JVS & Co. LLP is a premier chartered accountancy firm established to provide a comprehensive suite of professional services under one roof. 
+                Sabs Marks JVS & Co is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries. Established in 1985, the firm has evolved as a trusted third-generation practice, built on a strong legacy of expertise, integrity, and client-centric service.
+              </p>
+              <p className="text-stone-600 mb-6 leading-relaxed">
+                With a special focus on the MSME sector, Sabs Marks JVS & Co caters to businesses of all sizes, delivering tailored solutions that address both routine and complex business requirements. Through its presence across multiple locations and collaboration with associate firms, the organization seamlessly integrates expertise across service lines and geographies to support clients with efficiency and consistency.
               </p>
               <p className="text-stone-600 mb-8 leading-relaxed">
-                With a deep understanding of the evolving regulatory landscape, our team of seasoned professionals brings decades of experience to help organizations navigate complex business challenges, ensure compliance, and drive sustainable growth.
+                Driven by the core values of Integrity, Competence, and Professionalism, the firm is backed by a highly motivated team of experienced professionals specializing in their respective domains. We provide strategic, practical, and legally sound solutions designed to help businesses navigate challenges, ensure compliance, and achieve sustainable growth, all delivered with a personalized approach.
               </p>
               <Link href="/about" className="inline-flex items-center text-[#18395f] font-semibold hover:text-[#204a7a] transition-colors group">
                 Discover Our Firm <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
             <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1932&auto=format&fit=crop')] bg-cover bg-center" />
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1965&auto=format&fit=crop')] bg-cover bg-center" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. Service Offerings */}
       <section className="py-24 bg-stone-50">
         <div className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -65,7 +64,7 @@ export default function Home() {
             <div className="h-1 w-20 bg-[#18395f] mx-auto mt-6 mb-6"></div>
             <p className="text-stone-600 text-lg">Delivering specialized advisory, audit, and tax solutions tailored to your unique business requirements.</p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { title: "Audit & Assurance", desc: "Statutory, internal, and management audits ensuring compliance and transparency.", icon: FileText },
@@ -90,7 +89,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Industries Section */}
       <section className="py-24 bg-[#18395f] text-white">
         <div className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
@@ -105,10 +103,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {[
-              "Financial Services", "Manufacturing", "Real Estate & Infra", "IT & ITES",
-              "Healthcare", "Retail & FMCG", "Logistics", "NGOs & Trusts"
-            ].map((industry, i) => (
+            {["Financial Services", "Manufacturing", "Real Estate & Infra", "IT & ITES", "Healthcare", "Retail & FMCG", "Logistics", "NGOs & Trusts"].map((industry, i) => (
               <div key={i} className="border border-white/20 p-6 rounded-2xl hover:bg-white/10 transition-colors flex flex-col justify-between h-32">
                 <Building2 className="h-6 w-6 text-[#20a447]" />
                 <span className="font-semibold">{industry}</span>
@@ -118,7 +113,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Stats Section */}
       <section className="py-20 bg-white border-b border-stone-200">
         <div className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
@@ -137,7 +131,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Insights Teaser */}
       <section className="py-24 bg-stone-50">
         <div className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="flex justify-between items-end mb-12">
@@ -154,7 +147,7 @@ export default function Home() {
             {[1, 2, 3].map((item) => (
               <div key={item} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 flex flex-col group cursor-pointer hover:shadow-md transition-shadow">
                 <div className="h-48 bg-stone-200 overflow-hidden">
-                  <div className={`w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105 bg-[url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2026&auto=format&fit=crop')]`} />
+                  <div className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105 bg-[url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2026&auto=format&fit=crop')]" />
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="text-xs font-bold text-[#20a447] uppercase tracking-wider mb-2">Tax & Regulatory</div>

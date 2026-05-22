@@ -18,7 +18,7 @@ export default function LegacyPage() {
           <h2 className="text-3xl md:text-4xl font-bold text-[#18395f] mb-6">Our Journey</h2>
           <div className="h-1 w-24 bg-[#df8c20] mx-auto mb-8"></div>
           <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-            Decades of professional excellence, built on trust, integrity, and an unwavering commitment to our clients' success.
+            Decades of professional excellence, built on trust, integrity, and an unwavering commitment to our clients&apos; success.
           </p>
         </div>
 
