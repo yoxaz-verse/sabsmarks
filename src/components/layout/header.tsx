@@ -24,7 +24,7 @@ export async function Header() {
   }
 
   return (
-    <header className="relative z-[100] border-b border-stone-200 bg-white/95 backdrop-blur">
+    <header className="glass-panel sticky top-0 z-[100] border-b border-[var(--glass-border)]">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-4">
         <Link href="/">
           <Logo className="scale-75 origin-left" />

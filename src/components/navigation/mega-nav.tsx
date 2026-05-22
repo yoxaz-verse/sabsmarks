@@ -28,8 +28,8 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
               <Link
                 key={group}
                 href={item.href}
-                className={`flex items-center text-[13px] font-bold tracking-[0.1em] uppercase transition-colors duration-200 ${
-                  isActive ? "text-[#df8c20]" : "text-[#222] hover:text-[#df8c20]"
+                className={`flex items-center text-[13px] font-bold tracking-[0.1em] uppercase hover-glow transition-colors duration-200 ${
+                  isActive ? "text-[#0ea5e9]" : "text-stone-300 hover:text-[#0ea5e9]"
                 }`}
               >
                 {group}
@@ -46,7 +46,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
             >
               <button
                 className={`flex items-center gap-1 text-[13px] font-bold tracking-[0.1em] uppercase transition-colors duration-200 cursor-default ${
-                  isActive || isHovered ? "text-[#df8c20]" : "text-[#222] hover:text-[#df8c20]"
+                  isActive || isHovered ? "text-[#0ea5e9]" : "text-stone-300 hover:text-[#0ea5e9]"
                 }`}
               >
                 {group}
@@ -58,7 +58,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                   isHovered ? "pointer-events-auto translate-y-0 opacity-100 scale-100" : "pointer-events-none -translate-y-2 opacity-0 scale-95"
                 }`}
               >
-                <div className="rounded bg-white p-3 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] ring-1 ring-black/5">
+                <div className="rounded glass-panel p-3 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]">
                   <div className="flex flex-col gap-1">
                     {items.map((item, index) => (
                       <Link
@@ -67,7 +67,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                         style={{
                           transitionDelay: isHovered ? `${index * 75 + 100}ms` : "0ms",
                         }}
-                        className={`block rounded px-4 py-2.5 text-[14px] font-semibold text-[#333] hover:bg-stone-50 hover:text-[#df8c20] transition-all duration-300 ease-out ${
+                        className={`block rounded px-4 py-2.5 text-[14px] font-semibold text-stone-200 hover:bg-white/10 hover:text-[#0ea5e9] transition-all duration-300 ease-out ${
                           isHovered ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
                         }`}
                       >

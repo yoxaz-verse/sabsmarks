@@ -20,7 +20,7 @@ export function AuthMenu({ isAuthenticated, email, role }: AuthMenuProps) {
 
   if (!isAuthenticated) {
     return (
-      <Link href="/admin/login" className="rounded-full bg-stone-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">
+      <Link href="/admin/login" className="rounded-full bg-[var(--accent)] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[var(--bg)] hover:bg-[#0284c7] hover-glow transition-all">
         Admin Login
       </Link>
     );
@@ -28,15 +28,15 @@ export function AuthMenu({ isAuthenticated, email, role }: AuthMenuProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <Link href="/admin" className="rounded-full border border-stone-300 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-stone-700">
+      <Link href="/admin" className="rounded-full border border-[var(--glass-border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold uppercase tracking-wide text-[var(--accent)] hover-glow transition-all">
         {role ?? "user"}
       </Link>
-      <span className="hidden max-w-44 truncate text-xs text-stone-600 md:inline">{email}</span>
+      <span className="hidden max-w-44 truncate text-xs text-stone-400 md:inline">{email}</span>
       <button
         type="button"
         onClick={onLogout}
         disabled={busy}
-        className="rounded-full bg-stone-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white disabled:opacity-60"
+        className="rounded-full bg-[var(--surface-raised)] border border-[var(--glass-border)] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white disabled:opacity-60 hover-glow transition-all"
       >
         {busy ? "Signing out..." : "Logout"}
       </button>

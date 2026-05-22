@@ -1,11 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f8f6f2;
-  --surface: #ffffff;
-  --ink: #191919;
-  --muted: #57534e;
-  --accent: #1f2937;
+  /* Mission Control Dark Theme */
+  --bg: #050505;
+  --surface: #111111;
+  --surface-raised: #1a1a1a;
+  --ink: #fdfdfd;
+  --muted: #888888;
+  --accent: #0ea5e9; /* Cyan blue for tech/finance vibe */
+  --accent-secondary: #10b981; /* Emerald */
+  --accent-glow: rgba(14, 165, 233, 0.15);
+  
+  --glass: rgba(17, 17, 17, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --grid-color: rgba(255, 255, 255, 0.03);
 }
 
 * {
@@ -13,11 +21,69 @@
 }
 
 body {
-  background:
-    radial-gradient(circle at 20% 0%, rgba(214, 211, 209, 0.45), transparent 40%),
-    radial-gradient(circle at 85% 80%, rgba(186, 230, 253, 0.2), transparent 40%),
-    var(--bg);
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  background-size: 40px 40px;
   color: var(--ink);
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px var(--accent-glow); }
+  50% { box-shadow: 0 0 25px rgba(14, 165, 233, 0.3); }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* Cinematic Effects */
+.scanline-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 0, 0, 0.2) 51%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.3;
 }
 
 .footer-link {
@@ -25,5 +91,16 @@ body {
 }
 
 .footer-link:hover {
-  color: #1c376d;
+  color: var(--accent);
+}
+
+/* Premium Typography */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+}
+
+.data-number {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: -0.05em;
 }
