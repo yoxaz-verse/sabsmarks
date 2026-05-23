@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
   const pathname = usePathname();
-  const ordered = ["About", "Services", "Leadership", "Location", "Contact"];
+  const ordered = ["About", "Expertise", "Insights", "Career", "Contact"];
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
 
   return (
@@ -28,8 +28,8 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
               <Link
                 key={group}
                 href={item.href}
-                className={`flex items-center text-[13px] font-bold tracking-[0.1em] uppercase hover-glow transition-colors duration-200 ${
-                  isActive ? "text-[#0ea5e9]" : "text-stone-300 hover:text-[#0ea5e9]"
+                className={`flex items-center text-[13px] font-bold tracking-[0.1em] uppercase transition-colors duration-200 ${
+                  isActive ? "text-accent" : "text-ink hover:text-accent"
                 }`}
               >
                 {group}
@@ -46,19 +46,26 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
             >
               <button
                 className={`flex items-center gap-1 text-[13px] font-bold tracking-[0.1em] uppercase transition-colors duration-200 cursor-default ${
-                  isActive || isHovered ? "text-[#0ea5e9]" : "text-stone-300 hover:text-[#0ea5e9]"
+                  isActive || isHovered ? "text-accent" : "text-ink hover:text-accent"
                 }`}
               >
                 {group}
-                {isHovered ? <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={3} /> : <ChevronDown className="h-3.5 w-3.5 opacity-60" strokeWidth={3} />}
+                {isHovered ? (
+                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={3} />
+                ) : (
+                  <ChevronDown className="h-3.5 w-3.5 opacity-60" strokeWidth={3} />
+                )}
               </button>
 
+              {/* Dropdown Menu */}
               <div
                 className={`absolute left-0 top-[100%] z-50 min-w-[240px] pt-2 transition-all duration-200 ease-out origin-top-left ${
-                  isHovered ? "pointer-events-auto translate-y-0 opacity-100 scale-100" : "pointer-events-none -translate-y-2 opacity-0 scale-95"
+                  isHovered
+                    ? "pointer-events-auto translate-y-0 opacity-100 scale-100"
+                    : "pointer-events-none -translate-y-2 opacity-0 scale-95"
                 }`}
               >
-                <div className="rounded glass-panel p-3 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]">
+                <div className="rounded glass-panel bg-surface p-3 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] ring-1 ring-[var(--glass-border)]">
                   <div className="flex flex-col gap-1">
                     {items.map((item, index) => (
                       <Link
@@ -67,8 +74,10 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                         style={{
                           transitionDelay: isHovered ? `${index * 75 + 100}ms` : "0ms",
                         }}
-                        className={`block rounded px-4 py-2.5 text-[14px] font-semibold text-stone-200 hover:bg-white/10 hover:text-[#0ea5e9] transition-all duration-300 ease-out ${
-                          isHovered ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+                        className={`block rounded px-4 py-2.5 text-[14px] font-semibold text-ink hover:bg-surface-raised hover:text-accent transition-all duration-300 ease-out ${
+                          isHovered
+                            ? "translate-x-0 opacity-100"
+                            : "-translate-x-4 opacity-0"
                         }`}
                       >
                         {item.label}

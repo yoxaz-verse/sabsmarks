@@ -47,16 +47,16 @@ export function NewsletterForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
         required
-        className="w-full rounded-none border border-stone-300 bg-white px-4 py-3 text-sm text-stone-800 outline-none transition focus:border-[#18395f] focus:ring-1 focus:ring-[#18395f]"
+        className="w-full rounded-sm border border-[var(--glass-border)] bg-surface px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-1 focus:ring-[var(--accent)]"
       />
       <button
         type="submit"
         disabled={state === "loading"}
-        className="mt-3 w-full bg-[#18395f] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#204a7a] disabled:opacity-60 rounded-sm"
+        className="mt-3 w-full bg-accent px-4 py-3 text-sm font-bold text-white uppercase tracking-wider transition hover:bg-accent-secondary disabled:opacity-60 rounded-sm hover-glow"
       >
         {state === "loading" ? "Sending..." : "Subscribe to Newsletter"}
       </button>
-      {message ? <p className={`mt-2 text-xs ${state === "success" ? "text-green-700" : "text-red-700"}`}>{message}</p> : null}
+      {message ? <p className={`mt-2 text-xs font-semibold ${state === "success" ? "text-accent-secondary" : "text-red-500"}`}>{message}</p> : null}
     </form>
   );
 }

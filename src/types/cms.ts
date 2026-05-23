@@ -75,6 +75,8 @@ export interface TeamMember extends SeoFields {
   slug: string;
   name: string;
   designation: string;
+  location: string | null;
+  linkedin_url: string | null;
   credentials: string | null;
   bio: string | null;
   photo_url: string | null;

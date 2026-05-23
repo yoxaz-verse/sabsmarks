@@ -3,113 +3,65 @@
 import { useState } from "react";
 import { PageBanner } from "@/components/layout/page-banner";
 
-type OfficeDetail = {
-  label: string;
-  address: string;
-  email?: string;
-};
-
-type ContactLocation = {
-  id: string;
-  name: string;
-  details: OfficeDetail[];
-};
-
-const locations: ContactLocation[] = [
-  {
-    id: "head-office",
-    name: "Head Office",
-    details: [{ label: "Ettumanoor", address: "Oonnukallel Arcade, MC Road, Ettumanoor, Kottayam 686632", email: "info@sabsmarksjvs.com" }],
-  },
-  {
-    id: "kochi",
-    name: "Kochi",
+const locations = [
+  { id: "abu-dhabi", name: "Abu Dhabi" },
+  { id: "ahmedabad", name: "Ahmedabad" },
+  { id: "bengaluru", name: "Bengaluru" },
+  { id: "chennai", name: "Chennai" },
+  { id: "delhi", name: "Delhi" },
+  { id: "dubai", name: "Dubai" },
+  { id: "gift-city", name: "GIFT City" },
+  { id: "gurgaon", name: "Gurgaon" },
+  { id: "kolkata", name: "Kolkata" },
+  { 
+    id: "mumbai", 
+    name: "Mumbai",
     details: [
-      { label: "Branch 1", address: "A3 Pentalakshmi, M A Sajeev Road, Edappally, Kochi 682024", email: "info@sabsmarksjvs.com" },
-      { label: "Branch 2", address: "UTRA 8B, Inchiparambu, 1st Avenue, Unichira, Edappally, Kochi 682024" },
-    ],
-  },
-  {
-    id: "angamaly",
-    name: "Angamaly",
-    details: [
-      { label: "Branch 1", address: "First Floor, Padayattil Tower, East Nagar, MC Road, Angamaly, Kerala 683572" },
-      { label: "Branch 2", address: "First Floor, Padayattil Tower, East Nagar, MC Road, Angamaly, Kerala 683572" },
-    ],
-  },
-  {
-    id: "bengaluru",
-    name: "Bengaluru",
-    details: [
-      { label: "Branch 1", address: "A Wing 003, DSMAX Sankalp Manor APTS, Horamavu Agara Main Road, Bengaluru" },
-      { label: "Branch 2", address: "A Wing 003, DSMAX Sankalp Manor APTS, Horamavu Agara Main Road, Bengaluru" },
-      { label: "Branch 3", address: "No. 1653, 2nd Floor, Main A Block, 2nd Stage, Rajajinagar, Bengaluru, Karnataka 560010" },
-    ],
-  },
-  {
-    id: "chennai",
-    name: "Chennai",
-    details: [{ label: "Office", address: "Flat No. 26, Aarthi Arcade, 3rd Floor, 86 Dr Radhakrishna Salai, Mylapore, Chennai" }],
-  },
-  {
-    id: "tirupati",
-    name: "Tirupati",
-    details: [{ label: "Office", address: "D4#401 Creekside Residences, Sricity Expressway, Tirupati, Andhra Pradesh 517646" }],
-  },
-  {
-    id: "hyderabad",
-    name: "Hyderabad",
-    details: [{ label: "Office", address: "PL No. 1, 2nd Floor, SY No. 71, Silicon Valley, Near Image Garden, Madhapur, Telangana 500081" }],
-  },
-  {
-    id: "gurgaon",
-    name: "Gurgaon",
-    details: [{ label: "Office", address: "G-264, Ground Floor, Sushant Lok-I, Sector 57, Gurgaon, Haryana 122003" }],
-  },
-  {
-    id: "chengannur",
-    name: "Chengannur",
-    details: [{ label: "Office", address: "1382/3, 2nd Floor, Kannara Building, Near South Indian Bank, Court Road, Market Nandavanam Jct Road, Chengannur, Kerala 689121" }],
-  },
-  {
-    id: "thrissur",
-    name: "Thrissur",
-    details: [{ label: "Office", address: "First Floor, Arfa Complex, Door No. 5, 44/X/ABC, Herbert Road, Kunnamkulam, Thrissur, Kerala 680503" }],
-  },
-  {
-    id: "dubai",
-    name: "Dubai",
-    details: [{ label: "Office", address: "Growbox Businesses Center, Hamsah Building, Karama, Dubai" }],
-  },
-  {
-    id: "kottayam",
-    name: "Kottayam",
-    details: [{ label: "Office", address: "Thekkum Gopuram, Kottayam, Kerala 686001" }],
+      {
+        address: "Mistry Bhavan, 3rd Floor,\nDinshaw Vachha Road,\nChurchgate, Mumbai 400 020.",
+        phone: "+91 22 6623 0600",
+        email: "manish@sabsmarks.com"
+      },
+      {
+        address: "501-502, Narain Chambers, M.G. Road,\nVile Parle (E), Mumbai 400 057.",
+        phone: "+91 22 6250 7600",
+        email: "himanshu@sabsmarks.com"
+      },
+      {
+        address: "Takshashila,\n3rd Floor, Samant Estate,\nGoregaon (East),\nMumbai-400063",
+        phone: "+91 22 6307 2500",
+        email: "hiren@sabsmarks.com"
+      }
+    ]
   },
 ];
 
 export default function ContactPage() {
-  const [activeCity, setActiveCity] = useState(locations[0].id);
-  const activeLocation = locations.find((loc) => loc.id === activeCity) || locations[0];
+  const [activeCity, setActiveCity] = useState("mumbai");
+
+  const activeLocation = locations.find(loc => loc.id === activeCity) || locations[0];
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-surface">
       <PageBanner title="Contact Us" />
-
+      
       <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 w-full">
         <div className="mb-12">
-          <h2 className="text-3xl text-[#18395f] font-bold mb-4">Our Locations</h2>
+          <h2 className="text-3xl text-ink font-bold mb-4">Our Locations</h2>
           <div className="w-48 h-[2px] bg-stone-300"></div>
         </div>
 
         <div className="flex flex-col md:flex-row gap-8">
+          {/* Left Side: City Tabs */}
           <div className="w-full md:w-1/3 flex flex-col gap-[2px]">
             {locations.map((city) => (
               <button
                 key={city.id}
                 onClick={() => setActiveCity(city.id)}
                 className={`text-left px-6 py-3 text-[17px] font-bold transition-colors ${
-                  activeCity === city.id ? "bg-[#df8c20] text-white" : "bg-[#18395f] text-white hover:bg-[#204a7a]"
+                  activeCity === city.id
+                    ? "bg-accent-secondary text-white"
+                    : "bg-accent text-white hover:bg-accent-secondary"
                 }`}
               >
                 {city.name}
@@ -117,44 +69,61 @@ export default function ContactPage() {
             ))}
           </div>
 
-          <div className="w-full md:w-2/3 bg-[#18395f] text-white p-8 md:p-12 relative overflow-hidden min-h-[500px]">
+          {/* Right Side: Location Details */}
+          <div className="w-full md:w-2/3 bg-accent text-white p-8 md:p-12 relative overflow-hidden min-h-[500px]">
             <h3 className="text-sm font-bold tracking-wider mb-2 uppercase">{activeLocation.name}</h3>
-            <h2 className="text-3xl font-bold mb-10">Sabs Marks JVS & Co</h2>
-
-            <div className="space-y-8 relative z-10">
-              {activeLocation.details.map((office, i) => (
-                <div key={i} className="border-b border-[#df8c20]/30 pb-8 last:border-0 last:pb-0">
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#dfc28f] mb-2">{office.label}</p>
-                  <p className="text-[15px] leading-relaxed mb-2 text-blue-50">{office.address}</p>
-                  {office.email ? <p className="text-[15px] text-blue-100"><span className="font-semibold">E :</span> {office.email}</p> : null}
+            <h2 className="text-3xl font-bold mb-10">Sabs Marks & Associates LLP</h2>
+            
+            {activeLocation.details ? (
+              <div className="flex flex-col md:flex-row gap-8">
+                <div className="w-full md:w-1/2 space-y-8 relative z-10">
+                  {activeLocation.details.map((office, i) => (
+                    <div key={i} className="border-b border-[#df8c20]/30 pb-8 last:border-0 last:pb-0">
+                      <p className="text-[15px] leading-relaxed mb-4 whitespace-pre-line text-blue-50">
+                        {office.address}
+                      </p>
+                      <p className="text-[15px] text-blue-100">
+                        <span className="font-semibold">T :</span> {office.phone}
+                      </p>
+                      <p className="text-[15px] text-blue-100">
+                        <span className="font-semibold">E :</span> {office.email}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+                
+                {/* Map Image Placeholder for Mumbai layout */}
+                <div className="w-full md:w-1/2 relative z-10 hidden md:block">
+                  <div className="bg-stone-200 w-full aspect-square rounded-sm overflow-hidden border-4 border-white shadow-lg">
+                    {/* Placeholder map image. In a real scenario, use Google Maps iframe */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img 
+                      src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop" 
+                      alt="Map Location" 
+                      className="w-full h-full object-cover opacity-80 mix-blend-luminosity" 
+                    />
+                    <div className="absolute top-4 left-4 bg-surface text-ink text-xs font-bold px-3 py-1.5 rounded-sm shadow-sm">
+                      Open in Maps ↗
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-blue-100 text-[15px]">
+                <p>Office details for {activeLocation.name} will be updated soon.</p>
+              </div>
+            )}
+            
+            {/* Subtle bridge background decoration (mimicking the screenshot) */}
+            <div className="absolute bottom-0 right-0 w-2/3 opacity-10 pointer-events-none">
+              <svg viewBox="0 0 100 40" fill="none" stroke="currentColor" strokeWidth="0.5">
+                <path d="M0 30 L20 20 L40 30 L60 10 L80 30 L100 20" />
+                <path d="M20 20 L20 40 M60 10 L60 40" />
+                <path d="M20 20 L10 40 M20 20 L30 40 M60 10 L45 40 M60 10 L75 40" />
+                <line x1="0" y1="40" x2="100" y2="40" strokeWidth="1" />
+              </svg>
             </div>
           </div>
-        </div>
-
-        <div className="mt-14 grid md:grid-cols-2 gap-8">
-          <div className="border border-stone-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-[#18395f] mb-4">Contact (Head)</h3>
-            <p className="text-stone-700 mb-2"><span className="font-semibold">Call Us Phone:</span> 8943115500</p>
-            <p className="text-stone-700"><span className="font-semibold">Mail Us Email:</span> info@sabsmarksjvs.com</p>
-          </div>
-          <div className="border border-stone-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-[#18395f] mb-4">Social Media</h3>
-            <p className="text-stone-700 mb-2">
-              LinkedIn: <a className="text-[#18395f] font-semibold hover:underline" href="https://www.linkedin.com/company/sabs-marks-jvs-co/" target="_blank" rel="noreferrer">https://www.linkedin.com/company/sabs-marks-jvs-co/</a>
-            </p>
-            <p className="text-stone-700">
-              Instagram: <a className="text-[#18395f] font-semibold hover:underline" href="https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ==" target="_blank" rel="noreferrer">https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ==</a>
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-8 border border-stone-200 rounded-xl p-6 bg-stone-50">
-          <h3 className="text-lg font-bold text-[#18395f] mb-3">Our Locations</h3>
-          <p className="text-stone-700 leading-relaxed">
-            H.O: Oonnukallel Arcade, MC Road, Ettumanoor, Kottayam 686632, Kerala. Also at: Kochi | Angamaly | Thrissur | Bengaluru | Chennai | Tirupati | Gurgaon | Ettumanoor | Kottayam | Chengannur | Hyderabad | Dubai.
-          </p>
         </div>
       </section>
     </div>

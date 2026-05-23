@@ -74,8 +74,11 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     slug: z.string().min(1),
     name: z.string().min(2),
     designation: z.string().min(2),
+    location: z.string().optional().nullable(),
+    linkedin_url: z.string().url().optional().nullable(),
     credentials: z.string().optional().nullable(),
     bio: z.string().optional().nullable(),
+    photo_url: z.string().url().optional().nullable(),
     display_order: z.number().int().optional(),
     featured: z.boolean().optional(),
     status: statusSchema,
@@ -134,6 +137,8 @@ export async function POST(req: Request) {
   if (typeof normalized.featured === "string") normalized.featured = normalized.featured === "true";
   if (typeof normalized.display_order === "string") normalized.display_order = Number(normalized.display_order || 0);
   if (typeof normalized.published_at === "string" && normalized.published_at.trim() === "") normalized.published_at = null;
+  if (typeof normalized.linkedin_url === "string" && normalized.linkedin_url.trim() === "") normalized.linkedin_url = null;
+  if (typeof normalized.photo_url === "string" && normalized.photo_url.trim() === "") normalized.photo_url = null;
   if (typeof normalized.created_at === "string") delete normalized.created_at;
   if (typeof normalized.created_by === "string") delete normalized.created_by;
 

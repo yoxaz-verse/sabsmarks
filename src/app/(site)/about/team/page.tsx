@@ -1,103 +1,69 @@
 import { PageBanner } from "@/components/layout/page-banner";
+import { getTeamMembers } from "@/lib/content/service";
 import Image from "next/image";
 
-export default function TeamPage() {
-  const team = [
-    {
-      name: "Gautam Nayak",
-      role: "Managing Partner",
-      location: "Mumbai",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2000&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Hiren Shah",
-      role: "Senior Partner, Audit & Assurance",
-      location: "Mumbai",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=2000&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Manish Sampat",
-      role: "Partner, Indirect Tax",
-      location: "Ahmedabad",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2000&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Nehal Shah",
-      role: "Partner, Corporate Finance",
-      location: "Dubai",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2000&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Pareen Shah",
-      role: "Partner, Risk Advisory",
-      location: "GIFT City",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2000&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Suresh P.",
-      role: "Partner, Direct Tax",
-      location: "Bengaluru",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2000&auto=format&fit=crop",
-      linkedin: "#",
-    }
-  ];
+const FALLBACK_TEAM_PHOTO = "/globe.svg";
+
+export default async function TeamPage() {
+  const team = await getTeamMembers();
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex min-h-screen flex-col bg-surface">
       <PageBanner title="Leadership" />
-      
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 w-full">
+
+      <section className="mx-auto w-full max-w-7xl px-6 py-16 md:px-12">
         <div className="mb-12">
-          <h2 className="text-3xl text-[#18395f] font-bold mb-4">Our Partners</h2>
-          <div className="w-24 h-[2px] bg-[#df8c20]"></div>
-          <p className="mt-6 text-[15px] leading-7 text-stone-600 max-w-3xl">
+          <h2 className="mb-4 text-3xl font-bold text-ink">Our Partners</h2>
+          <div className="h-[2px] w-24 bg-accent-secondary"></div>
+          <p className="mt-6 max-w-3xl text-[15px] leading-7 text-muted">
             Our leadership team brings decades of combined experience across diverse financial and advisory disciplines. Partner-led teams ensure deep domain expertise and exceptional service delivery.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {team.map((member, i) => (
-            <div key={i} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-xl transition-all duration-300">
-              <div className="aspect-[4/5] overflow-hidden relative">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {team.map((member) => (
+            <div
+              key={member.id}
+              className="group overflow-hidden rounded-xl border border-[var(--glass-border)] bg-surface shadow-sm transition-all duration-300 hover:shadow-xl"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
-                  src={member.image}
+                  src={member.photo_url || FALLBACK_TEAM_PHOTO}
                   alt={member.name}
                   fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#18395f]/90 via-[#18395f]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                <div className="absolute bottom-0 left-0 w-full p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                  <a 
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#1076b4] text-white shadow-md hover:bg-[#0b5c8f] transition-colors mb-2"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                      <rect x="2" y="9" width="4" height="12"></rect>
-                      <circle cx="4" cy="4" r="2"></circle>
-                    </svg>
-                  </a>
-                  <p className="text-white text-sm font-medium">Read Full Profile</p>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#18395f]/90 via-[#18395f]/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                {member.linkedin_url ? (
+                  <div className="absolute bottom-0 left-0 w-full translate-y-4 p-6 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    <a
+                      href={member.linkedin_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#1076b4] text-white shadow-md transition-colors hover:bg-[#0b5c8f]"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                      </svg>
+                    </a>
+                    <p className="text-sm font-medium text-white">LinkedIn Profile</p>
+                  </div>
+                ) : null}
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-[#18395f] mb-1 group-hover:text-[#df8c20] transition-colors">{member.name}</h3>
-                <p className="text-sm font-medium text-stone-500 mb-3">{member.role}</p>
+                <h3 className="mb-1 text-xl font-bold text-ink transition-colors group-hover:text-accent-secondary">{member.name}</h3>
+                <p className="mb-2 text-sm font-medium text-muted">{member.designation}</p>
+                {member.bio ? <p className="mb-3 line-clamp-3 text-sm text-stone-600">{member.bio}</p> : null}
                 <div className="flex items-center text-xs font-bold uppercase tracking-wider text-stone-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="mr-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  {member.location}
+                  {member.location ?? "Location unavailable"}
                 </div>
               </div>
             </div>

@@ -25,32 +25,32 @@ export default function ApproachPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-stone-50">
+    <div className="flex flex-col min-h-screen bg-bg">
       <PageBanner title="Our Approach" />
       
       <section className="mx-auto max-w-7xl px-6 py-20 md:py-32 w-full">
         <div className="mb-20 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#18395f] mb-6">A Structured, Client-Centric Methodology</h2>
-          <div className="h-1 w-24 bg-[#df8c20] mx-auto mb-8"></div>
-          <p className="text-lg text-stone-600 leading-relaxed">
+          <h2 className="text-3xl md:text-4xl font-bold text-ink mb-6">A Structured, Client-Centric Methodology</h2>
+          <div className="h-1 w-24 bg-accent-secondary mx-auto mb-8"></div>
+          <p className="text-lg text-muted leading-relaxed">
             Our approach is built on decades of professional experience. We combine technical rigor with practical business acumen to deliver solutions that are not only compliant but highly effective in real-world scenarios.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 relative">
           {/* Subtle background connecting line for desktop */}
-          <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-[#18395f]/10 -translate-y-1/2 z-0"></div>
+          <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-accent/10 -translate-y-1/2 z-0"></div>
 
           {steps.map((step, i) => (
-            <div key={i} className="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-stone-100 relative z-10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-              <div className="text-6xl font-black text-[#18395f]/5 absolute top-6 right-8 select-none pointer-events-none">
+            <div key={i} className="bg-surface p-8 md:p-10 rounded-2xl shadow-sm border border-[var(--glass-border)] relative z-10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="text-6xl font-black text-ink/5 absolute top-6 right-8 select-none pointer-events-none">
                 {step.num}
               </div>
-              <div className="h-14 w-14 bg-[#df8c20] text-white flex items-center justify-center font-bold text-xl rounded-xl mb-6 shadow-md">
+              <div className="h-14 w-14 bg-accent-secondary text-white flex items-center justify-center font-bold text-xl rounded-xl mb-6 shadow-md">
                 {step.num}
               </div>
-              <h3 className="text-2xl font-bold text-[#18395f] mb-4 relative z-10">{step.title}</h3>
-              <p className="text-[16px] text-stone-600 leading-relaxed relative z-10">
+              <h3 className="text-2xl font-bold text-ink mb-4 relative z-10">{step.title}</h3>
+              <p className="text-[16px] text-muted leading-relaxed relative z-10">
                 {step.desc}
               </p>
             </div>

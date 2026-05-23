@@ -1,19 +1,49 @@
 @import "tailwindcss";
 
 :root {
-  /* Mission Control Dark Theme */
-  --bg: #050505;
-  --surface: #111111;
-  --surface-raised: #1a1a1a;
-  --ink: #fdfdfd;
-  --muted: #888888;
-  --accent: #0ea5e9; /* Cyan blue for tech/finance vibe */
-  --accent-secondary: #10b981; /* Emerald */
-  --accent-glow: rgba(14, 165, 233, 0.15);
+  /* Professional Light Theme */
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --surface-raised: #f1f5f9;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --accent: #1e3a8a; /* Navy Blue */
+  --accent-secondary: #0f172a; /* Slate */
+  --accent-glow: rgba(30, 58, 138, 0.1);
   
-  --glass: rgba(17, 17, 17, 0.7);
+  --glass: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --grid-color: rgba(0, 0, 0, 0.05);
+
+  --logo-text: #1e3a8a; /* Official brand dark blue */
+}
+
+.dark {
+  /* Professional Dark Theme */
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface-raised: #334155;
+  --ink: #f8fafc;
+  --muted: #94a3b8;
+  --accent: #3b82f6; /* Soft blue */
+  --accent-secondary: #e2e8f0;
+  --accent-glow: rgba(59, 130, 246, 0.15);
+  
+  --glass: rgba(30, 41, 59, 0.7);
   --glass-border: rgba(255, 255, 255, 0.08);
   --grid-color: rgba(255, 255, 255, 0.03);
+
+  --logo-text: #ffffff;
+}
+
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-secondary: var(--accent-secondary);
 }
 
 * {
@@ -22,10 +52,6 @@
 
 body {
   background-color: var(--bg);
-  background-image: 
-    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-  background-size: 40px 40px;
   color: var(--ink);
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
@@ -36,23 +62,17 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+.dark .glass-panel {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 15px var(--accent-glow); }
-  50% { box-shadow: 0 0 25px rgba(14, 165, 233, 0.3); }
-}
-
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
 }
 
 .animate-fade-in {
@@ -65,25 +85,7 @@ body {
 
 .hover-glow:hover {
   border-color: var(--accent);
-  box-shadow: 0 0 20px var(--accent-glow);
-}
-
-/* Cinematic Effects */
-.scanline-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(
-    to bottom,
-    transparent 50%,
-    rgba(0, 0, 0, 0.2) 51%
-  );
-  background-size: 100% 4px;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.3;
+  box-shadow: 0 4px 20px var(--accent-glow);
 }
 
 .footer-link {
@@ -100,7 +102,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .data-number {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.02em;
+}
+
+/* Illusion Animations */
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+  animation: blob 15s infinite alternate ease-in-out;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+@keyframes loaderProgress {
+  0% { width: 0%; left: 0%; }
+  50% { width: 100%; left: 0%; }
+  100% { width: 0%; left: 100%; }
+}
+
+.animate-loader-progress {
+  animation: loaderProgress 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }

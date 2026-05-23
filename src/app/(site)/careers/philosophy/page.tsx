@@ -6,9 +6,9 @@ export default async function PhilosophyPage() {
     <CmsPage
       slug="careers/philosophy"
       fallback={
-        <div className="flex flex-col min-h-screen bg-white">
+        <div className="flex flex-col min-h-screen bg-surface">
           <PageBanner title="Philosophy" />
-          <section className="mx-auto max-w-7xl px-6 py-16 text-[#555]">
+          <section className="mx-auto max-w-7xl px-6 py-16 text-muted">
             <p>Career philosophy content is being migrated to CMS.</p>
           </section>
         </div>

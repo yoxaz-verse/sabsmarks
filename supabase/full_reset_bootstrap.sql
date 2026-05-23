@@ -142,6 +142,8 @@ create table team_members (
   slug text unique not null,
   name text not null,
   designation text not null,
+  location text,
+  linkedin_url text,
   credentials text,
   bio text,
   photo_url text,

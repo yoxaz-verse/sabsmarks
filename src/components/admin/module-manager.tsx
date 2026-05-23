@@ -22,6 +22,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [form, setForm] = useState<AdminRecord>({ status: "draft" });
 
   const orderedFields = useMemo(() => config.fields, [config.fields]);
@@ -87,6 +88,59 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     setSaving(false);
   }
 
+  async function uploadTeamPhoto(file: File) {
+    if (!file) return;
+    setError("");
+    setMessage("");
+    setUploadingField("photo_url");
+    try {
+      const timestamp = Math.floor(Date.now() / 1000);
+      const signRes = await fetch("/api/cloudinary/sign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ timestamp }),
+      });
+      const signJson = (await signRes.json()) as { signature?: string; apiKey?: string; cloudName?: string; timestamp?: number; error?: string };
+      if (!signRes.ok || !signJson.signature || !signJson.apiKey || !signJson.cloudName || !signJson.timestamp) {
+        throw new Error(signJson.error ?? "Failed to sign upload.");
+      }
+
+      const body = new FormData();
+      body.append("file", file);
+      body.append("api_key", signJson.apiKey);
+      body.append("timestamp", String(signJson.timestamp));
+      body.append("signature", signJson.signature);
+
+      const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${signJson.cloudName}/image/upload`, {
+        method: "POST",
+        body,
+      });
+      const uploadJson = (await uploadRes.json()) as { secure_url?: string; public_id?: string; resource_type?: string; error?: { message?: string } };
+      if (!uploadRes.ok || !uploadJson.secure_url || !uploadJson.public_id) {
+        throw new Error(uploadJson.error?.message ?? "Cloudinary upload failed.");
+      }
+
+      const persistRes = await fetch("/api/admin/upload-asset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          public_id: uploadJson.public_id,
+          secure_url: uploadJson.secure_url,
+          resource_type: uploadJson.resource_type ?? "image",
+        }),
+      });
+      const persistJson = (await persistRes.json()) as { error?: string };
+      if (!persistRes.ok) throw new Error(persistJson.error ?? "Failed to persist media asset.");
+
+      setForm((prev) => ({ ...prev, photo_url: uploadJson.secure_url }));
+      setMessage("Photo uploaded.");
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : "Upload failed.");
+    } finally {
+      setUploadingField(null);
+    }
+  }
+
   return (
     <section className="rounded-2xl border border-stone-200 bg-white p-6">
       <div className="flex items-center justify-between">
@@ -135,7 +189,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
       </div>
 
       {open ? (
-        <div className="fixed inset-0 z-50 flex items-end justify-end bg-black/20 p-4 md:items-center md:p-8">
+        <div className="fixed inset-0 z-[999] flex items-end justify-end bg-black/20 p-4 md:items-center md:p-8">
           <div className="h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-stone-900">Edit {config.title}</h3>
@@ -210,6 +264,21 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                       }
                       className="rounded-lg border border-stone-300 px-3 py-2"
                     />
+                    {config.table === "team_members" && field.key === "photo_url" ? (
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) void uploadTeamPhoto(file);
+                            e.currentTarget.value = "";
+                          }}
+                          className="block w-full text-xs text-stone-600 file:mr-3 file:rounded-md file:border-0 file:bg-stone-900 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white"
+                        />
+                        {uploadingField === "photo_url" ? <span className="text-xs text-stone-500">Uploading...</span> : null}
+                      </div>
+                    ) : null}
                   </label>
                 );
               })}
