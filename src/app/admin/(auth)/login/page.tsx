@@ -1,10 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<AdminLoginFallback />}>
+      <AdminLoginForm />
+    </Suspense>
+  );
+}
+
+function AdminLoginFallback() {
+  return (
+    <div className="mx-auto w-full max-w-xl rounded-3xl border border-stone-200 bg-white px-8 py-8 shadow-[0_20px_50px_rgba(15,23,42,0.08)] md:px-10 md:py-10">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Secure Admin Access</p>
+      <h1 className="mt-2 text-4xl font-bold tracking-tight text-[var(--ink)]">Admin Login</h1>
+      <p className="mt-2 text-sm text-[var(--muted)]">Loading...</p>
+    </div>
+  );
+}
+
+function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const reason = searchParams.get("reason");
