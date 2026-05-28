@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getRoleForUser } from "@/lib/supabase/roles";
 
 type Row = { id: string; slug: string };
 
@@ -21,9 +22,9 @@ export async function POST() {
     const { data: auth } = await supabase.auth.getUser();
     if (!auth.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { data: roleRow, error: roleErr } = await supabase.from("user_roles").select("role").eq("user_id", auth.user.id).maybeSingle<{ role: "admin" | "editor" }>();
-    if (roleErr) return NextResponse.json({ error: roleErr.message }, { status: 400 });
-    if (!roleRow || roleRow.role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    const roleLookup = await getRoleForUser(auth.user.id);
+    if (roleLookup.error) return NextResponse.json({ error: roleLookup.error }, { status: 400 });
+    if (roleLookup.role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     const now = new Date().toISOString();
 

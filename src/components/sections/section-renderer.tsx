@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { SectionRecord } from "@/types/cms";
+import { sanitizeCmsPayload } from "@/lib/content/sanitize";
 
 export function SectionRenderer({ section }: { section: SectionRecord }) {
-  const payload = section.payload;
+  const payload = sanitizeCmsPayload(section.payload);
 
   if (section.section_type === "hero") {
     return (

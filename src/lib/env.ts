@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-const DEFAULT_SUPABASE_URL = "https://omonppnrwvgcuyibicsu.supabase.co";
-const DEFAULT_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_JiA1CjP2slc-fNojWfPpfg_lkuUzP2S";
-
 const supabaseSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional(),
@@ -17,10 +14,9 @@ const cloudinarySchema = z.object({
 
 export function requireSupabaseEnv() {
   const supabaseCandidate = {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ?? DEFAULT_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? DEFAULT_SUPABASE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
   };
 
   const env = supabaseSchema.safeParse(supabaseCandidate);

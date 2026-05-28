@@ -1,10 +1,18 @@
+import type { Metadata } from "next";
 import { PageBanner } from "@/components/layout/page-banner";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  path: "/careers",
+  title: "Careers",
+  description: "Join our teams across audit, tax, and advisory practices.",
+});
 
 export default function JoinUsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-surface">
       <PageBanner title="JOIN US" />
-      
+
       <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 text-muted">
         <div className="space-y-6 text-[15px] leading-8 mb-16">
           <p>

@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
+
 import { ArrowRight, BarChart3, Building2, Calculator, Briefcase, ShieldCheck, Database, Network } from "lucide-react";
 import { AnimatedNumber } from "@/components/ui/animated-number";
+
+export const metadata: Metadata = buildPageMetadata({
+  path: "/",
+  title: "Home",
+  description: "Chartered accounting services across audit, tax, advisory, and compliance for growing businesses.",
+});
 
 export default function Home() {
   return (

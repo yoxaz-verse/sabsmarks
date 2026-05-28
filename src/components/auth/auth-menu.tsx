@@ -20,7 +20,10 @@ export function AuthMenu({ isAuthenticated, email, role }: AuthMenuProps) {
 
   if (!isAuthenticated) {
     return (
-      <Link href="/admin/login" className="rounded-full bg-accent px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[var(--surface)] hover-glow transition-all">
+      <Link
+        href="/admin/login"
+        className="rounded-full border border-[var(--glass-border)] bg-white px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent)] transition-colors hover:bg-surface-raised"
+      >
         Admin Login
       </Link>
     );

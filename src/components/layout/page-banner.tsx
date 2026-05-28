@@ -1,10 +1,15 @@
-import React from "react";
+"use client";
+
+import { useTheme } from "next-themes";
 
 interface PageBannerProps {
   title: string;
 }
 
 export function PageBanner({ title }: PageBannerProps) {
+  const { resolvedTheme } = useTheme();
+  const themeLabel = resolvedTheme === "dark" ? "DARK THEME" : "LIGHT THEME";
+
   return (
     <div className="relative w-full overflow-hidden py-20 md:py-32 border-b border-[var(--glass-border)] bg-bg dark:bg-ink group transition-colors duration-500">
       {/* Dynamic Backgrounds for Light/Dark Mode */}
@@ -35,7 +40,7 @@ export function PageBanner({ title }: PageBannerProps) {
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 flex flex-col items-start animate-fade-in pt-10">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-raised/80 dark:bg-white/5 border border-[var(--glass-border)] dark:border-white/10 backdrop-blur-md mb-6 shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.05)] transition-colors duration-500">
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-          <span className="text-xs font-semibold text-ink/80 dark:text-white/90 tracking-[0.2em] uppercase transition-colors duration-500">Section</span>
+          <span suppressHydrationWarning className="text-xs font-semibold text-ink/80 dark:text-white/90 tracking-[0.2em] uppercase transition-colors duration-500">{themeLabel}</span>
         </div>
         
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter drop-shadow-sm dark:drop-shadow-2xl mb-4 py-2 text-transparent bg-clip-text bg-gradient-to-br from-ink via-ink/90 to-ink/60 dark:from-white dark:via-white/90 dark:to-white/60 transition-colors duration-500">

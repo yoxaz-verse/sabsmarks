@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import { PageBanner } from "@/components/layout/page-banner";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = buildPageMetadata({
+  path: "/about",
+  title: "About",
+  description: "Learn about Sabs Marks JVS & Co., our legacy, leadership, and advisory philosophy.",
+});
 
 export default function AboutPage() {
   return (

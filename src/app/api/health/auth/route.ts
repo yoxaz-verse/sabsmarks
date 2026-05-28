@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { requireSupabaseEnv } from "@/lib/env";
+import { checkRoleRowExistsByService, getRoleForUser } from "@/lib/supabase/roles";
 
 export async function GET() {
   if (process.env.NODE_ENV === "production") {
@@ -19,11 +20,19 @@ export async function GET() {
 
   let role: string | null = null;
   let roleError: string | null = null;
+  let roleErrorCode: string | null = null;
+  let roleRowExistsByService: boolean | null = null;
+  let roleLookupSource: "service_role" | "session_rls" | null = null;
+  let serviceKeyPresent = false;
 
   if (userId) {
-    const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId).maybeSingle<{ role: string }>();
-    role = data?.role ?? null;
-    roleError = error?.message ?? null;
+    const roleLookup = await getRoleForUser(userId);
+    role = roleLookup.role;
+    roleError = roleLookup.error;
+    roleErrorCode = roleLookup.errorCode;
+    roleLookupSource = roleLookup.source;
+    serviceKeyPresent = roleLookup.serviceKeyPresent;
+    roleRowExistsByService = await checkRoleRowExistsByService(userId);
   }
 
   return NextResponse.json({
@@ -41,6 +50,11 @@ export async function GET() {
       value: role,
       isAdmin: role === "admin",
       error: roleError,
+      errorCode: roleErrorCode,
+      rowExistsByService: roleRowExistsByService,
+      likelyPolicyFiltered: role === null && roleError === null && roleRowExistsByService === true,
+      lookupSource: roleLookupSource,
+      serviceKeyPresent,
     },
   });
 }

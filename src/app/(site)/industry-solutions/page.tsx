@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import { PageBanner } from "@/components/layout/page-banner";
+import { buildPageMetadata } from "@/lib/seo";
 import { Building2, Factory } from "lucide-react";
+
+export const metadata: Metadata = buildPageMetadata({
+  path: "/industry-solutions",
+  title: "Industry Solutions",
+  description: "Industry-specific financial, compliance, and strategic advisory solutions.",
+});
 
 export default function IndustryPage() {
   return (

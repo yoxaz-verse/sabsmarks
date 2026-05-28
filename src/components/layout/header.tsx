@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { MegaNav } from "@/components/navigation/mega-nav";
 import { Logo } from "@/components/layout/logo";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { AuthMenu } from "@/components/auth/auth-menu";
+import { ThemeToggle } from "@/components/theme-toggle";
 import type { MenuItem } from "@/types/cms";
+import { getMegaNav } from "@/lib/content/service";
 
-const staticNavGroups: Record<string, MenuItem[]> = {
+const fallbackNavGroups: Record<string, MenuItem[]> = {
   About: [
     { id: "about-1", parent_id: null, label: "The Firm", href: "/about", group_name: "About", display_order: 1, status: "published" },
     { id: "about-2", parent_id: null, label: "Legacy", href: "/about/legacy", group_name: "About", display_order: 2, status: "published" },
@@ -28,28 +28,20 @@ const staticNavGroups: Record<string, MenuItem[]> = {
   Contact: [{ id: "contact-1", parent_id: null, label: "Contact", href: "/contact", group_name: "Contact", display_order: 1, status: "published" }],
 };
 
-import { ThemeToggle } from "@/components/theme-toggle";
-
 export async function Header() {
-  const supabase = await createServerSupabaseClient();
-  const { data: userData } = await supabase.auth.getUser();
-
-  let role: "admin" | "editor" | null = null;
-  if (userData.user) {
-    const { data: roleRow } = await supabase.from("user_roles").select("role").eq("user_id", userData.user.id).maybeSingle<{ role: "admin" | "editor" }>();
-    role = roleRow?.role ?? null;
-  }
+  const cmsNavGroups = await getMegaNav();
+  const hasCmsNav = Object.values(cmsNavGroups).some((items) => items.length > 0);
+  const navGroups = hasCmsNav ? cmsNavGroups : fallbackNavGroups;
 
   return (
     <header className="glass-panel sticky top-0 z-[100] border-b border-[var(--glass-border)]">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-4">
         <Link href="/">
           <Logo className="scale-75 origin-left" />
         </Link>
-        <div className="flex items-center gap-4 ml-auto">
-          <MegaNav groups={staticNavGroups} />
+        <div className="flex items-center gap-4">
+          <MegaNav groups={navGroups} />
           <ThemeToggle />
-          <AuthMenu isAuthenticated={!!userData.user} email={userData.user?.email ?? null} role={role} />
         </div>
       </div>
     </header>

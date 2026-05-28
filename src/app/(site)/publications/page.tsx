@@ -1,7 +1,15 @@
 import Link from "next/link";
 import { getCollection } from "@/lib/content/service";
+import type { Metadata } from "next";
 import { PageBanner } from "@/components/layout/page-banner";
+import { buildPageMetadata } from "@/lib/seo";
 import { FileText, Download } from "lucide-react";
+
+export const metadata: Metadata = buildPageMetadata({
+  path: "/publications",
+  title: "Publications",
+  description: "Explore reports, publications, and expert commentary from Sabs Marks JVS & Co.",
+});
 
 export default async function PublicationsPage() {
   const entries = await getCollection("publications");

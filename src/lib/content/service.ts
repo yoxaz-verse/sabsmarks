@@ -124,3 +124,9 @@ export async function getInsightTags() {
   const { data } = await supabase.from("insight_tags").select("*").eq("status", "published").order("title", { ascending: true }).returns<InsightTag[]>();
   return data ?? [];
 }
+
+export async function getPublishedSlugs(type: EntryRecord["type"]) {
+  const supabase = await createServerSupabaseClient();
+  const { data } = await supabase.from(type).select("slug, updated_at").eq("status", "published");
+  return (data ?? []) as Array<{ slug: string; updated_at?: string | null }>;
+}

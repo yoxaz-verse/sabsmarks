@@ -88,41 +88,47 @@ export default function PracticeAreasPage() {
         <div className="glass-panel rounded-3xl overflow-hidden flex flex-col md:flex-row relative z-10 shadow-2xl border border-[var(--glass-border)] bg-surface/60 backdrop-blur-xl min-h-[750px] md:min-h-[650px]">
           
           {/* Left Pane: Navigation Sidebar */}
-          <div className="w-full md:w-[380px] flex flex-col gap-2 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[var(--glass-border)] bg-surface-raised/30 relative">
+          <div className="w-full md:w-[380px] flex flex-col items-stretch gap-2 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[var(--glass-border)] bg-surface-raised/30 relative">
             <div className="absolute inset-0 bg-gradient-to-b from-surface/40 to-transparent pointer-events-none"></div>
             <h4 className="text-xs font-bold text-muted uppercase tracking-widest mb-6 px-4">Service Verticals</h4>
             {practices.map((practice) => {
               const isActive = activeTab === practice.id;
               return (
-                <button
-                  key={practice.id}
-                  onClick={() => setActiveTab(practice.id)}
-                  className={`text-left px-6 py-5 font-bold text-[13px] tracking-[0.08em] rounded-2xl transition-all duration-500 relative overflow-hidden group ${
-                    isActive
-                      ? "bg-surface shadow-lg text-ink border border-[var(--glass-border)]"
-                      : "text-muted hover:bg-surface/50 hover:text-ink border border-transparent"
-                  }`}
-                >
-                  {/* Active indicator line */}
-                  {isActive && (
-                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent rounded-l-2xl shadow-[0_0_15px_var(--accent-glow)]"></div>
-                  )}
-                  {/* Active Background Glow */}
-                  {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-100"></div>
-                  )}
-                  {/* Hover background slide */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  <span className={`relative z-10 flex items-center justify-between transition-transform duration-500 ${isActive ? 'translate-x-2' : 'translate-x-0 group-hover:translate-x-2'}`}>
-                    <span>{practice.title}</span>
+                <div key={practice.id} className="w-full md:w-[320px] md:max-w-[320px] md:min-w-[320px] md:mx-auto">
+                  <button
+                    onClick={() => setActiveTab(practice.id)}
+                    className={`block h-20 w-full min-w-full max-w-full px-6 py-4 text-left font-bold text-[13px] tracking-[0.08em] rounded-2xl transition-all duration-500 relative overflow-hidden group box-border ${
+                      isActive
+                        ? "bg-surface shadow-lg text-ink border border-[var(--glass-border)]"
+                        : "text-muted bg-surface/45 hover:bg-surface/65 hover:text-ink border border-[var(--glass-border)]/70"
+                    }`}
+                  >
+                    {/* Active indicator line */}
                     {isActive && (
-                      <svg className="w-4 h-4 text-accent animate-fade-in" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent rounded-l-2xl shadow-[0_0_15px_var(--accent-glow)]"></div>
                     )}
-                  </span>
-                </button>
+                    {/* Active Background Glow */}
+                    {isActive && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-100"></div>
+                    )}
+                    {/* Hover background slide */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <span className="relative z-10 flex h-full w-full items-center justify-between gap-4">
+                      <span className="line-clamp-2 leading-6">{practice.title}</span>
+                      <span className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center">
+                        <svg
+                          className={`h-4 w-4 transition-opacity duration-300 ${isActive ? "text-accent opacity-100 animate-fade-in" : "text-muted opacity-35 group-hover:opacity-60"}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </span>
+                  </button>
+                </div>
               );
             })}
           </div>

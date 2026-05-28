@@ -1,7 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
 import { getInsights } from "@/lib/content/service";
 import { PageBanner } from "@/components/layout/page-banner";
 import { ArrowRight, BookOpen } from "lucide-react";
+
+export const metadata: Metadata = buildPageMetadata({
+  path: "/insights",
+  title: "Insights",
+  description: "Insights and thought leadership on audit, tax, and business advisory matters.",
+});
 
 export default async function InsightsPage() {
   const insights = await getInsights({ page: 1 });
