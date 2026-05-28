@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { MegaNav } from "@/components/navigation/mega-nav";
+import { MobileNav } from "@/components/navigation/mobile-nav";
 import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import type { MenuItem } from "@/types/cms";
@@ -39,8 +40,9 @@ export async function Header() {
         <Link href="/">
           <Logo className="scale-75 origin-left" />
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <MegaNav groups={navGroups} />
+          <MobileNav groups={navGroups} />
           <ThemeToggle />
         </div>
       </div>
