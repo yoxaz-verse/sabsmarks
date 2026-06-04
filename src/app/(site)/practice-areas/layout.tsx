@@ -3,8 +3,8 @@ import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/practice-areas",
-  title: "Practice Areas",
-  description: "Comprehensive audit, tax, governance, and advisory service lines.",
+  title: "Services",
+  description: "Comprehensive corporate finance, audit, tax, governance, risk, and business advisory services.",
 });
 
 export default function PracticeAreasLayout({ children }: { children: React.ReactNode }) {

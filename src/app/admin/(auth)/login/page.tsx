@@ -14,10 +14,10 @@ export default function AdminLoginPage() {
 
 function AdminLoginFallback() {
   return (
-    <div className="mx-auto w-full max-w-xl rounded-3xl border border-stone-200 bg-white px-8 py-8 shadow-[0_20px_50px_rgba(15,23,42,0.08)] md:px-10 md:py-10">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Secure Admin Access</p>
-      <h1 className="mt-2 text-4xl font-bold tracking-tight text-[var(--ink)]">Admin Login</h1>
-      <p className="mt-2 text-sm text-[var(--muted)]">Loading...</p>
+    <div className="mx-auto w-full max-w-[520px] rounded-[32px] border border-slate-200 bg-white px-6 py-7 text-slate-950 shadow-[0_32px_90px_rgba(15,23,42,0.18)] sm:px-8 sm:py-8">
+      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Secure Admin Access</p>
+      <h1 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-4xl">Admin Login</h1>
+      <p className="mt-3 text-sm leading-6 text-slate-600">Loading...</p>
     </div>
   );
 }
@@ -70,45 +70,66 @@ function AdminLoginForm() {
     router.refresh();
   }
 
-  return (
-    <div className="mx-auto w-full max-w-xl rounded-3xl border border-stone-200 bg-white px-8 py-8 shadow-[0_20px_50px_rgba(15,23,42,0.08)] md:px-10 md:py-10">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Secure Admin Access</p>
-      <h1 className="mt-2 text-4xl font-bold tracking-tight text-[var(--ink)]">Admin Login</h1>
-      <p className="mt-2 text-sm text-[var(--muted)]">Sign in to access the CMS dashboard.</p>
+  const roleMessage =
+    reason === "unauthorized"
+      ? "This account is signed in but does not have admin access."
+      : reason === "missing-role"
+        ? "Your account has no CMS role yet. Ask an admin to assign role in `user_roles`."
+        : reason === "role-query-failed"
+          ? "Signed in, but role lookup failed. Please contact your administrator."
+          : null;
 
-      <form action={onSubmit} className="mt-8 grid gap-4">
+  return (
+    <div className="mx-auto w-full max-w-[520px] rounded-[32px] border border-slate-200 bg-white px-6 py-7 text-slate-950 shadow-[0_32px_90px_rgba(15,23,42,0.18)] sm:px-8 sm:py-8 md:px-10 md:py-10">
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 sm:px-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Secure Admin Access</p>
+        <h1 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-4xl">Admin Login</h1>
+        <p className="mt-3 text-sm leading-6 text-slate-600">Sign in to access the CMS dashboard.</p>
+      </div>
+
+      <form action={onSubmit} className="mt-6 grid gap-4">
         <input
           name="email"
           type="email"
           placeholder="Email"
-          className="h-14 rounded-xl border border-stone-300 px-4 text-lg text-[var(--ink)] placeholder:text-stone-400 focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20 focus:outline-none"
+          className="h-14 rounded-2xl border border-slate-300 bg-white px-4 text-base text-slate-950 placeholder:text-slate-400 shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)] outline-none transition focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
           required
         />
         <input
           name="password"
           type="password"
           placeholder="Password"
-          className="h-14 rounded-xl border border-stone-300 px-4 text-lg text-[var(--ink)] placeholder:text-stone-400 focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20 focus:outline-none"
+          className="h-14 rounded-2xl border border-slate-300 bg-white px-4 text-base text-slate-950 placeholder:text-slate-400 shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)] outline-none transition focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
           required
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="mt-1 h-13 rounded-full bg-stone-900 px-6 text-lg font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-2 inline-flex h-14 items-center justify-center rounded-full bg-slate-950 px-6 text-base font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "loading" ? "Signing in..." : "Sign in"}
         </button>
       </form>
-      {reason === "unauthorized" ? <p className="mt-4 text-sm text-amber-700">This account is signed in but does not have admin access.</p> : null}
-      {reason === "missing-role" ? <p className="mt-4 text-sm text-amber-700">Your account has no CMS role yet. Ask an admin to assign role in `user_roles`.</p> : null}
-      {reason === "role-query-failed" ? <p className="mt-4 text-sm text-amber-700">Signed in, but role lookup failed. Please contact your administrator.</p> : null}
-      {reason === "signedout" ? <p className="mt-4 text-sm text-green-700">You have been signed out.</p> : null}
-      {(reason === "unauthorized" || reason === "missing-role" || reason === "role-query-failed") ? (
-        <button type="button" onClick={switchAccount} className="mt-4 rounded-full border border-stone-300 px-5 py-2 text-xs font-semibold uppercase tracking-wide text-stone-700 hover:bg-stone-50">
+
+      <div className="mt-5 space-y-3">
+        {roleMessage ? (
+          <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900">{roleMessage}</p>
+        ) : null}
+        {reason === "signedout" ? (
+          <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-900">You have been signed out.</p>
+        ) : null}
+        {message ? <p className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm leading-6 text-rose-900">{message}</p> : null}
+      </div>
+
+      {roleMessage ? (
+        <button
+          type="button"
+          onClick={switchAccount}
+          className="mt-5 inline-flex rounded-full border border-slate-300 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200"
+        >
           Sign out & switch account
         </button>
       ) : null}
-      {message ? <p className="mt-2 text-sm text-red-700">{message}</p> : null}
     </div>
   );
 }

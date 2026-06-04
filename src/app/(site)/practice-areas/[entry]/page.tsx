@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: { params: Promise<{ entry: st
   const { entry: slug } = await params;
   const entry = await getEntry("practice_areas", slug);
   if (!entry) return { robots: { index: false, follow: false } };
-  return buildEntryMetadata(entry, `/practice-areas/${entry.slug}`, "Explore our audit, tax, and advisory practice areas.");
+  return buildEntryMetadata(entry, `/practice-areas/${entry.slug}`, "Explore our corporate finance, audit, tax, and advisory services.");
 }
 
 export default async function PracticeAreaDetail({ params }: { params: Promise<{ entry: string }> }) {
@@ -17,7 +17,7 @@ export default async function PracticeAreaDetail({ params }: { params: Promise<{
 
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: "Home", url: "/" },
-    { name: "Practice Areas", url: "/practice-areas" },
+    { name: "Services", url: "/practice-areas" },
     { name: entry.title, url: `/practice-areas/${entry.slug}` },
   ]);
 

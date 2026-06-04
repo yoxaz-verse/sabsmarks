@@ -133,7 +133,10 @@ export interface SiteSettings {
   logo_url: string | null;
   primary_email: string | null;
   primary_phone: string | null;
+  head_office_label: string | null;
+  head_office_address: string | null;
   social_links: Record<string, string>;
+  service_locations: string[];
   footer_text: string | null;
   disclaimers: string | null;
 }

@@ -24,7 +24,7 @@ export default function IndustryPage() {
             <span className="text-xs font-bold text-ink uppercase tracking-wider">Our Expertise</span>
           </div>
           <p>
-            Sabs Marks has been providing knowledge-based solutions to its clients, helping them better understand the fundamentals and complexity of various issues, thereby enabling them to take strategic, data-driven decisions.
+            Sabs Marks JVS PVT LTD has been providing knowledge-based solutions to its clients, helping them better understand the fundamentals and complexity of various issues, thereby enabling them to take strategic, data-driven decisions.
           </p>
           <p>
             In view of our in-house research, close relationships, and constant interactions with clients from diverse industries, we have built a well-developed and fully updated knowledge center. This enables us to cater to demands from diverse industries for a wide range of services across major functional areas.

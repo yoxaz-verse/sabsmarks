@@ -3,12 +3,45 @@
 
 create extension if not exists "pgcrypto";
 
+insert into site_settings (
+  id,
+  brand_name,
+  primary_email,
+  primary_phone,
+  head_office_label,
+  head_office_address,
+  social_links,
+  service_locations,
+  footer_text
+)
+values (
+  '00000000-0000-0000-0000-000000000001',
+  'Sabs Marks JVS PVT LTD',
+  'info@sabsmarksjvs.com',
+  '8943115500',
+  'H.O',
+  'Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala',
+  '{"linkedin":"https://www.linkedin.com/company/sabs-marks-jvs-co/","instagram":"https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ=="}'::jsonb,
+  '["Kochi","Angamaly","Thrissur","Bengaluru","Chennai","Tirupati","Gurgaon","Ettumanoor","Kottayam","Chengannur","Hyderabad","Dubai"]'::jsonb,
+  'Sabs Marks JVS PVT LTD. All rights reserved.'
+)
+on conflict (id) do update set
+  brand_name = excluded.brand_name,
+  primary_email = excluded.primary_email,
+  primary_phone = excluded.primary_phone,
+  head_office_label = excluded.head_office_label,
+  head_office_address = excluded.head_office_address,
+  social_links = excluded.social_links,
+  service_locations = excluded.service_locations,
+  footer_text = excluded.footer_text,
+  updated_at = now();
+
 -- 1) Pages
 insert into pages (slug, title, template_type, status, published_at)
 values
 ('about', 'The Firm', 'about', 'published', now()),
 ('about/legacy', 'Legacy', 'about', 'published', now()),
-('about/locations', 'Locations', 'about', 'published', now()),
+('about/locations', 'Our Services', 'about', 'published', now()),
 ('about/team', 'Leadership', 'about', 'published', now()),
 ('careers/philosophy', 'Philosophy', 'generic', 'published', now()),
 ('careers/alumni', 'Alumni', 'generic', 'published', now()),
@@ -45,7 +78,7 @@ insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'rich_text',
 jsonb_build_object(
   'title','Overview',
-  'content','Sabs Marks JVS & Co. LLP is an all services firm specializing in providing a wide spectrum of professional services under one roof to domestic and multinational corporations.\n\nEstablished in 1936, Sabs Marks serves diverse businesses with emphasis on the MSME sector.\n\nWith a wide network of people and locations, Sabs Marks and its associate firms collaborate across service lines and geographies to deliver legally sound and practical solutions.'
+  'content','Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.\n\nEstablished in 1936, Sabs Marks JVS PVT LTD serves diverse businesses with emphasis on the MSME sector.\n\nWith a wide network of people and locations, Sabs Marks JVS PVT LTD and its associate firms collaborate across service lines and geographies to deliver legally sound and practical solutions.'
 ),
 1, true
 from pages where slug='about';
@@ -73,16 +106,15 @@ from pages where slug='about/legacy';
 
 -- Locations
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
-select id, 'hero', jsonb_build_object('kicker','About','headline','Locations','subtext','Global presence across India and UAE through our offices and associate network.'), 0, true
+select id, 'hero', jsonb_build_object('kicker','About','headline','Our Services','subtext','Structured support across finance, governance, compliance, and execution.'), 0, true
 from pages where slug='about/locations';
 
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
-select id, 'office_cards',
-jsonb_build_object('offices', jsonb_build_array(
-  jsonb_build_object('city','Mumbai','address','Mistry Bhavan, 3rd Floor, Dinshaw Vachha Road, Churchgate'),
-  jsonb_build_object('city','Chennai','address','New No. 57, Kochu Bhavan, McNicholas Road, Chetpet'),
-  jsonb_build_object('city','Dubai','address','Associate office presence in UAE')
-)),
+select id, 'rich_text',
+jsonb_build_object(
+  'title','Our Services',
+  'content','This route is rendered through a custom frontend page that presents our service lines across advisory, audit, tax, governance, risk, and transformation.'
+),
 1, true
 from pages where slug='about/locations';
 
@@ -144,3 +176,23 @@ from pages where slug='expertise/our-approach';
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'rich_text', jsonb_build_object('title','Approach','content','Content migrated and editable from admin.'), 1, true
 from pages where slug='expertise/our-approach';
+
+-- Navigation
+insert into menu_items (label, href, group_name, display_order, status)
+values
+('Home', '/', 'Home', 1, 'published'),
+('The Firm', '/about', 'About', 1, 'published'),
+('Leadership', '/about/team', 'About', 3, 'published'),
+('Our Services', '/about/locations', 'About', 4, 'published'),
+('Services', '/practice-areas', 'Expertise', 1, 'published'),
+('Our Approach', '/expertise/our-approach', 'Expertise', 5, 'published'),
+('Insights', '/insights', 'Insights', 1, 'published'),
+('Philosophy', '/careers/philosophy', 'Career', 1, 'published'),
+('Join Us', '/careers', 'Career', 2, 'published'),
+('Contact', '/contact', 'Contact', 1, 'published')
+on conflict (href) do update set
+  label = excluded.label,
+  group_name = excluded.group_name,
+  display_order = excluded.display_order,
+  status = excluded.status,
+  updated_at = now();

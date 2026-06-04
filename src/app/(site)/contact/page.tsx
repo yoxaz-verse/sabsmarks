@@ -1,127 +1,63 @@
-"use client";
-
-import { useState } from "react";
 import { PageBanner } from "@/components/layout/page-banner";
+import { getSiteSettings } from "@/lib/content/service";
+import { getSiteContact } from "@/lib/site-contact";
 
-const locations = [
-  { id: "abu-dhabi", name: "Abu Dhabi" },
-  { id: "ahmedabad", name: "Ahmedabad" },
-  { id: "bengaluru", name: "Bengaluru" },
-  { id: "chennai", name: "Chennai" },
-  { id: "delhi", name: "Delhi" },
-  { id: "dubai", name: "Dubai" },
-  { id: "gift-city", name: "GIFT City" },
-  { id: "gurgaon", name: "Gurgaon" },
-  { id: "kolkata", name: "Kolkata" },
-  { 
-    id: "mumbai", 
-    name: "Mumbai",
-    details: [
-      {
-        address: "Mistry Bhavan, 3rd Floor,\nDinshaw Vachha Road,\nChurchgate, Mumbai 400 020.",
-        phone: "+91 22 6623 0600",
-        email: "manish@sabsmarks.com"
-      },
-      {
-        address: "501-502, Narain Chambers, M.G. Road,\nVile Parle (E), Mumbai 400 057.",
-        phone: "+91 22 6250 7600",
-        email: "himanshu@sabsmarks.com"
-      },
-      {
-        address: "Takshashila,\n3rd Floor, Samant Estate,\nGoregaon (East),\nMumbai-400063",
-        phone: "+91 22 6307 2500",
-        email: "hiren@sabsmarks.com"
-      }
-    ]
-  },
-];
+function ContactLink({ href, label, value }: { href: string; label: string; value: string }) {
+  return (
+    <a href={href} className="group rounded-2xl border border-[var(--glass-border)] bg-white/85 p-5 transition-colors hover:border-accent hover:bg-white">
+      <p className="text-xs font-bold uppercase tracking-[0.22em] text-muted">{label}</p>
+      <p className="mt-3 text-lg font-semibold text-ink group-hover:text-accent">{value}</p>
+    </a>
+  );
+}
 
-export default function ContactPage() {
-  const [activeCity, setActiveCity] = useState("mumbai");
-
-  const activeLocation = locations.find(loc => loc.id === activeCity) || locations[0];
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
+  const contact = getSiteContact(settings);
 
   return (
-    <div className="flex flex-col min-h-screen bg-surface">
+    <div className="flex min-h-screen flex-col bg-surface">
       <PageBanner title="Contact Us" />
-      
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 w-full">
-        <div className="mb-12">
-          <h2 className="text-3xl text-ink font-bold mb-4">Our Locations</h2>
-          <div className="w-48 h-[2px] bg-stone-300"></div>
-        </div>
 
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Left Side: City Tabs */}
-          <div className="w-full md:w-1/3 flex flex-col gap-[2px]">
-            {locations.map((city) => (
-              <button
-                key={city.id}
-                onClick={() => setActiveCity(city.id)}
-                className={`text-left px-6 py-3 text-[17px] font-bold transition-colors ${
-                  activeCity === city.id
-                    ? "bg-accent-secondary text-white"
-                    : "bg-accent text-white hover:bg-accent-secondary"
-                }`}
-              >
-                {city.name}
-              </button>
-            ))}
+      <section className="mx-auto w-full max-w-7xl px-6 py-16 md:px-12">
+        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-[2rem] bg-accent px-8 py-10 text-white shadow-[0_32px_80px_rgba(18,57,95,0.18)] md:px-10 md:py-12">
+            <p className="text-sm font-bold uppercase tracking-[0.28em] text-blue-100">Contact</p>
+            <h2 className="mt-4 max-w-xl text-4xl font-bold leading-tight">{contact.brandName}</h2>
+            <p className="mt-4 max-w-2xl text-[15px] leading-7 text-blue-50">
+              Reach our head office directly for enquiries, appointments, and location assistance.
+            </p>
+
+            <div className="mt-10 grid gap-4 md:grid-cols-2">
+              <ContactLink href={`tel:${contact.primaryPhone.replace(/\s+/g, "")}`} label="Call Us" value={contact.primaryPhone} />
+              <ContactLink href={`mailto:${contact.primaryEmail}`} label="Mail Us" value={contact.primaryEmail} />
+            </div>
           </div>
 
-          {/* Right Side: Location Details */}
-          <div className="w-full md:w-2/3 bg-accent text-white p-8 md:p-12 relative overflow-hidden min-h-[500px]">
-            <h3 className="text-sm font-bold tracking-wider mb-2 uppercase">{activeLocation.name}</h3>
-            <h2 className="text-3xl font-bold mb-10">Sabs Marks & Associates LLP</h2>
-            
-            {activeLocation.details ? (
-              <div className="flex flex-col md:flex-row gap-8">
-                <div className="w-full md:w-1/2 space-y-8 relative z-10">
-                  {activeLocation.details.map((office, i) => (
-                    <div key={i} className="border-b border-[#df8c20]/30 pb-8 last:border-0 last:pb-0">
-                      <p className="text-[15px] leading-relaxed mb-4 whitespace-pre-line text-blue-50">
-                        {office.address}
-                      </p>
-                      <p className="text-[15px] text-blue-100">
-                        <span className="font-semibold">T :</span> {office.phone}
-                      </p>
-                      <p className="text-[15px] text-blue-100">
-                        <span className="font-semibold">E :</span> {office.email}
-                      </p>
-                    </div>
-                  ))}
+          <div className="rounded-[2rem] border border-[var(--glass-border)] bg-white/90 p-8 shadow-[0_24px_60px_rgba(15,23,42,0.08)]">
+            <p className="text-sm font-bold uppercase tracking-[0.28em] text-muted">Social Media</p>
+            <div className="mt-6 space-y-4">
+              <ContactLink href={contact.socialLinks.linkedin} label="LinkedIn" value="sabs-marks-jvs-co" />
+              <ContactLink href={contact.socialLinks.instagram} label="Instagram" value="@sabsmarksjvs" />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-10 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="rounded-[2rem] border border-[var(--glass-border)] bg-white/90 p-8 shadow-[0_24px_60px_rgba(15,23,42,0.08)]">
+            <p className="text-sm font-bold uppercase tracking-[0.28em] text-muted">Our Locations</p>
+            <h3 className="mt-4 text-2xl font-bold text-ink">{contact.headOfficeLabel}</h3>
+            <p className="mt-4 whitespace-pre-line text-[15px] leading-7 text-muted">{contact.headOfficeAddress}</p>
+          </div>
+
+          <div className="rounded-[2rem] bg-[linear-gradient(135deg,rgba(15,23,42,0.98),rgba(18,57,95,0.95))] p-8 text-white shadow-[0_32px_80px_rgba(15,23,42,0.24)]">
+            <p className="text-sm font-bold uppercase tracking-[0.28em] text-blue-100">Also At</p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {contact.serviceLocations.map((city) => (
+                <div key={city} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-blue-50 backdrop-blur-sm">
+                  {city}
                 </div>
-                
-                {/* Map Image Placeholder for Mumbai layout */}
-                <div className="w-full md:w-1/2 relative z-10 hidden md:block">
-                  <div className="bg-stone-200 w-full aspect-square rounded-sm overflow-hidden border-4 border-white shadow-lg">
-                    {/* Placeholder map image. In a real scenario, use Google Maps iframe */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img 
-                      src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop" 
-                      alt="Map Location" 
-                      className="w-full h-full object-cover opacity-80 mix-blend-luminosity" 
-                    />
-                    <div className="absolute top-4 left-4 bg-surface text-ink text-xs font-bold px-3 py-1.5 rounded-sm shadow-sm">
-                      Open in Maps ↗
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="text-blue-100 text-[15px]">
-                <p>Office details for {activeLocation.name} will be updated soon.</p>
-              </div>
-            )}
-            
-            {/* Subtle bridge background decoration (mimicking the screenshot) */}
-            <div className="absolute bottom-0 right-0 w-2/3 opacity-10 pointer-events-none">
-              <svg viewBox="0 0 100 40" fill="none" stroke="currentColor" strokeWidth="0.5">
-                <path d="M0 30 L20 20 L40 30 L60 10 L80 30 L100 20" />
-                <path d="M20 20 L20 40 M60 10 L60 40" />
-                <path d="M20 20 L10 40 M20 20 L30 40 M60 10 L45 40 M60 10 L75 40" />
-                <line x1="0" y1="40" x2="100" y2="40" strokeWidth="1" />
-              </svg>
+              ))}
             </div>
           </div>
         </div>

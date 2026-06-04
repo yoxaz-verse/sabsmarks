@@ -8,11 +8,86 @@ function inputValue(record: AdminRecord, key: string) {
   return value === null || value === undefined ? "" : String(value);
 }
 
+function inputText(record: AdminRecord, key: string) {
+  const value = record[key];
+  if (Array.isArray(value) || (typeof value === "object" && value !== null)) {
+    return JSON.stringify(value, null, 2);
+  }
+  return inputValue(record, key);
+}
+
 function datetimeLocalValue(value: unknown) {
   if (!value) return "";
   const text = String(value);
   if (text.includes("T") && text.length >= 16) return text.slice(0, 16);
   return "";
+}
+
+function nullableText(value: unknown) {
+  if (typeof value !== "string") return value ?? null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function isStringRecord(value: unknown): value is Record<string, string> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function normalizeLocationsText(value: unknown) {
+  if (Array.isArray(value)) {
+    return value
+      .filter((item): item is string => typeof item === "string")
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  return typeof value === "string" ? value : "";
+}
+
+function shapeSiteSettingsForm(record: AdminRecord) {
+  const socialLinks = isStringRecord(record.social_links) ? record.social_links : {};
+
+  return {
+    ...record,
+    head_office_label: typeof record.head_office_label === "string" ? record.head_office_label : "",
+    head_office_address: typeof record.head_office_address === "string" ? record.head_office_address : "",
+    service_locations_text: normalizeLocationsText(record.service_locations),
+    linkedin_url: socialLinks.linkedin ?? "",
+    instagram_url: socialLinks.instagram ?? "",
+  };
+}
+
+function serializeSiteSettingsForm(form: AdminRecord) {
+  const existingSocialLinks = isStringRecord(form.social_links) ? { ...form.social_links } : {};
+  const linkedin = typeof form.linkedin_url === "string" ? form.linkedin_url.trim() : "";
+  const instagram = typeof form.instagram_url === "string" ? form.instagram_url.trim() : "";
+  const socialLinks = { ...existingSocialLinks };
+
+  if (linkedin) socialLinks.linkedin = linkedin;
+  else delete socialLinks.linkedin;
+
+  if (instagram) socialLinks.instagram = instagram;
+  else delete socialLinks.instagram;
+
+  const serviceLocations = normalizeLocationsText(form.service_locations_text)
+    .split(/\r?\n|,/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  return {
+    id: form.id,
+    brand_name: String(form.brand_name ?? ""),
+    logo_url: nullableText(form.logo_url),
+    primary_email: nullableText(form.primary_email),
+    primary_phone: nullableText(form.primary_phone),
+    head_office_label: nullableText(form.head_office_label),
+    head_office_address: nullableText(form.head_office_address),
+    social_links: socialLinks,
+    service_locations: serviceLocations,
+    footer_text: nullableText(form.footer_text),
+    disclaimers: nullableText(form.disclaimers),
+  };
 }
 
 export function ModuleManager({ config }: { config: AdminModuleConfig }) {
@@ -59,7 +134,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
   }
 
   function openEdit(record: AdminRecord) {
-    setForm(record);
+    setForm(config.table === "site_settings" ? shapeSiteSettingsForm(record) : record);
     setMessage("");
     setError("");
     setOpen(true);
@@ -69,10 +144,11 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     setMessage("");
     setError("");
     setSaving(true);
+    const payload = config.table === "site_settings" ? serializeSiteSettingsForm(form) : form;
     const res = await fetch("/api/admin/upsert", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ table: config.table, payload: form }),
+      body: JSON.stringify({ table: config.table, payload }),
     });
     const json = (await res.json()) as { ok?: boolean; error?: string };
 
@@ -205,7 +281,8 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                     <label key={field.key} className="grid gap-2 text-sm text-stone-700">
                       {field.label} {field.required ? <span className="text-red-600">*</span> : null}
                       <textarea
-                        value={inputValue(form, field.key)}
+                        value={inputText(form, field.key)}
+                        placeholder={field.placeholder}
                         onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.value }))}
                         className="min-h-28 rounded-lg border border-stone-300 px-3 py-2"
                       />
@@ -250,7 +327,8 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                     <input
                       type={field.type === "datetime" ? "datetime-local" : field.type}
                       required={field.required}
-                      value={field.type === "datetime" ? datetimeLocalValue(form[field.key]) : inputValue(form, field.key)}
+                      value={field.type === "datetime" ? datetimeLocalValue(form[field.key]) : inputText(form, field.key)}
+                      placeholder={field.placeholder}
                       onChange={(e) =>
                         setForm((prev) => ({
                           ...prev,

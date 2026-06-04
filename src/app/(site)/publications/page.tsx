@@ -8,7 +8,7 @@ import { FileText, Download } from "lucide-react";
 export const metadata: Metadata = buildPageMetadata({
   path: "/publications",
   title: "Publications",
-  description: "Explore reports, publications, and expert commentary from Sabs Marks JVS & Co.",
+  description: "Explore reports, publications, and expert commentary from Sabs Marks JVS PVT LTD.",
 });
 
 export default async function PublicationsPage() {

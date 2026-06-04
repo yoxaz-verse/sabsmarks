@@ -6,7 +6,7 @@ import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type { MenuItem } from "@/types/cms";
 
-const ORDERED_GROUPS = ["About", "Expertise", "Insights", "Career", "Contact"] as const;
+const ORDERED_GROUPS = ["Home", "About", "Expertise", "Insights", "Career", "Contact"] as const;
 
 export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
   const pathname = usePathname();

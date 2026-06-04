@@ -7,7 +7,7 @@ import { buildOrganizationSchema } from "@/lib/seo-schema";
 import "./globals.css";
 
 const defaultDescription =
-  "Sabs Marks JVS & Co. Chartered Accountants delivering audit, tax, advisory, and compliance services.";
+  "Sabs Marks JVS PVT LTD delivering audit, tax, advisory, and compliance services.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

@@ -1,32 +1,66 @@
+import Link from "next/link";
+import { ShieldCheck, LockKeyhole, LayoutDashboard } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
-import { Header } from "@/components/layout/header";
 
 export default function AdminAuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <Header />
-      <section className="relative min-h-[calc(100vh-90px)] overflow-hidden bg-[var(--surface)]">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-28 -left-24 h-80 w-80 rounded-full bg-[var(--accent)]/10 blur-3xl" />
-          <div className="absolute top-1/2 -right-24 h-96 w-96 rounded-full bg-[#20a447]/10 blur-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(30,58,138,0.06),transparent_42%),radial-gradient(circle_at_85%_30%,rgba(32,164,71,0.08),transparent_36%)]" />
+    <main className="relative isolate min-h-screen overflow-hidden bg-[#f4f7fb] text-slate-950">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#0f172a_0%,#16233f_46%,#1f3a5f_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.24),transparent_28%),radial-gradient(circle_at_80%_20%,rgba(32,164,71,0.18),transparent_25%),radial-gradient(circle_at_bottom,rgba(255,255,255,0.08),transparent_40%)]" />
+        <div className="absolute inset-y-0 left-[8%] w-px bg-white/10" />
+        <div className="absolute inset-x-0 top-[18%] h-px bg-white/8" />
+      </div>
+
+      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+        <div className="flex items-center justify-between rounded-[28px] border border-white/12 bg-white/6 px-5 py-4 shadow-[0_20px_80px_rgba(15,23,42,0.18)] backdrop-blur md:px-6">
+          <Link href="/" className="inline-flex items-center text-white/92 transition hover:text-white">
+            <Logo className="origin-left scale-75 items-start md:scale-[0.82]" />
+          </Link>
+          <div className="hidden rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/72 sm:block">
+            CMS Admin Portal
+          </div>
         </div>
 
-        <div className="relative mx-auto grid min-h-[calc(100vh-90px)] w-full max-w-7xl items-center gap-10 px-6 py-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:px-10">
-          <aside className="order-2 rounded-3xl border border-[var(--glass-border)] bg-white/70 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur md:p-10 lg:order-1">
-            <Logo className="items-start scale-95 origin-left md:scale-100" />
-            <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Secure Admin Access</p>
-            <h2 className="mt-3 text-3xl font-bold leading-tight text-[var(--ink)] md:text-4xl">
-              Welcome to the CMS control center.
-            </h2>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-[var(--muted)]">
-              Manage pages, team profiles, and firm content in one place with a focused, secure editing experience.
-            </p>
-          </aside>
+        <section className="flex flex-1 items-center py-6 md:py-8 lg:py-10">
+          <div className="grid w-full items-stretch gap-6 lg:grid-cols-[1.1fr_minmax(420px,520px)] xl:gap-8">
+            <aside className="order-2 flex flex-col justify-between rounded-[32px] border border-white/12 bg-white/7 p-6 text-white shadow-[0_28px_100px_rgba(15,23,42,0.24)] backdrop-blur md:p-8 lg:order-1 lg:min-h-[640px] lg:p-10">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.28em] text-sky-100">
+                  <ShieldCheck className="h-4 w-4" />
+                  Secure Admin Access
+                </div>
+                <h1 className="mt-6 max-w-lg text-4xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
+                  Focused access to the Sabs Marks JVS PVT LTD CMS.
+                </h1>
+                <p className="mt-5 max-w-xl text-base leading-7 text-slate-200/88 md:text-lg">
+                  Sign in to manage site content, editorial updates, and team information from a single protected workspace built for the internal operations team.
+                </p>
+              </div>
 
-          <div className="order-1 lg:order-2">{children}</div>
-        </div>
-      </section>
-    </>
+              <div className="mt-10 grid gap-4 md:grid-cols-3 lg:mt-14 lg:grid-cols-1 xl:grid-cols-3">
+                <div className="rounded-2xl border border-white/12 bg-slate-950/26 p-4">
+                  <LayoutDashboard className="h-5 w-5 text-sky-200" />
+                  <p className="mt-3 text-sm font-semibold text-white">Content control</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300/86">Keep pages, sections, and publishing workflows organized in one place.</p>
+                </div>
+                <div className="rounded-2xl border border-white/12 bg-slate-950/26 p-4">
+                  <ShieldCheck className="h-5 w-5 text-emerald-300" />
+                  <p className="mt-3 text-sm font-semibold text-white">Role-protected access</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300/86">Only approved CMS users can reach the protected console after sign-in.</p>
+                </div>
+                <div className="rounded-2xl border border-white/12 bg-slate-950/26 p-4">
+                  <LockKeyhole className="h-5 w-5 text-violet-200" />
+                  <p className="mt-3 text-sm font-semibold text-white">Reliable workflow</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300/86">A clean login screen that stays readable regardless of the public site theme.</p>
+                </div>
+              </div>
+            </aside>
+
+            <div className="order-1 flex items-center lg:order-2">{children}</div>
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }

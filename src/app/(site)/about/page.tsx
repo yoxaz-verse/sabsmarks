@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 export const metadata: Metadata = buildPageMetadata({
   path: "/about",
   title: "About",
-  description: "Learn about Sabs Marks JVS & Co., our legacy, leadership, and advisory philosophy.",
+  description: "Learn about Sabs Marks JVS PVT LTD, our legacy, leadership, and advisory philosophy.",
 });
 
 export default function AboutPage() {
@@ -32,10 +32,13 @@ export default function AboutPage() {
             
             <div className="space-y-6 text-lg text-muted mb-12 leading-relaxed">
               <p>
-                Sabs Marks JVS & Co. LLP is a premier chartered accountancy firm established to provide a comprehensive suite of professional services under one roof. 
+                Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.
               </p>
               <p>
-                With a deep understanding of the evolving regulatory landscape, our team of seasoned professionals brings decades of experience to help organizations navigate complex business challenges, ensure compliance, and drive sustainable growth across domestic and multinational sectors.
+                Established in 1985, the firm has grown into a trusted third-generation practice built on a legacy of expertise, integrity, and client-centric service. With a strong focus on the MSME sector, we support businesses of all sizes with tailored solutions that address both routine and complex business requirements.
+              </p>
+              <p>
+                Guided by the values of Integrity, Competence, and Professionalism, our experienced team delivers strategic, practical, and legally sound advice to help clients navigate challenges, ensure compliance, and achieve sustainable growth through a personalized approach.
               </p>
             </div>
 
@@ -45,7 +48,7 @@ export default function AboutPage() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link href="/about/locations" className="group flex items-center justify-center gap-2 px-8 py-4 bg-surface-raised border border-[var(--glass-border)] text-ink font-bold rounded-xl hover:bg-surface transition-all shadow-sm hover:shadow-md">
-                <span>View Global Offices</span>
+                <span>Explore Our Services</span>
               </Link>
             </div>
           </div>

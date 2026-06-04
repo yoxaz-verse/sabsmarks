@@ -8,7 +8,7 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
   if (section.section_type === "hero") {
     return (
       <section className="rounded-3xl bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#334155] px-8 py-16 text-white">
-        <p className="animate-[fadeIn_.6s_ease] text-xs uppercase tracking-[0.3em] text-stone-300">{String(payload.kicker ?? "Sabs Marks JVS")}</p>
+        <p className="animate-[fadeIn_.6s_ease] text-xs uppercase tracking-[0.3em] text-stone-300">{String(payload.kicker ?? "Sabs Marks JVS PVT LTD")}</p>
         <h1 className="mt-4 max-w-3xl animate-[fadeIn_.8s_ease] text-4xl font-semibold leading-tight md:text-5xl">{String(payload.headline ?? "Where knowledge meets execution")}</h1>
         <p className="mt-4 max-w-2xl text-stone-200">{String(payload.subtext ?? "A multi-disciplinary firm delivering practical and legally sound solutions.")}</p>
       </section>

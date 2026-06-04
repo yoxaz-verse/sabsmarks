@@ -22,6 +22,20 @@ const writeableTables = new Set([
   "site_settings",
 ]);
 
+const tablesWithStatus = new Set([
+  "pages",
+  "practice_areas",
+  "industry_solutions",
+  "publications",
+  "careers",
+  "offices",
+  "locations",
+  "team_members",
+  "insight_categories",
+  "insight_tags",
+  "menu_items",
+]);
+
 const statusSchema = z.enum(["draft", "review", "published"]);
 const contentEntitySchema = z.object({
   id: z.string().uuid().optional(),
@@ -33,6 +47,34 @@ const contentEntitySchema = z.object({
   published_at: z.string().optional().nullable(),
   status: statusSchema,
 });
+
+function isStringRecord(value: unknown): value is Record<string, string> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function normalizeStringArray(value: unknown) {
+  if (Array.isArray(value)) {
+    return value
+      .filter((item): item is string => typeof item === "string")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  if (typeof value === "string") {
+    return value
+      .split(/\r?\n|,/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  return [] as string[];
+}
+
+function nullableString(value: unknown) {
+  if (typeof value !== "string") return value;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
 
 const tableSchemas: Record<string, z.ZodTypeAny> = {
   pages: z.object({
@@ -112,6 +154,10 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     logo_url: z.string().optional().nullable(),
     primary_email: z.string().optional().nullable(),
     primary_phone: z.string().optional().nullable(),
+    head_office_label: z.string().optional().nullable(),
+    head_office_address: z.string().optional().nullable(),
+    social_links: z.record(z.string(), z.string()).default({}),
+    service_locations: z.array(z.string()).default([]),
     footer_text: z.string().optional().nullable(),
     disclaimers: z.string().optional().nullable(),
   }),
@@ -131,34 +177,56 @@ export async function POST(req: Request) {
   const normalized: Record<string, unknown> = {
     ...payload,
     updated_at: new Date().toISOString(),
-    status: payload.status === "published" || payload.status === "review" ? payload.status : "draft",
   };
+
+  if (tablesWithStatus.has(table)) {
+    normalized.status = payload.status === "published" || payload.status === "review" ? payload.status : "draft";
+  }
 
   if (typeof normalized.featured === "string") normalized.featured = normalized.featured === "true";
   if (typeof normalized.display_order === "string") normalized.display_order = Number(normalized.display_order || 0);
   if (typeof normalized.published_at === "string" && normalized.published_at.trim() === "") normalized.published_at = null;
   if (typeof normalized.linkedin_url === "string" && normalized.linkedin_url.trim() === "") normalized.linkedin_url = null;
   if (typeof normalized.photo_url === "string" && normalized.photo_url.trim() === "") normalized.photo_url = null;
+  if (table === "site_settings") {
+    normalized.logo_url = nullableString(normalized.logo_url);
+    normalized.primary_email = nullableString(normalized.primary_email);
+    normalized.primary_phone = nullableString(normalized.primary_phone);
+    normalized.head_office_label = nullableString(normalized.head_office_label);
+    normalized.head_office_address = nullableString(normalized.head_office_address);
+    normalized.footer_text = nullableString(normalized.footer_text);
+    normalized.disclaimers = nullableString(normalized.disclaimers);
+    normalized.service_locations = normalizeStringArray(normalized.service_locations);
+
+    const socialLinks = isStringRecord(normalized.social_links) ? normalized.social_links : {};
+    normalized.social_links = Object.fromEntries(
+      Object.entries(socialLinks)
+        .map(([key, value]) => [key, value.trim()])
+        .filter(([, value]) => value.length > 0)
+    );
+  }
   if (typeof normalized.created_at === "string") delete normalized.created_at;
   if (typeof normalized.created_by === "string") delete normalized.created_by;
 
   const schema = tableSchemas[table];
+  let sanitized = normalized;
   if (schema) {
     const result = schema.safeParse(normalized);
     if (!result.success) {
       const issue = result.error.issues[0];
       return NextResponse.json({ error: `Validation failed: ${issue.path.join(".") || "payload"} - ${issue.message}` }, { status: 400 });
     }
+    sanitized = { ...(result.data as Record<string, unknown>), updated_at: normalized.updated_at };
   }
 
   let query;
-  if (typeof normalized.id === "string" && normalized.id.length > 0) {
-    const id = normalized.id;
-    const withoutId = { ...normalized };
+  if (typeof sanitized.id === "string" && sanitized.id.length > 0) {
+    const id = sanitized.id;
+    const withoutId = { ...sanitized };
     delete withoutId.id;
     query = supabase.from(table).update(withoutId).eq("id", id);
   } else {
-    query = supabase.from(table).insert(normalized);
+    query = supabase.from(table).insert(sanitized);
   }
 
   const { error } = await query;

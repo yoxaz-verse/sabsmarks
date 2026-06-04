@@ -92,7 +92,7 @@ export default function Home() {
               </div>
               <div className="h-[2px] w-20 bg-accent mb-8"></div>
               <p className="text-lg text-muted mb-6 leading-relaxed font-light">
-                Sabs Marks JVS & Co is a multidisciplinary professional services firm offering a comprehensive suite of solutions under one roof. Established in 1985, our firm has evolved into a trusted advisory partner, built on expertise, integrity, and absolute professionalism.
+                Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.
               </p>
               <p className="text-muted mb-8 leading-relaxed text-sm opacity-80">
                 Driven by Integrity, Competence, and Professionalism, our framework is backed by highly specialized professionals. We deliver strategic, legally sound solutions designed to help businesses navigate complex regulatory environments.
@@ -109,7 +109,7 @@ export default function Home() {
       <section className="py-24 relative bg-surface-raised border-y border-[var(--glass-border)]">
         <div className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold text-ink tracking-tight uppercase">Our Practice Areas</h2>
+            <h2 className="text-3xl font-bold text-ink tracking-tight uppercase">Our Services</h2>
             <div className="h-[2px] w-20 bg-accent mx-auto mt-6 mb-6"></div>
             <p className="text-muted">Deploying specialized advisory, audit, and tax solutions configured for your business needs.</p>
           </div>

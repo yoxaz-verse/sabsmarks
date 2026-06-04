@@ -1,6 +1,35 @@
-insert into site_settings (brand_name, primary_email, primary_phone, footer_text)
-values ('Sabs Marks JVS & Co LLP', 'info@sabsmarksjvs.com', '+91 89431 15500', 'Sabs Marks JVS & Co LLP. All rights reserved.')
-on conflict do nothing;
+insert into site_settings (
+  id,
+  brand_name,
+  primary_email,
+  primary_phone,
+  head_office_label,
+  head_office_address,
+  social_links,
+  service_locations,
+  footer_text
+)
+values (
+  '00000000-0000-0000-0000-000000000001',
+  'Sabs Marks JVS PVT LTD',
+  'info@sabsmarksjvs.com',
+  '8943115500',
+  'H.O',
+  'Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala',
+  '{"linkedin":"https://www.linkedin.com/company/sabs-marks-jvs-co/","instagram":"https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ=="}'::jsonb,
+  '["Kochi","Angamaly","Thrissur","Bengaluru","Chennai","Tirupati","Gurgaon","Ettumanoor","Kottayam","Chengannur","Hyderabad","Dubai"]'::jsonb,
+  'Sabs Marks JVS PVT LTD. All rights reserved.'
+)
+on conflict (id) do update set
+  brand_name = excluded.brand_name,
+  primary_email = excluded.primary_email,
+  primary_phone = excluded.primary_phone,
+  head_office_label = excluded.head_office_label,
+  head_office_address = excluded.head_office_address,
+  social_links = excluded.social_links,
+  service_locations = excluded.service_locations,
+  footer_text = excluded.footer_text,
+  updated_at = now();
 
 insert into pages (slug, title, template_type, status, published_at)
 values
@@ -8,7 +37,7 @@ values
 ('about', 'The Firm', 'about', 'published', now()),
 ('about/legacy', 'Legacy', 'about', 'published', now()),
 ('about/team', 'Leadership', 'about', 'published', now()),
-('about/locations', 'Locations', 'about', 'published', now()),
+('about/locations', 'Our Services', 'about', 'published', now()),
 ('expertise/ifsc', 'Services in IFSC (GIFT City)', 'generic', 'published', now()),
 ('expertise/uae', 'Services in UAE', 'generic', 'published', now()),
 ('expertise/our-approach', 'Our Approach', 'generic', 'published', now()),
@@ -18,7 +47,7 @@ on conflict (slug) do update set title=excluded.title;
 
 insert into sections (page_id, section_type, payload, order_index)
 select id, 'hero', jsonb_build_object(
-  'kicker', 'Sabs Marks JVS',
+  'kicker', 'Sabs Marks JVS PVT LTD',
   'headline', 'Where knowledge meets experience',
   'subtext', 'Partner-led assurance, tax, and advisory services for domestic and multinational businesses.'
 ), 0 from pages where slug='home';
@@ -50,8 +79,8 @@ on conflict (slug) do update set title=excluded.title;
 
 insert into locations (slug, city, office_name, address, phone, email, status)
 values
-('chennai', 'Chennai', 'Sabs Marks JVS Chennai', 'New No. 57, Kochu Bhavan, Ground Floor, McNicholas Road, Chetpet, Chennai 600 031', '+91 44 3500 3458', 'chennai@sabsmarksjvs.com', 'published'),
-('mumbai', 'Mumbai', 'Sabs Marks JVS Mumbai', 'Business district office address placeholder for migration', '+91 22 0000 0000', 'mumbai@sabsmarksjvs.com', 'published')
+('chennai', 'Chennai', 'Sabs Marks JVS PVT LTD Chennai', 'New No. 57, Kochu Bhavan, Ground Floor, McNicholas Road, Chetpet, Chennai 600 031', '+91 44 3500 3458', 'chennai@sabsmarksjvs.com', 'published'),
+('mumbai', 'Mumbai', 'Sabs Marks JVS PVT LTD Mumbai', 'Business district office address placeholder for migration', '+91 22 0000 0000', 'mumbai@sabsmarksjvs.com', 'published')
 on conflict (slug) do update set city=excluded.city;
 
 insert into team_members (slug, name, designation, credentials, bio, display_order, featured, status, published_at)
@@ -74,17 +103,13 @@ on conflict (slug) do update set title=excluded.title;
 
 insert into menu_items (label, href, group_name, display_order, status)
 values
+('Home', '/', 'Home', 1, 'published'),
 ('The Firm', '/about', 'About', 1, 'published'),
-('Legacy', '/about/legacy', 'About', 2, 'published'),
 ('Leadership', '/about/team', 'About', 3, 'published'),
-('Locations', '/about/locations', 'About', 4, 'published'),
-('Practice Areas', '/practice-areas', 'Expertise', 1, 'published'),
-('Services in IFSC (GIFT City)', '/expertise/ifsc', 'Expertise', 2, 'published'),
-('Services in UAE', '/expertise/uae', 'Expertise', 3, 'published'),
-('Industry Solutions', '/industry-solutions', 'Expertise', 4, 'published'),
+('Our Services', '/about/locations', 'About', 4, 'published'),
+('Services', '/practice-areas', 'Expertise', 1, 'published'),
 ('Our Approach', '/expertise/our-approach', 'Expertise', 5, 'published'),
 ('Insights', '/insights', 'Insights', 1, 'published'),
 ('Philosophy', '/careers/philosophy', 'Career', 1, 'published'),
 ('Join Us', '/careers', 'Career', 2, 'published'),
-('Alumni', '/careers/alumni', 'Career', 3, 'published'),
 ('Contact', '/contact', 'Contact', 1, 'published');

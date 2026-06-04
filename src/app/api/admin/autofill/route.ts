@@ -7,7 +7,7 @@ type Row = { id: string; slug: string };
 const pagesSeed = [
   { slug: "about", title: "The Firm", template_type: "about" },
   { slug: "about/legacy", title: "Legacy", template_type: "about" },
-  { slug: "about/locations", title: "Locations", template_type: "about" },
+  { slug: "about/locations", title: "Our Services", template_type: "about" },
   { slug: "about/team", title: "Leadership", template_type: "about" },
   { slug: "careers/philosophy", title: "Philosophy", template_type: "generic" },
   { slug: "careers/alumni", title: "Alumni", template_type: "generic" },
@@ -37,10 +37,30 @@ export async function POST() {
     await must(
       supabase.from("site_settings").upsert({
         id: "00000000-0000-0000-0000-000000000001",
-        brand_name: "Sabs Marks JVS & Co LLP",
+        brand_name: "Sabs Marks JVS PVT LTD",
         primary_email: "info@sabsmarksjvs.com",
-        primary_phone: "+91 89431 15500",
-        footer_text: "Sabs Marks JVS & Co LLP. All rights reserved.",
+        primary_phone: "8943115500",
+        head_office_label: "H.O",
+        head_office_address: "Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala",
+        social_links: {
+          linkedin: "https://www.linkedin.com/company/sabs-marks-jvs-co/",
+          instagram: "https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ==",
+        },
+        service_locations: [
+          "Kochi",
+          "Angamaly",
+          "Thrissur",
+          "Bengaluru",
+          "Chennai",
+          "Tirupati",
+          "Gurgaon",
+          "Ettumanoor",
+          "Kottayam",
+          "Chengannur",
+          "Hyderabad",
+          "Dubai",
+        ],
+        footer_text: "Sabs Marks JVS PVT LTD. All rights reserved.",
         updated_at: now,
       }),
       "site_settings upsert"
@@ -67,10 +87,10 @@ export async function POST() {
 
     const sectionRows = [
       ["about", "hero", { kicker: "About", headline: "The Firm", subtext: "A full-service professional firm with deep-rooted client relationships and practical advisory expertise." }, 0],
-      ["about", "rich_text", { title: "Overview", content: "Sabs Marks JVS & Co. LLP is an all services firm specializing in providing a wide spectrum of professional services under one roof to domestic and multinational corporations.\n\nEstablished in 1936, Sabs Marks serves diverse businesses with emphasis on the MSME sector." }, 1],
+      ["about", "rich_text", { title: "Overview", content: "Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.\n\nEstablished in 1936, Sabs Marks JVS PVT LTD serves diverse businesses with emphasis on the MSME sector." }, 1],
       ["about/legacy", "hero", { kicker: "About", headline: "Legacy", subtext: "Our journey has been shaped by multiple professional legacies integrated into one organization." }, 0],
       ["about/legacy", "stats", { items: [{ label: "1936", value: "H.M Contractor & Co." }, { label: "1949", value: "R.B. Patel & Co." }, { label: "1951", value: "S.S. Nayak & Co." }] }, 1],
-      ["about/locations", "hero", { kicker: "About", headline: "Locations", subtext: "Global presence across India and UAE." }, 0],
+      ["about/locations", "hero", { kicker: "About", headline: "Our Services", subtext: "Structured support across finance, governance, compliance, and execution." }, 0],
       ["about/team", "hero", { kicker: "About", headline: "Leadership", subtext: "Partner-led teams with deep domain expertise." }, 0],
       ["careers/philosophy", "hero", { kicker: "Career", headline: "Philosophy", subtext: "Built on quality, ethics, and integrity." }, 0],
       ["careers/philosophy", "rich_text", { title: "Our People", content: "We provide an extensive range of services and believe difficult problems are solved together. Our success depends upon the quality of our people." }, 1],
@@ -104,18 +124,15 @@ export async function POST() {
 
     await must(
       supabase.from("menu_items").upsert([
+        { label: "Home", href: "/", group_name: "Home", display_order: 1, status: "published" },
         { label: "The Firm", href: "/about", group_name: "About", display_order: 1, status: "published" },
-        { label: "Legacy", href: "/about/legacy", group_name: "About", display_order: 2, status: "published" },
         { label: "Leadership", href: "/about/team", group_name: "About", display_order: 3, status: "published" },
-        { label: "Locations", href: "/about/locations", group_name: "About", display_order: 4, status: "published" },
-        { label: "Practice Areas", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },
-        { label: "Services in IFSC (GIFT City)", href: "/expertise/ifsc", group_name: "Expertise", display_order: 2, status: "published" },
-        { label: "Services in UAE", href: "/expertise/uae", group_name: "Expertise", display_order: 3, status: "published" },
+        { label: "Our Services", href: "/about/locations", group_name: "About", display_order: 4, status: "published" },
+        { label: "Services", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },
         { label: "Our Approach", href: "/expertise/our-approach", group_name: "Expertise", display_order: 4, status: "published" },
         { label: "Insights", href: "/insights", group_name: "Insights", display_order: 1, status: "published" },
         { label: "Philosophy", href: "/careers/philosophy", group_name: "Career", display_order: 1, status: "published" },
         { label: "Join Us", href: "/careers", group_name: "Career", display_order: 2, status: "published" },
-        { label: "Alumni", href: "/careers/alumni", group_name: "Career", display_order: 3, status: "published" },
         { label: "Contact Us", href: "/contact", group_name: "Contact", display_order: 1, status: "published" },
       ], { onConflict: "href" }),
       "menu_items upsert"
