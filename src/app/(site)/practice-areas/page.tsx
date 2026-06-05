@@ -17,11 +17,13 @@ const serviceAreas: ServiceArea[] = [
   {
     id: "corporate-finance-advisory",
     title: "Corporate Finance Advisory",
-    strapline: "Structured capital and unshaken confidence",
+    strapline: "Structured Capital and Unshaken Confidence",
     subtitle: "Service Scope",
     paragraphs: [
       "We work with leadership teams on key financial and strategic decisions that shape organisational direction. Our role extends beyond transactions to capital structuring, option evaluation, and alignment of financial decisions with business strategy, governance, and long-term objectives.",
-      "As organisations scale, capital decisions demand higher standards of governance, valuation discipline, and regulatory preparedness. We support valuation-led decision-making and public issue readiness while coordinating with merchant bankers, legal advisors, auditors, and regulators.",
+      "All decisions are supported by structured analysis and risk awareness, ensuring clarity and discipline in capital outcomes.",
+      "As organisations scale, capital decisions require higher standards of governance, valuation discipline, and regulatory preparedness. We support valuation-led decision-making and public issue readiness, working alongside merchant bankers, legal advisors, auditors, and regulators.",
+      "Our role is to strengthen financial and governance foundations, enabling confident engagement with public markets.",
     ],
     bulletsLabel: "Our service includes",
     bullets: [
@@ -38,13 +40,13 @@ const serviceAreas: ServiceArea[] = [
   {
     id: "audit-assurance",
     title: "Audit & Assurance",
-    strapline: "Audit that withstands scrutiny",
+    strapline: "Audit That Withstands Scrutiny",
     subtitle: "Service Scope",
     paragraphs: [
       "We deliver audits that are structured, risk-focused, and regulator-ready.",
       "Our audits identify control gaps and opportunities for improvement, not merely statutory observations.",
     ],
-    bulletsLabel: "Our service includes",
+    bulletsLabel: "Our services include",
     bullets: [
       "Statutory Audit",
       "Internal Audit",
@@ -57,7 +59,7 @@ const serviceAreas: ServiceArea[] = [
   {
     id: "tax-regulatory-services",
     title: "Tax & Regulatory Services",
-    strapline: "Tax positions that are unbreakable",
+    strapline: "Tax Positions That Are Unbreakable",
     subtitle: "Service Scope",
     paragraphs: [
       "We assist organisations in managing tax exposure with clarity and discipline.",
@@ -74,7 +76,7 @@ const serviceAreas: ServiceArea[] = [
   {
     id: "corporate-other-laws",
     title: "Corporate & Other Laws",
-    strapline: "Governance without gaps",
+    strapline: "Governance Without Gaps",
     subtitle: "Service Scope",
     paragraphs: [
       "Strong governance protects both growth and reputation.",
@@ -91,7 +93,7 @@ const serviceAreas: ServiceArea[] = [
   {
     id: "cfo-business-advisory",
     title: "CFO & Business Advisory",
-    strapline: "The finance office behind the business",
+    strapline: "The Finance Office Behind the Business",
     subtitle: "Service Scope",
     paragraphs: [
       "We support leadership teams not only with financial insights, but with strategic thinking and operational clarity required to run and scale modern organisations. Our advisory extends across finance, management process, and digital enablement, helping organisations transition from intuition-driven operations to structured, data-led decision-making.",
@@ -108,11 +110,12 @@ const serviceAreas: ServiceArea[] = [
   {
     id: "business-process-reengineering",
     title: "Business Process Re-Engineering",
-    strapline: "Structure that scales",
+    strapline: "Structure That Scales",
     subtitle: "Service Scope",
     paragraphs: [
       "As organisations grow, process weaknesses surface as control gaps, inefficiencies, and delayed decisions. Fragmented workflows and unclear accountability dilute execution quality and increase risk.",
       "We support leadership in reviewing and redesigning critical business and finance processes to ensure clarity of roles, strength of controls, and alignment with governance and regulatory expectations. Our approach is finance-led and outcome-driven, focused on improving decision visibility and execution discipline.",
+      "Well-structured processes reduce friction, strengthen oversight, and enable consistent execution at scale.",
     ],
     bulletsLabel: "Our service includes",
     bullets: [
@@ -125,11 +128,12 @@ const serviceAreas: ServiceArea[] = [
   {
     id: "digital-transformation-systems-advisory",
     title: "Digital Transformation & Systems Advisory",
-    strapline: "Systems that strengthen control",
+    strapline: "Systems That Strengthen Control",
     subtitle: "Service Scope",
     paragraphs: [
       "Automation initiatives require clarity on process ownership, system architecture, and reporting integrity. When automation is introduced without governance and design discipline, it weakens controls, increases rework, and reduces confidence in decision data.",
       "We advise organisations on automation strategy, software scope, and digital system design aligned with finance, compliance, and management reporting needs. Our role is independent and system-agnostic, ensuring automation strengthens governance, data integrity, cost efficiency, and decision reliability.",
+      "Well-designed automation improves control, cost efficiency, predictability, and confidence in decisions.",
     ],
     bulletsLabel: "Our work includes",
     bullets: [
@@ -148,6 +152,7 @@ const serviceAreas: ServiceArea[] = [
     paragraphs: [
       "We have led multiple business revival and organisational revamping engagements, working with promoters, boards, and lenders to restore financial control, operational stability, and stakeholder confidence. Business stress typically reflects weakened controls, cost inefficiencies, and fragmented decision-making, requiring revenue and profit maximisation diagnosis alongside disciplined intervention.",
       "Our approach is reliable, achievable, and target-driven, focused on stabilisation before strengthening cash flows, improving cost efficiency, restoring profitability, and re-establishing governance and execution discipline.",
+      "Engagements are conducted with independence, discretion, and regulator-ready documentation, enabling sustainable recovery and durable business confidence.",
     ],
     bulletsLabel: "Our service includes",
     bullets: [
@@ -168,7 +173,7 @@ const serviceAreas: ServiceArea[] = [
       "Risk rarely announces itself. It escalates quietly through weak controls, governance blind spots, and delayed intervention. We help organisations identify and manage risks before they become exposed.",
       "Our approach prioritises independence, discretion, and documentation that withstands regulatory and legal scrutiny.",
     ],
-    bulletsLabel: "Our service includes",
+    bulletsLabel: "Our services include",
     bullets: [
       "Enterprise Risk Management & Control Frameworks",
       "Information Systems & Data Integrity Audits",
@@ -185,7 +190,7 @@ export default function PracticeAreasPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-surface">
-      <PageBanner title="Services" />
+      <PageBanner title="Our Services" />
 
       <section className="mx-auto max-w-[1400px] px-6 py-16 md:px-12 relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-accent opacity-10 dark:opacity-20 rounded-full blur-[120px] pointer-events-none z-0"></div>
@@ -197,7 +202,7 @@ export default function PracticeAreasPage() {
         <div className="glass-panel rounded-3xl overflow-hidden flex flex-col md:flex-row relative z-10 shadow-2xl border border-[var(--glass-border)] bg-surface/60 backdrop-blur-xl min-h-[750px] md:min-h-[650px]">
           <div className="w-full md:w-[380px] flex flex-col items-stretch gap-2 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[var(--glass-border)] bg-surface-raised/30 relative">
             <div className="absolute inset-0 bg-gradient-to-b from-surface/40 to-transparent pointer-events-none"></div>
-            <h4 className="text-xs font-bold text-muted uppercase tracking-widest mb-6 px-4">Services</h4>
+            <h4 className="text-xs font-bold text-muted uppercase tracking-widest mb-6 px-4">Our Services</h4>
             {serviceAreas.map((serviceArea) => {
               const isActive = activeTab === serviceArea.id;
               return (

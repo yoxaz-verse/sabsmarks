@@ -106,7 +106,6 @@ values
 ('Home', '/', 'Home', 1, 'published'),
 ('The Firm', '/about', 'About', 1, 'published'),
 ('Leadership', '/about/team', 'About', 3, 'published'),
-('Our Services', '/about/locations', 'About', 4, 'published'),
 ('Services', '/practice-areas', 'Expertise', 1, 'published'),
 ('Our Approach', '/expertise/our-approach', 'Expertise', 5, 'published'),
 ('Insights', '/insights', 'Insights', 1, 'published'),

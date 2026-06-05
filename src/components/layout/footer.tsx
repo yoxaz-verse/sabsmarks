@@ -34,7 +34,6 @@ export async function Footer() {
               <h4 className="mb-6 text-base font-bold text-ink drop-shadow-sm">About Us</h4>
               <div className="flex flex-col gap-4 text-[14px] font-medium text-muted">
                 <Link href="/practice-areas" className="hover:text-accent transition-colors">Services</Link>
-                <Link href="/industry-solutions" className="hover:text-accent transition-colors">Industry Solutions</Link>
                 <Link href="/expertise/our-approach" className="hover:text-accent transition-colors">Our Approach</Link>
                 <Link href="/insights" className="hover:text-accent transition-colors">Publications</Link>
               </div>

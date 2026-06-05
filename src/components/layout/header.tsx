@@ -8,6 +8,7 @@ import { getMegaNav } from "@/lib/content/service";
 
 const HIDDEN_NAV_HREFS = new Set([
   "/about/legacy",
+  "/about/locations",
   "/expertise/ifsc",
   "/expertise/uae",
   "/industry-solutions",
@@ -43,7 +44,6 @@ const fallbackNavGroups: Record<string, MenuItem[]> = {
   About: [
     { id: "about-1", parent_id: null, label: "The Firm", href: "/about", group_name: "About", display_order: 1, status: "published" },
     { id: "about-3", parent_id: null, label: "Leadership", href: "/about/team", group_name: "About", display_order: 3, status: "published" },
-    { id: "about-4", parent_id: null, label: "Our Services", href: "/about/locations", group_name: "About", display_order: 4, status: "published" },
   ],
   Expertise: [
     { id: "expertise-1", parent_id: null, label: "Services", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },

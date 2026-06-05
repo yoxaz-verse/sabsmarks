@@ -127,7 +127,6 @@ export async function POST() {
         { label: "Home", href: "/", group_name: "Home", display_order: 1, status: "published" },
         { label: "The Firm", href: "/about", group_name: "About", display_order: 1, status: "published" },
         { label: "Leadership", href: "/about/team", group_name: "About", display_order: 3, status: "published" },
-        { label: "Our Services", href: "/about/locations", group_name: "About", display_order: 4, status: "published" },
         { label: "Services", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },
         { label: "Our Approach", href: "/expertise/our-approach", group_name: "Expertise", display_order: 4, status: "published" },
         { label: "Insights", href: "/insights", group_name: "Insights", display_order: 1, status: "published" },
