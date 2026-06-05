@@ -28,13 +28,14 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
   ]);
 
   return (
-    <article className="mx-auto max-w-4xl rounded-2xl border border-[var(--glass-border)] bg-surface p-8">
+    <article className="brand-card mx-auto max-w-4xl p-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact", href: "/contact" }, { label: location.city }]} />
-      <h1 className="text-4xl font-semibold">{location.office_name}</h1>
-      <p className="mt-4 whitespace-pre-wrap text-stone-700">{location.address}</p>
-      {location.phone ? <p className="mt-2 text-stone-700">T: {location.phone}</p> : null}
-      {location.email ? <p className="text-stone-700">E: {location.email}</p> : null}
+      <h1 className="text-4xl font-semibold text-accent">{location.office_name}</h1>
+      <div className="brand-rule mt-5" />
+      <p className="mt-5 whitespace-pre-wrap text-muted">{location.address}</p>
+      {location.phone ? <p className="mt-2 text-muted">T: {location.phone}</p> : null}
+      {location.email ? <p className="text-muted">E: {location.email}</p> : null}
       {location.contact_person ? <p className="mt-2 text-sm text-muted">Contact Person: {location.contact_person}</p> : null}
     </article>
   );

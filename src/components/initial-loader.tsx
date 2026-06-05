@@ -32,17 +32,15 @@ export function InitialLoader() {
       }`}
     >
       <div className="relative flex flex-col items-center">
-        {/* Cinematic logo reveal */}
-        <div className="animate-fade-in mb-10 scale-110">
+        <div className="animate-fade-in mb-10 scale-105">
           <Logo />
         </div>
-        
-        {/* Loading line */}
-        <div className="w-64 h-[2px] bg-gray-200 dark:bg-gray-800 overflow-hidden relative rounded-full opacity-80">
-          <div className="absolute top-0 left-0 h-full bg-[#20a447] rounded-full animate-loader-progress"></div>
+
+        <div className="relative h-[2px] w-64 overflow-hidden rounded-full bg-[var(--mist-grey)] opacity-90">
+          <div className="animate-loader-progress absolute top-0 left-0 h-full bg-[var(--accent-secondary)] rounded-full"></div>
         </div>
-        
-        <div className="mt-6 text-xs font-semibold tracking-[0.3em] text-[#6d6e71] dark:text-stone-400 animate-pulse">
+
+        <div className="mt-6 text-xs font-semibold tracking-[0.28em] text-[var(--muted)]">
           INITIALIZING SECURE CONNECTION
         </div>
       </div>

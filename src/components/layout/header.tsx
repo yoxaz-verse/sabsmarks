@@ -2,7 +2,6 @@ import Link from "next/link";
 import { MegaNav } from "@/components/navigation/mega-nav";
 import { MobileNav } from "@/components/navigation/mobile-nav";
 import { Logo } from "@/components/layout/logo";
-import { ThemeToggle } from "@/components/theme-toggle";
 import type { MenuItem } from "@/types/cms";
 import { getMegaNav } from "@/lib/content/service";
 
@@ -63,15 +62,14 @@ export async function Header() {
   const navGroups = ensureHomeGroup(filterNavItems(hasCmsNav ? cmsNavGroups : fallbackNavGroups));
 
   return (
-    <header className="glass-panel sticky top-0 z-[100] border-b border-[var(--glass-border)]">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-4">
-        <Link href="/">
+    <header className="sticky top-0 z-[100] border-b border-[var(--border)] bg-[var(--cloud)]/95 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-5">
+        <Link href="/" aria-label="Sabs Marks JVS & Co., Chartered Accountants">
           <Logo className="scale-75 origin-left" />
         </Link>
         <div className="flex items-center gap-3">
           <MegaNav groups={navGroups} />
           <MobileNav groups={navGroups} />
-          <ThemeToggle />
         </div>
       </div>
     </header>

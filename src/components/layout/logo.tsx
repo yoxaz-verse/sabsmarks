@@ -6,20 +6,22 @@ interface LogoProps {
 
 export function Logo({ className }: LogoProps) {
   return (
-    <div className={`flex flex-col items-center justify-center font-sans ${className || ""}`}>
-      <div className="text-center text-2xl font-bold leading-tight tracking-tight text-[var(--logo-text)] transition-colors md:text-3xl">
-        Sabs Marks JVS
+    <div className={`flex flex-col items-center justify-center text-center ${className || ""}`}>
+      <div className="font-sans text-[1.8rem] font-extrabold leading-none tracking-[-0.05em] md:text-[2.35rem]">
+        <span className="text-[#1773bb]">Sabs </span>
+        <span className="text-[#2cb34a]">Marks </span>
+        <span className="text-[#1773bb]">JVS</span>
       </div>
 
-      <div className="flex items-center gap-3 w-full mt-2 px-1">
-        <div className="h-[2px] flex-1 bg-[#20a447]"></div>
-        <span className="text-[var(--logo-text)] font-bold text-lg md:text-xl whitespace-nowrap leading-none pb-1 transition-colors">
-          PVT LTD
+      <div className="mt-2 flex w-full min-w-[13rem] items-center gap-3 md:min-w-[16rem] md:gap-4">
+        <div className="h-[2px] flex-1 bg-[#2cb34a]" />
+        <span className="whitespace-nowrap font-sans text-[0.95rem] font-extrabold leading-none tracking-[-0.03em] text-[#1773bb] md:text-[1.2rem]">
+          &amp; Co.
         </span>
-        <div className="h-[2px] flex-1 bg-[#20a447]"></div>
+        <div className="h-[2px] flex-1 bg-[#2cb34a]" />
       </div>
 
-      <div className="text-[#6d6e71] dark:text-stone-400 text-sm md:text-base tracking-[0.15em] mt-1 font-medium leading-none transition-colors">
+      <div className="mt-2 font-[Georgia] text-[0.78rem] font-medium leading-none tracking-[0.34em] text-[#4f5257] md:text-[1rem]">
         Chartered Accountants
       </div>
     </div>

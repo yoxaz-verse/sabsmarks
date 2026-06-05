@@ -43,8 +43,10 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Insights", href: "/insights" }, { label: insight.title }]} />
-      <h1 className="text-4xl font-semibold">{insight.title}</h1>
-      <p className="mt-5 whitespace-pre-wrap rounded-2xl border border-[var(--glass-border)] bg-surface p-8 leading-7 text-stone-700">{insight.body}</p>
+      <h1 className="text-4xl font-semibold text-accent">{insight.title}</h1>
+      <div className="brand-card mt-5 p-8">
+        <p className="whitespace-pre-wrap leading-7 text-muted">{insight.body}</p>
+      </div>
     </article>
   );
 }

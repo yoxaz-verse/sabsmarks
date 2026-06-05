@@ -28,8 +28,8 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
               <Link
                 key={group}
                 href={item.href}
-                className={`flex items-center text-[13px] font-bold tracking-[0.1em] uppercase transition-colors duration-200 ${
-                  isActive ? "text-accent" : "text-ink hover:text-accent"
+                className={`flex items-center text-[12px] font-bold tracking-[0.18em] uppercase transition-colors duration-200 ${
+                  isActive ? "text-accent" : "text-ink hover:text-accent-secondary"
                 }`}
               >
                 {group}
@@ -45,8 +45,8 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
               onMouseLeave={() => setHoveredGroup(null)}
             >
               <button
-                className={`flex items-center gap-1 text-[13px] font-bold tracking-[0.1em] uppercase transition-colors duration-200 cursor-default ${
-                  isActive || isHovered ? "text-accent" : "text-ink hover:text-accent"
+                className={`flex cursor-default items-center gap-1 text-[12px] font-bold tracking-[0.18em] uppercase transition-colors duration-200 ${
+                  isActive || isHovered ? "text-accent" : "text-ink hover:text-accent-secondary"
                 }`}
               >
                 {group}
@@ -65,7 +65,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                     : "pointer-events-none -translate-y-2 opacity-0 scale-95"
                 }`}
               >
-                <div className="rounded glass-panel bg-surface p-3 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] ring-1 ring-[var(--glass-border)]">
+                <div className="min-w-[16rem] rounded-md border border-[var(--border)] bg-[var(--surface)] p-3 shadow-[0_14px_32px_rgba(24,57,95,0.08)]">
                   <div className="flex flex-col gap-1">
                     {items.map((item, index) => (
                       <Link
@@ -74,7 +74,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                         style={{
                           transitionDelay: isHovered ? `${index * 75 + 100}ms` : "0ms",
                         }}
-                        className={`block rounded px-4 py-2.5 text-[14px] font-semibold text-ink hover:bg-surface-raised hover:text-accent transition-all duration-300 ease-out ${
+                        className={`block rounded-sm border-l-2 border-transparent px-4 py-2.5 text-[14px] font-semibold text-ink transition-all duration-300 ease-out hover:border-[var(--accent-secondary)] hover:bg-[var(--surface-raised)] hover:text-accent ${
                           isHovered
                             ? "translate-x-0 opacity-100"
                             : "-translate-x-4 opacity-0"

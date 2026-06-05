@@ -39,11 +39,12 @@ export default async function PublicationDetail({ params }: { params: Promise<{ 
   ]);
 
   return (
-    <article className="mx-auto max-w-4xl rounded-2xl border border-[var(--glass-border)] bg-surface p-8">
+    <article className="brand-card mx-auto max-w-4xl p-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <h1 className="text-4xl font-semibold">{entry.title}</h1>
-      <p className="mt-5 whitespace-pre-wrap leading-7 text-stone-700">{entry.body}</p>
+      <h1 className="text-4xl font-semibold text-accent">{entry.title}</h1>
+      <div className="brand-rule mt-5" />
+      <p className="mt-5 whitespace-pre-wrap leading-7 text-muted">{entry.body}</p>
     </article>
   );
 }
