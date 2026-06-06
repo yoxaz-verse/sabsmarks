@@ -28,15 +28,17 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
   ]);
 
   return (
-    <article className="brand-card mx-auto max-w-4xl p-8">
+    <article className="detail-shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact", href: "/contact" }, { label: location.city }]} />
-      <h1 className="text-4xl font-semibold text-accent">{location.office_name}</h1>
-      <div className="brand-rule mt-5" />
-      <p className="mt-5 whitespace-pre-wrap text-muted">{location.address}</p>
-      {location.phone ? <p className="mt-2 text-muted">T: {location.phone}</p> : null}
-      {location.email ? <p className="text-muted">E: {location.email}</p> : null}
-      {location.contact_person ? <p className="mt-2 text-sm text-muted">Contact Person: {location.contact_person}</p> : null}
+      <div className="detail-card p-8 md:p-10">
+        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Office</p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink">{location.office_name}</h1>
+        <p className="mt-6 whitespace-pre-wrap leading-8 text-muted">{location.address}</p>
+        {location.phone ? <p className="mt-4 text-muted">T: {location.phone}</p> : null}
+        {location.email ? <p className="mt-1 text-muted">E: {location.email}</p> : null}
+        {location.contact_person ? <p className="mt-3 text-sm text-muted">Contact Person: {location.contact_person}</p> : null}
+      </div>
     </article>
   );
 }

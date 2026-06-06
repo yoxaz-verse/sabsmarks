@@ -39,13 +39,14 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
   ]);
 
   return (
-    <article className="mx-auto max-w-4xl">
+    <article className="detail-shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Insights", href: "/insights" }, { label: insight.title }]} />
-      <h1 className="text-4xl font-semibold text-accent">{insight.title}</h1>
-      <div className="brand-card mt-5 p-8">
-        <p className="whitespace-pre-wrap leading-7 text-muted">{insight.body}</p>
+      <div className="detail-card p-8 md:p-10">
+        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Insight</p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink">{insight.title}</h1>
+        <p className="detail-body">{insight.body}</p>
       </div>
     </article>
   );

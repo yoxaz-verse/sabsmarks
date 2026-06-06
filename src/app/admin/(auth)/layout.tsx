@@ -15,7 +15,7 @@ export default function AdminAuthLayout({ children }: { children: React.ReactNod
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
         <div className="flex items-center justify-between rounded-[28px] border border-white/12 bg-white/6 px-5 py-4 shadow-[0_20px_80px_rgba(15,23,42,0.18)] backdrop-blur md:px-6">
           <Link href="/" className="inline-flex items-center text-white/92 transition hover:text-white">
-            <Logo className="origin-left scale-75 items-start md:scale-[0.82]" />
+            <Logo className="w-[188px] rounded-2xl bg-white px-3 py-2 shadow-[0_12px_30px_rgba(15,23,42,0.18)] sm:w-[216px]" />
           </Link>
           <div className="hidden rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/72 sm:block">
             CMS Admin Portal

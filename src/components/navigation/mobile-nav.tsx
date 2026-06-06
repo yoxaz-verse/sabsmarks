@@ -56,7 +56,7 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
         aria-label="Open navigation menu"
         aria-expanded={isOpen}
         aria-controls="mobile-nav-drawer"
-        className="xl:hidden inline-flex h-10 w-10 items-center justify-center rounded-sm border border-[var(--border)] bg-[var(--surface)] text-ink transition-colors hover:border-[var(--accent)] hover:text-accent"
+        className="xl:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_72%,transparent)] text-ink shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl transition-colors hover:text-accent"
         onClick={() => setIsOpen(true)}
       >
         <Menu className="h-5 w-5" />
@@ -77,16 +77,16 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
 
         <aside
           id="mobile-nav-drawer"
-          className={`absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-[var(--border)] bg-[var(--cloud)] shadow-[0_18px_44px_rgba(24,57,95,0.12)] transition-transform duration-300 ease-out ${
+          className={`absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--bg)_92%,transparent)] shadow-2xl backdrop-blur-2xl transition-transform duration-300 ease-out ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-accent">Menu</p>
+          <div className="flex items-center justify-between border-b border-[var(--glass-border)] px-5 py-4">
+            <p className="text-sm font-bold uppercase tracking-[0.14em] text-ink">Menu</p>
             <button
               type="button"
               aria-label="Close menu"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-[var(--border)] text-ink hover:border-[var(--accent)] hover:text-accent"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glass-border)] text-ink hover:text-accent"
               onClick={() => setIsOpen(false)}
             >
               <X className="h-4.5 w-4.5" />
@@ -106,8 +106,8 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                       key={group}
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className={`rounded-sm border-l-2 px-3 py-3 text-sm font-semibold tracking-[0.08em] transition-colors ${
-                        isGroupActive ? "border-[var(--accent-secondary)] bg-[var(--surface)] text-accent" : "border-transparent text-ink hover:bg-[var(--surface)] hover:text-accent"
+                      className={`rounded-md px-3 py-3 text-sm font-semibold tracking-[0.04em] transition-colors ${
+                        isGroupActive ? "bg-surface-raised text-accent" : "text-ink hover:bg-surface-raised hover:text-accent"
                       }`}
                     >
                       {group}
@@ -118,12 +118,12 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                 const isExpanded = expandedGroup === group;
 
                 return (
-                  <div key={group} className="rounded-sm border border-[var(--border)] bg-[var(--surface)]">
+                    <div key={group} className="rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_76%,transparent)]">
                     <button
                       type="button"
                       aria-expanded={isExpanded}
                       aria-controls={`mobile-group-${group}`}
-                      className={`flex w-full items-center justify-between px-3 py-3 text-left text-sm font-semibold tracking-[0.08em] transition-colors ${
+                      className={`flex w-full items-center justify-between px-3 py-3 text-left text-sm font-semibold tracking-[0.04em] transition-colors ${
                         isGroupActive ? "text-accent" : "text-ink hover:text-accent"
                       }`}
                       onClick={() => setExpandedGroup((prev) => (prev === group ? null : group))}
@@ -138,7 +138,7 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                         isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                       }`}
                     >
-                      <div className="min-h-0 border-t border-[var(--border)]">
+                      <div className="min-h-0 border-t border-[var(--glass-border)]">
                         <div className="flex flex-col p-2">
                           {items.map((item) => {
                             const isItemActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -148,10 +148,10 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                                 key={item.id}
                                 href={item.href}
                                 onClick={() => setIsOpen(false)}
-                                className={`rounded-sm px-3 py-2.5 text-sm transition-colors ${
+                                className={`rounded-md px-3 py-2.5 text-sm transition-colors ${
                                   isItemActive
-                                    ? "bg-[var(--surface-raised)] text-accent"
-                                    : "text-ink/90 hover:bg-[var(--surface-raised)] hover:text-accent"
+                                    ? "bg-surface text-accent"
+                                    : "text-ink/90 hover:bg-surface hover:text-accent"
                                 }`}
                               >
                                 {item.label}

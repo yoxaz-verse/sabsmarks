@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/theme-provider";
 import NextTopLoader from "nextjs-toploader";
 import { InitialLoader } from "@/components/initial-loader";
 import { buildOpenGraph, buildTwitter, SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -46,14 +47,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased relative brand-shell">
+      <body className="antialiased selection:bg-[#0ea5e9] selection:text-white relative">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <NextTopLoader color="#18395f" height={2} showSpinner={false} shadow="0 0 0 transparent" zIndex={100000} />
+        <NextTopLoader color="#20a447" height={3} showSpinner={false} shadow="0 0 10px #20a447,0 0 5px #20a447" zIndex={100000} />
         <InitialLoader />
-        <div className="relative z-10 flex min-h-screen flex-col">{children}</div>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <div className="scanline-overlay"></div>
+          <div className="relative z-10 flex flex-col min-h-screen">{children}</div>
+        </ThemeProvider>
       </body>
     </html>
   );

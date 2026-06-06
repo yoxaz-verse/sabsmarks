@@ -37,26 +37,28 @@ export function NewsletterForm() {
 
   return (
     <form onSubmit={onSubmit} className="mt-4">
-      <label htmlFor="newsletter-email" className="sr-only">
-        Email
+      <label htmlFor="newsletter-email" className="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-muted">
+        Email Address
       </label>
-      <input
-        id="newsletter-email"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-        className="w-full rounded-sm border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-1 focus:ring-[var(--accent)]"
-      />
-      <button
-        type="submit"
-        disabled={state === "loading"}
-        className="mt-3 w-full rounded-sm border border-[var(--accent)] bg-[var(--accent)] px-4 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-[#122c49] disabled:opacity-60"
-      >
-        {state === "loading" ? "Sending..." : "Subscribe to Newsletter"}
-      </button>
-      {message ? <p className={`mt-2 text-xs font-semibold ${state === "success" ? "text-[var(--affirmative)]" : "text-[var(--adverse)]"}`}>{message}</p> : null}
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <input
+          id="newsletter-email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+          required
+          className="min-h-12 flex-1 rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_84%,transparent)] px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent)_20%,transparent)]"
+        />
+        <button
+          type="submit"
+          disabled={state === "loading"}
+          className="min-h-12 rounded-2xl bg-accent px-5 py-3 text-sm font-bold text-white uppercase tracking-[0.14em] transition hover:bg-accent-secondary disabled:opacity-60"
+        >
+          {state === "loading" ? "Sending..." : "Subscribe"}
+        </button>
+      </div>
+      {message ? <p className={`mt-2 text-xs font-semibold ${state === "success" ? "text-accent-secondary" : "text-red-500"}`}>{message}</p> : null}
     </form>
   );
 }

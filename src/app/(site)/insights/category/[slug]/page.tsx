@@ -28,12 +28,12 @@ export default async function InsightCategoryPage({ params }: { params: Promise<
     <section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Insights", href: "/insights" }, { label: slug }]} />
-      <h1 className="text-4xl font-semibold text-accent">Category: {slug}</h1>
+      <h1 className="text-4xl font-semibold">Category: {slug}</h1>
       <div className="mt-8 grid gap-5 md:grid-cols-3">
         {insights.data.map((item) => (
-          <Link key={item.id} href={`/insights/${item.slug}`} className="brand-card p-6">
-            <h2 className="text-xl font-semibold text-accent">{item.title}</h2>
-            <p className="mt-2 text-sm leading-7 text-muted">{item.excerpt ?? item.summary}</p>
+          <Link key={item.id} href={`/insights/${item.slug}`} className="rounded-2xl border border-[var(--glass-border)] bg-surface p-6">
+            <h2 className="text-xl font-semibold">{item.title}</h2>
+            <p className="mt-2 text-sm text-muted">{item.excerpt ?? item.summary}</p>
           </Link>
         ))}
       </div>

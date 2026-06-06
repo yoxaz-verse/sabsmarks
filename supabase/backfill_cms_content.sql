@@ -41,7 +41,7 @@ insert into pages (slug, title, template_type, status, published_at)
 values
 ('about', 'The Firm', 'about', 'published', now()),
 ('about/legacy', 'Legacy', 'about', 'published', now()),
-('about/locations', 'Our Services', 'about', 'published', now()),
+('about/locations', 'Locations', 'about', 'published', now()),
 ('about/team', 'Leadership', 'about', 'published', now()),
 ('careers/philosophy', 'Philosophy', 'generic', 'published', now()),
 ('careers/alumni', 'Alumni', 'generic', 'published', now()),
@@ -106,14 +106,14 @@ from pages where slug='about/legacy';
 
 -- Locations
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
-select id, 'hero', jsonb_build_object('kicker','About','headline','Our Services','subtext','Structured support across finance, governance, compliance, and execution.'), 0, true
+select id, 'hero', jsonb_build_object('kicker','About','headline','Locations','subtext','Browse our offices and connect with the location most relevant to you.'), 0, true
 from pages where slug='about/locations';
 
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'rich_text',
 jsonb_build_object(
-  'title','Our Services',
-  'content','This route is rendered through a custom frontend page that presents our service lines across advisory, audit, tax, governance, risk, and transformation.'
+  'title','Locations',
+  'content','This route is rendered through a custom frontend page that presents all published office locations and links through to each office detail page.'
 ),
 1, true
 from pages where slug='about/locations';
@@ -182,6 +182,7 @@ insert into menu_items (label, href, group_name, display_order, status)
 values
 ('Home', '/', 'Home', 1, 'published'),
 ('The Firm', '/about', 'About', 1, 'published'),
+('Locations', '/about/locations', 'About', 2, 'published'),
 ('Leadership', '/about/team', 'About', 3, 'published'),
 ('Services', '/practice-areas', 'Expertise', 1, 'published'),
 ('Our Approach', '/expertise/our-approach', 'Expertise', 5, 'published'),

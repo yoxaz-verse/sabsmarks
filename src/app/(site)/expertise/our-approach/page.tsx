@@ -25,30 +25,31 @@ export default function ApproachPage() {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--bg)]">
+    <div className="flex flex-col min-h-screen bg-bg">
       <PageBanner title="Our Approach" />
 
-      <section className="mx-auto w-full max-w-7xl px-6 py-20 md:py-24">
-        <div className="mx-auto mb-20 max-w-3xl text-center">
-          <p className="brand-kicker inline-flex">Methodology</p>
-          <h2 className="mt-6 text-3xl font-bold text-accent md:text-4xl">A Structured, Client-Centric Methodology</h2>
-          <div className="brand-rule mx-auto mt-6" />
-          <p className="mt-8 text-lg leading-relaxed text-muted">
+      <section className="mx-auto max-w-7xl px-6 py-20 md:py-32 w-full">
+        <div className="mb-20 text-center max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-ink mb-6">A Structured, Client-Centric Methodology</h2>
+          <div className="h-1 w-24 bg-accent-secondary mx-auto mb-8"></div>
+          <p className="text-lg text-muted leading-relaxed">
             Our approach is built on decades of professional experience. We combine technical rigor with practical business acumen to deliver solutions that are not only compliant but highly effective in real-world scenarios.
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
-          {steps.map((step) => (
-            <div key={step.num} className="brand-card relative p-8 md:p-10">
-              <div className="data-number absolute right-8 top-6 text-5xl text-[rgba(24,57,95,0.08)]">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 relative">
+          <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-accent/10 -translate-y-1/2 z-0"></div>
+
+          {steps.map((step, i) => (
+            <div key={i} className="bg-surface p-8 md:p-10 rounded-2xl shadow-sm border border-[var(--glass-border)] relative z-10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="text-6xl font-black text-ink/5 absolute top-6 right-8 select-none pointer-events-none">
                 {step.num}
               </div>
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-sm bg-[var(--accent)] text-xl font-bold text-white">
+              <div className="h-14 w-14 bg-accent-secondary text-white flex items-center justify-center font-bold text-xl rounded-xl mb-6 shadow-md">
                 {step.num}
               </div>
-              <h3 className="text-2xl font-bold text-accent">{step.title}</h3>
-              <p className="mt-4 text-[16px] leading-relaxed text-muted">
+              <h3 className="text-2xl font-bold text-ink mb-4 relative z-10">{step.title}</h3>
+              <p className="text-[16px] text-muted leading-relaxed relative z-10">
                 {step.desc}
               </p>
             </div>

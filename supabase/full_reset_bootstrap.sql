@@ -306,7 +306,7 @@ values
 ('about', 'The Firm', 'about', 'published', now()),
 ('about/legacy', 'Legacy', 'about', 'published', now()),
 ('about/team', 'Leadership', 'about', 'published', now()),
-('about/locations', 'Our Services', 'about', 'published', now()),
+('about/locations', 'Locations', 'about', 'published', now()),
 ('expertise/ifsc', 'Services in IFSC (GIFT City)', 'generic', 'published', now()),
 ('expertise/uae', 'Services in UAE', 'generic', 'published', now()),
 ('expertise/our-approach', 'Our Approach', 'generic', 'published', now()),
@@ -349,7 +349,7 @@ select id, 'hero', jsonb_build_object('kicker','About','headline','Leadership','
 from pages where slug='about/team';
 
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
-select id, 'hero', jsonb_build_object('kicker','About','headline','Our Services','subtext','Structured support across finance, governance, compliance, and execution.'), 0, true
+select id, 'hero', jsonb_build_object('kicker','About','headline','Locations','subtext','Browse our offices and connect with the location most relevant to you.'), 0, true
 from pages where slug='about/locations';
 
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
@@ -436,6 +436,7 @@ insert into menu_items (label, href, group_name, display_order, status)
 values
 ('Home', '/', 'Home', 1, 'published'),
 ('The Firm', '/about', 'About', 1, 'published'),
+('Locations', '/about/locations', 'About', 2, 'published'),
 ('Leadership', '/about/team', 'About', 3, 'published'),
 ('Services', '/practice-areas', 'Expertise', 1, 'published'),
 ('Our Approach', '/expertise/our-approach', 'Expertise', 5, 'published'),

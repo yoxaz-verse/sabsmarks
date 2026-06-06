@@ -7,7 +7,7 @@ type Row = { id: string; slug: string };
 const pagesSeed = [
   { slug: "about", title: "The Firm", template_type: "about" },
   { slug: "about/legacy", title: "Legacy", template_type: "about" },
-  { slug: "about/locations", title: "Our Services", template_type: "about" },
+  { slug: "about/locations", title: "Locations", template_type: "about" },
   { slug: "about/team", title: "Leadership", template_type: "about" },
   { slug: "careers/philosophy", title: "Philosophy", template_type: "generic" },
   { slug: "careers/alumni", title: "Alumni", template_type: "generic" },
@@ -90,7 +90,7 @@ export async function POST() {
       ["about", "rich_text", { title: "Overview", content: "Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.\n\nEstablished in 1936, Sabs Marks JVS PVT LTD serves diverse businesses with emphasis on the MSME sector." }, 1],
       ["about/legacy", "hero", { kicker: "About", headline: "Legacy", subtext: "Our journey has been shaped by multiple professional legacies integrated into one organization." }, 0],
       ["about/legacy", "stats", { items: [{ label: "1936", value: "H.M Contractor & Co." }, { label: "1949", value: "R.B. Patel & Co." }, { label: "1951", value: "S.S. Nayak & Co." }] }, 1],
-      ["about/locations", "hero", { kicker: "About", headline: "Our Services", subtext: "Structured support across finance, governance, compliance, and execution." }, 0],
+      ["about/locations", "hero", { kicker: "About", headline: "Locations", subtext: "Browse our offices and connect with the location most relevant to you." }, 0],
       ["about/team", "hero", { kicker: "About", headline: "Leadership", subtext: "Partner-led teams with deep domain expertise." }, 0],
       ["careers/philosophy", "hero", { kicker: "Career", headline: "Philosophy", subtext: "Built on quality, ethics, and integrity." }, 0],
       ["careers/philosophy", "rich_text", { title: "Our People", content: "We provide an extensive range of services and believe difficult problems are solved together. Our success depends upon the quality of our people." }, 1],
@@ -126,6 +126,7 @@ export async function POST() {
       supabase.from("menu_items").upsert([
         { label: "Home", href: "/", group_name: "Home", display_order: 1, status: "published" },
         { label: "The Firm", href: "/about", group_name: "About", display_order: 1, status: "published" },
+        { label: "Locations", href: "/about/locations", group_name: "About", display_order: 2, status: "published" },
         { label: "Leadership", href: "/about/team", group_name: "About", display_order: 3, status: "published" },
         { label: "Services", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },
         { label: "Our Approach", href: "/expertise/our-approach", group_name: "Expertise", display_order: 4, status: "published" },

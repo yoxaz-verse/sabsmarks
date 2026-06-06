@@ -8,14 +8,13 @@ export function InitialLoader() {
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
-    // Only run on initial load
     const timer1 = setTimeout(() => {
       setIsFadingOut(true);
-    }, 1200); // 1.2s loading screen
+    }, 1200);
 
     const timer2 = setTimeout(() => {
       setIsLoading(false);
-    }, 1800); // remove from DOM after fade out completes (600ms fade)
+    }, 1800);
 
     return () => {
       clearTimeout(timer1);
@@ -32,15 +31,15 @@ export function InitialLoader() {
       }`}
     >
       <div className="relative flex flex-col items-center">
-        <div className="animate-fade-in mb-10 scale-105">
-          <Logo />
+        <div className="animate-fade-in mb-10">
+          <Logo className="w-[300px] sm:w-[360px]" />
         </div>
 
-        <div className="relative h-[2px] w-64 overflow-hidden rounded-full bg-[var(--mist-grey)] opacity-90">
-          <div className="animate-loader-progress absolute top-0 left-0 h-full bg-[var(--accent-secondary)] rounded-full"></div>
+        <div className="w-64 h-[2px] bg-gray-200 dark:bg-gray-800 overflow-hidden relative rounded-full opacity-80">
+          <div className="absolute top-0 left-0 h-full bg-[#20a447] rounded-full animate-loader-progress"></div>
         </div>
 
-        <div className="mt-6 text-xs font-semibold tracking-[0.28em] text-[var(--muted)]">
+        <div className="mt-6 text-xs font-semibold tracking-[0.3em] text-[#6d6e71] dark:text-stone-400 animate-pulse">
           INITIALIZING SECURE CONNECTION
         </div>
       </div>

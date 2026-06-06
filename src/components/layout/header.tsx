@@ -2,12 +2,12 @@ import Link from "next/link";
 import { MegaNav } from "@/components/navigation/mega-nav";
 import { MobileNav } from "@/components/navigation/mobile-nav";
 import { Logo } from "@/components/layout/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import type { MenuItem } from "@/types/cms";
 import { getMegaNav } from "@/lib/content/service";
 
 const HIDDEN_NAV_HREFS = new Set([
   "/about/legacy",
-  "/about/locations",
   "/expertise/ifsc",
   "/expertise/uae",
   "/industry-solutions",
@@ -29,6 +29,26 @@ function ensureHomeGroup(groups: Record<string, MenuItem[]>) {
   return { Home: [HOME_MENU_ITEM], ...groups };
 }
 
+const ABOUT_LOCATIONS_ITEM: MenuItem = {
+  id: "about-2",
+  parent_id: null,
+  label: "Locations",
+  href: "/about/locations",
+  group_name: "About",
+  display_order: 2,
+  status: "published",
+};
+
+function ensureLocationsItem(groups: Record<string, MenuItem[]>) {
+  const aboutItems = groups.About ?? [];
+  if (aboutItems.some((item) => item.href === ABOUT_LOCATIONS_ITEM.href)) return groups;
+
+  return {
+    ...groups,
+    About: [...aboutItems, ABOUT_LOCATIONS_ITEM].sort((a, b) => a.display_order - b.display_order),
+  };
+}
+
 function filterNavItems(groups: Record<string, MenuItem[]>) {
   return Object.fromEntries(
     Object.entries(groups).map(([group, items]) => [
@@ -42,6 +62,7 @@ const fallbackNavGroups: Record<string, MenuItem[]> = {
   Home: [HOME_MENU_ITEM],
   About: [
     { id: "about-1", parent_id: null, label: "The Firm", href: "/about", group_name: "About", display_order: 1, status: "published" },
+    { id: "about-2", parent_id: null, label: "Locations", href: "/about/locations", group_name: "About", display_order: 2, status: "published" },
     { id: "about-3", parent_id: null, label: "Leadership", href: "/about/team", group_name: "About", display_order: 3, status: "published" },
   ],
   Expertise: [
@@ -59,17 +80,18 @@ const fallbackNavGroups: Record<string, MenuItem[]> = {
 export async function Header() {
   const cmsNavGroups = await getMegaNav();
   const hasCmsNav = Object.values(cmsNavGroups).some((items) => items.length > 0);
-  const navGroups = ensureHomeGroup(filterNavItems(hasCmsNav ? cmsNavGroups : fallbackNavGroups));
+  const navGroups = ensureLocationsItem(ensureHomeGroup(filterNavItems(hasCmsNav ? cmsNavGroups : fallbackNavGroups)));
 
   return (
-    <header className="sticky top-0 z-[100] border-b border-[var(--border)] bg-[var(--cloud)]/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-5">
-        <Link href="/" aria-label="Sabs Marks JVS & Co., Chartered Accountants">
-          <Logo className="scale-75 origin-left" />
+    <header className="sticky top-0 z-[100] border-b border-[var(--section-border)] bg-[color-mix(in_srgb,var(--bg)_76%,transparent)]/95 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-3.5">
+        <Link href="/">
+          <Logo className="w-[172px] sm:w-[205px]" />
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <MegaNav groups={navGroups} />
           <MobileNav groups={navGroups} />
+          <ThemeToggle />
         </div>
       </div>
     </header>

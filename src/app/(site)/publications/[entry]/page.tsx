@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { getEntry } from "@/lib/content/service";
 import { buildAbsoluteUrl, buildEntryMetadata, resolveSeoDescription } from "@/lib/seo";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/seo-schema";
@@ -39,12 +40,15 @@ export default async function PublicationDetail({ params }: { params: Promise<{ 
   ]);
 
   return (
-    <article className="brand-card mx-auto max-w-4xl p-8">
+    <article className="detail-shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <h1 className="text-4xl font-semibold text-accent">{entry.title}</h1>
-      <div className="brand-rule mt-5" />
-      <p className="mt-5 whitespace-pre-wrap leading-7 text-muted">{entry.body}</p>
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Publications", href: "/publications" }, { label: entry.title }]} />
+      <div className="detail-card p-8 md:p-10">
+        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Publication</p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink">{entry.title}</h1>
+        <p className="detail-body">{entry.body}</p>
+      </div>
     </article>
   );
 }

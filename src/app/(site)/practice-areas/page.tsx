@@ -185,68 +185,113 @@ const serviceAreas: ServiceArea[] = [
 
 export default function PracticeAreasPage() {
   const [activeTab, setActiveTab] = useState(serviceAreas[0].id);
+
   const activeContent = serviceAreas.find((serviceArea) => serviceArea.id === activeTab) || serviceAreas[0];
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--bg)]">
+    <div className="flex flex-col min-h-screen bg-surface">
       <PageBanner title="Our Services" />
 
-      <section className="mx-auto max-w-[1400px] px-6 py-16 md:px-12">
-        <p className="mx-auto mb-12 max-w-4xl text-center text-[16px] leading-relaxed text-muted">
+      <section className="mx-auto max-w-[1400px] px-6 py-16 md:px-12 relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-accent opacity-10 dark:opacity-20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+        <p className="text-[16px] leading-relaxed text-muted mb-12 max-w-4xl text-center mx-auto relative z-10">
           Our services are designed to strengthen financial decision-making, governance, controls, and execution discipline across every stage of growth. We combine structured analysis, regulatory awareness, and business context to help leadership teams act with clarity and confidence.
         </p>
 
-        <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_18px_40px_rgba(24,57,95,0.06)] md:flex">
-          <div className="w-full border-b border-[var(--border)] bg-[var(--cloud)] p-6 md:w-[380px] md:border-b-0 md:border-r md:p-8">
-            <h4 className="mb-6 text-xs font-bold uppercase tracking-[0.18em] text-muted">Our Services</h4>
-            <div className="flex flex-col gap-2">
-              {serviceAreas.map((serviceArea) => {
-                const isActive = activeTab === serviceArea.id;
-                return (
+        <div className="glass-panel rounded-3xl overflow-hidden flex flex-col md:flex-row relative z-10 shadow-2xl border border-[var(--glass-border)] bg-surface/60 backdrop-blur-xl min-h-[750px] md:min-h-[650px]">
+          <div className="w-full md:w-[380px] flex flex-col items-stretch gap-2 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[var(--glass-border)] bg-surface-raised/30 relative">
+            <div className="absolute inset-0 bg-gradient-to-b from-surface/40 to-transparent pointer-events-none"></div>
+            <h4 className="text-xs font-bold text-muted uppercase tracking-widest mb-6 px-4">Our Services</h4>
+            {serviceAreas.map((serviceArea) => {
+              const isActive = activeTab === serviceArea.id;
+              return (
+                <div key={serviceArea.id} className="w-full md:w-[320px] md:max-w-[320px] md:min-w-[320px] md:mx-auto">
                   <button
-                    key={serviceArea.id}
                     onClick={() => setActiveTab(serviceArea.id)}
-                    className={`w-full rounded-sm border-l-2 px-4 py-4 text-left text-[13px] font-bold tracking-[0.08em] transition-colors ${
+                    className={`block h-20 w-full min-w-full max-w-full px-6 py-4 text-left font-bold text-[13px] tracking-[0.08em] rounded-2xl transition-all duration-500 relative overflow-hidden group box-border ${
                       isActive
-                        ? "border-[var(--accent-secondary)] bg-[var(--surface)] text-accent"
-                        : "border-transparent bg-transparent text-muted hover:bg-[var(--surface)] hover:text-accent"
+                        ? "bg-surface shadow-lg text-ink border border-[var(--glass-border)]"
+                        : "text-muted bg-surface/45 hover:bg-surface/65 hover:text-ink border border-[var(--glass-border)]/70"
                     }`}
                   >
-                    {serviceArea.title}
+                    {isActive && (
+                      <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent rounded-l-2xl shadow-[0_0_15px_var(--accent-glow)]"></div>
+                    )}
+                    {isActive && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-100"></div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                    <span className="relative z-10 flex h-full w-full items-center justify-between gap-4">
+                      <span className="line-clamp-2 leading-6">{serviceArea.title}</span>
+                      <span className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center">
+                        <svg
+                          className={`h-4 w-4 transition-opacity duration-300 ${isActive ? "text-accent opacity-100 animate-fade-in" : "text-muted opacity-35 group-hover:opacity-60"}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </span>
                   </button>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
 
-          <div className="flex-1 p-8 md:p-14">
-            <p className="brand-kicker mb-6">{activeContent.subtitle}</p>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-              {activeContent.strapline}
-            </p>
-            <h2 className="mt-5 text-4xl font-bold text-accent md:text-5xl">{activeContent.title}</h2>
-            <div className="brand-rule mt-6" />
+          <div key={activeTab} className="flex-1 p-8 md:p-16 relative overflow-hidden flex flex-col justify-center min-h-[650px] md:min-h-[600px]">
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent opacity-[0.04] dark:opacity-[0.06] rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/4 animate-pulse" style={{ animationDuration: "4s" }}></div>
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent opacity-[0.02] dark:opacity-[0.03] rounded-full blur-[80px] pointer-events-none -translate-x-1/3 translate-y-1/3"></div>
 
-            <div className="mt-8 space-y-5">
-              {activeContent.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="text-[17px] leading-relaxed text-muted">
-                  {paragraph}
-                </p>
-              ))}
+            <div className="relative z-10 max-w-3xl animate-fade-in" style={{ animationDuration: "600ms" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-8 backdrop-blur-sm">
+                <div className="relative flex items-center justify-center w-2 h-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent animate-ping absolute"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent absolute"></div>
+                </div>
+                <span className="text-xs font-bold text-accent uppercase tracking-widest ml-1">{activeContent.subtitle}</span>
+              </div>
+
+              <p className="text-sm md:text-base uppercase tracking-[0.24em] text-accent/85 font-semibold mb-5">
+                {activeContent.strapline}
+              </p>
+
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-ink mb-8 tracking-tight">
+                {activeContent.title}
+              </h2>
+
+              <div className="w-20 h-1 bg-gradient-to-r from-accent to-transparent rounded-full mb-8"></div>
+
+              <div className="space-y-5 mb-10">
+                {activeContent.paragraphs.map((paragraph) => (
+                  <p key={paragraph} className="text-[17px] leading-relaxed text-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+
+              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-ink/80 mb-6">
+                {activeContent.bulletsLabel}
+              </h3>
+
+              <ul className="space-y-6">
+                {activeContent.bullets.map((bullet, index) => (
+                  <li
+                    key={index}
+                    className="flex items-start group animate-fade-in"
+                    style={{ animationDelay: `${150 + index * 100}ms`, animationFillMode: "both" }}
+                  >
+                    <div className="w-10 h-10 rounded-2xl bg-surface-raised border border-[var(--glass-border)] flex items-center justify-center mr-6 flex-shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-500 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+                      <span className="w-2.5 h-2.5 rounded-full bg-accent/70 group-hover:bg-accent group-hover:scale-150 group-hover:shadow-[0_0_12px_var(--accent-glow)] transition-all duration-500"></span>
+                    </div>
+                    <span className="text-[17px] leading-relaxed text-muted pt-1.5 group-hover:text-ink transition-colors duration-500">{bullet}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <h3 className="mt-10 text-sm font-bold uppercase tracking-[0.2em] text-accent">
-              {activeContent.bulletsLabel}
-            </h3>
-
-            <ul className="mt-6 space-y-5">
-              {activeContent.bullets.map((bullet, index) => (
-                <li key={index} className="flex items-start gap-4">
-                  <span className="brand-list-dot" />
-                  <span className="text-[17px] leading-relaxed text-muted">{bullet}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>
