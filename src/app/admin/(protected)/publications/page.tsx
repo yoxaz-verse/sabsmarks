@@ -1,5 +1,6 @@
-import { redirect } from "next/navigation";
+import { ModuleManager } from "@/components/admin/module-manager";
+import { adminModules } from "@/components/admin/module-config";
 
-export default function AdminModuleDisabled() {
-  redirect("/admin");
+export default function AdminPublicationsPage() {
+  return <ModuleManager config={adminModules.publications} />;
 }

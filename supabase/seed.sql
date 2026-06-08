@@ -41,6 +41,7 @@ values
 ('expertise/ifsc', 'Services in IFSC (GIFT City)', 'generic', 'published', now()),
 ('expertise/uae', 'Services in UAE', 'generic', 'published', now()),
 ('expertise/our-approach', 'Our Approach', 'generic', 'published', now()),
+('careers', 'Careers', 'career-list', 'published', now()),
 ('careers/philosophy', 'Philosophy', 'generic', 'published', now()),
 ('careers/alumni', 'Alumni', 'generic', 'published', now())
 on conflict (slug) do update set title=excluded.title;
@@ -58,6 +59,19 @@ select id, 'stats', jsonb_build_object('items', jsonb_build_array(
   jsonb_build_object('label','Partners','value','35+'),
   jsonb_build_object('label','Offices','value','10+')
 )), 1 from pages where slug='home';
+
+insert into sections (page_id, section_type, payload, order_index)
+select id, 'hero', jsonb_build_object(
+  'kicker', 'Career',
+  'headline', 'Join Us',
+  'subtext', 'Explore opportunities to grow with Sabs Marks JVS across audit, tax, and advisory.'
+), 0 from pages where slug='careers';
+
+insert into sections (page_id, section_type, payload, order_index)
+select id, 'rich_text', jsonb_build_object(
+  'title', 'Build your career with a firm that values curiosity and responsibility.',
+  'content', 'Due to our ambitious growth plans and rapidly growing practice in different functional areas, we are in constant need of energetic and enthusiastic professionals who are keen on learning and taking up challenging roles within the organization.\n\nWe are always on the look-out for bright and passionate professionals with diverse educational qualifications and experience, who can think outside the box, are enthusiastic about learning, and love to accept challenges.'
+), 1 from pages where slug='careers';
 
 insert into practice_areas (slug, title, summary, excerpt, body, status, published_at)
 values

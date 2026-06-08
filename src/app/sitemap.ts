@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
-import { getLocations, getPublishedSlugs } from "@/lib/content/service";
+import { getLocations, getPublishedSlugs, getPublishedTeamMemberSlugs } from "@/lib/content/service";
 
 const staticRoutes = [
   "",
@@ -29,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const industries = await getPublishedSlugs("industry_solutions");
   const careers = await getPublishedSlugs("careers");
   const locations = await getLocations();
+  const teamMembers = await getPublishedTeamMemberSlugs();
 
   return [
     ...staticRoutes.map((path) => ({
@@ -74,6 +75,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.6,
+    })),
+    ...teamMembers.map((item) => ({
+      url: `${SITE_URL}/about/team/${item.slug}`,
+      lastModified: item.updated_at ? new Date(item.updated_at) : now,
+      changeFrequency: "monthly" as const,
+      priority: 0.65,
     })),
   ];
 }

@@ -4,6 +4,8 @@ import { buildPageMetadata } from "@/lib/seo";
 import { getInsights } from "@/lib/content/service";
 import { PageBanner } from "@/components/layout/page-banner";
 import { ArrowRight, BookOpen } from "lucide-react";
+import Image from "next/image";
+import { SITE_VISUALS } from "@/lib/site-visuals";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/insights",
@@ -33,6 +35,16 @@ export default async function InsightsPage() {
               href={`/insights/${post.slug}`}
               className="site-card interactive-card group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-0"
             >
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <Image
+                  src={post.image_url ?? SITE_VISUALS.insights.fallback}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.06),rgba(8,15,30,0.32))]" />
+              </div>
               <div className="absolute inset-0 bg-gradient-to-br from-accent/6 via-transparent to-accent-secondary/6 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
               <div className="relative z-10 flex h-full flex-col p-8">

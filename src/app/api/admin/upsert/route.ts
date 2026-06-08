@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { requireAdminApiSession } from "@/lib/admin-auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 const payloadSchema = z.object({
@@ -42,13 +43,26 @@ const contentEntitySchema = z.object({
   slug: z.string().min(1),
   title: z.string().min(2),
   summary: z.string().optional().nullable(),
+  excerpt: z.string().optional().nullable(),
   body: z.string().optional().nullable(),
+  image_url: z.string().optional().nullable(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
   featured: z.boolean().optional(),
   published_at: z.string().optional().nullable(),
   status: statusSchema,
 });
+const careersMetadataSchema = z
+  .object({
+    show_apply_cta: z.boolean().optional(),
+    apply_url: z.string().url().optional().nullable(),
+  })
+  .catchall(z.unknown());
 
 function isStringRecord(value: unknown): value is Record<string, string> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
@@ -93,7 +107,11 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     slug: z.string().min(1),
     title: z.string().min(2),
     summary: z.string().optional().nullable(),
+    excerpt: z.string().optional().nullable(),
     body: z.string().optional().nullable(),
+    image_url: z.string().optional().nullable(),
+    metadata: careersMetadataSchema.optional(),
+    featured: z.boolean().optional(),
     status: statusSchema,
     published_at: z.string().optional().nullable(),
   }),
@@ -164,12 +182,13 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
 };
 
 export async function POST(req: Request) {
+  const { error: authError } = await requireAdminApiSession();
+  if (authError) return authError;
+
   const parsed = payloadSchema.safeParse(await req.json());
   if (!parsed.success) return NextResponse.json({ error: parsed.error.message }, { status: 400 });
 
   const supabase = await createServerSupabaseClient();
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { table, payload } = parsed.data;
   if (!writeableTables.has(table)) return NextResponse.json({ error: "Table not allowed for writes." }, { status: 400 });
@@ -188,6 +207,10 @@ export async function POST(req: Request) {
   if (typeof normalized.published_at === "string" && normalized.published_at.trim() === "") normalized.published_at = null;
   if (typeof normalized.linkedin_url === "string" && normalized.linkedin_url.trim() === "") normalized.linkedin_url = null;
   if (typeof normalized.photo_url === "string" && normalized.photo_url.trim() === "") normalized.photo_url = null;
+  if (typeof normalized.image_url === "string" && normalized.image_url.trim() === "") normalized.image_url = null;
+  if (typeof normalized.excerpt === "string" && normalized.excerpt.trim() === "") normalized.excerpt = null;
+  if (typeof normalized.summary === "string" && normalized.summary.trim() === "") normalized.summary = null;
+  if (typeof normalized.body === "string" && normalized.body.trim() === "") normalized.body = null;
   if (table === "site_settings") {
     normalized.logo_url = nullableString(normalized.logo_url);
     normalized.primary_email = nullableString(normalized.primary_email);
@@ -217,6 +240,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `Validation failed: ${issue.path.join(".") || "payload"} - ${issue.message}` }, { status: 400 });
     }
     sanitized = { ...(result.data as Record<string, unknown>), updated_at: normalized.updated_at };
+  }
+
+  if (table === "careers") {
+    const metadata = isRecord(sanitized.metadata) ? sanitized.metadata : {};
+    if (metadata.show_apply_cta === true && (typeof metadata.apply_url !== "string" || metadata.apply_url.trim().length === 0)) {
+      return NextResponse.json({ error: "Validation failed: apply_url - Apply URL is required when the Apply button is enabled." }, { status: 400 });
+    }
   }
 
   let query;

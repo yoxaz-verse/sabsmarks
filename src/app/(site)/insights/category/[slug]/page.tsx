@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { getInsights } from "@/lib/content/service";
 import { buildPageMetadata } from "@/lib/seo";
 import { buildBreadcrumbSchema } from "@/lib/seo-schema";
@@ -26,7 +27,7 @@ export default async function InsightCategoryPage({ params }: { params: Promise<
 
   return (
     <section>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <JsonLdScript id={`insight-category-breadcrumb-${slug}`} data={breadcrumbSchema} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Insights", href: "/insights" }, { label: slug }]} />
       <h1 className="text-4xl font-semibold">Category: {slug}</h1>
       <div className="mt-8 grid gap-5 md:grid-cols-3">

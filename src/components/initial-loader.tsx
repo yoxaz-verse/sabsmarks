@@ -3,16 +3,26 @@
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/layout/logo";
 
+const LOADER_SESSION_KEY = "smjvs-initial-loader-complete";
+
 export function InitialLoader() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.sessionStorage.getItem(LOADER_SESSION_KEY) === "1") {
+      setIsLoading(false);
+      return;
+    }
+
     const timer1 = setTimeout(() => {
       setIsFadingOut(true);
     }, 1200);
 
     const timer2 = setTimeout(() => {
+      if (typeof window !== "undefined") {
+        window.sessionStorage.setItem(LOADER_SESSION_KEY, "1");
+      }
       setIsLoading(false);
     }, 1800);
 

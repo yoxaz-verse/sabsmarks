@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 import { PageBanner } from "@/components/layout/page-banner";
+import { InteriorIntroSection } from "@/components/sections/interior-intro-section";
+import Image from "next/image";
+import { SITE_VISUALS } from "@/lib/site-visuals";
 
 type ServiceArea = {
   id: string;
   title: string;
   strapline: string;
   subtitle: string;
+  image: string;
   paragraphs: string[];
   bulletsLabel: string;
   bullets: string[];
@@ -19,6 +23,7 @@ const serviceAreas: ServiceArea[] = [
     title: "Corporate Finance Advisory",
     strapline: "Structured Capital and Unshaken Confidence",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["corporate-finance-advisory"],
     paragraphs: [
       "We work with leadership teams on key financial and strategic decisions that shape organisational direction. Our role extends beyond transactions to capital structuring, option evaluation, and alignment of financial decisions with business strategy, governance, and long-term objectives.",
       "All decisions are supported by structured analysis and risk awareness, ensuring clarity and discipline in capital outcomes.",
@@ -42,6 +47,7 @@ const serviceAreas: ServiceArea[] = [
     title: "Audit & Assurance",
     strapline: "Audit That Withstands Scrutiny",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["audit-assurance"],
     paragraphs: [
       "We deliver audits that are structured, risk-focused, and regulator-ready.",
       "Our audits identify control gaps and opportunities for improvement, not merely statutory observations.",
@@ -61,6 +67,7 @@ const serviceAreas: ServiceArea[] = [
     title: "Tax & Regulatory Services",
     strapline: "Tax Positions That Are Unbreakable",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["tax-regulatory-services"],
     paragraphs: [
       "We assist organisations in managing tax exposure with clarity and discipline.",
       "Tax decisions are evaluated in the context of business structure, risk tolerance, and long-term positioning.",
@@ -78,6 +85,7 @@ const serviceAreas: ServiceArea[] = [
     title: "Corporate & Other Laws",
     strapline: "Governance Without Gaps",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["corporate-other-laws"],
     paragraphs: [
       "Strong governance protects both growth and reputation.",
       "Well-structured governance reduces friction, delays, and execution risk.",
@@ -95,6 +103,7 @@ const serviceAreas: ServiceArea[] = [
     title: "CFO & Business Advisory",
     strapline: "The Finance Office Behind the Business",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["cfo-business-advisory"],
     paragraphs: [
       "We support leadership teams not only with financial insights, but with strategic thinking and operational clarity required to run and scale modern organisations. Our advisory extends across finance, management process, and digital enablement, helping organisations transition from intuition-driven operations to structured, data-led decision-making.",
       "Financial discipline, combined with strategic and digital thinking, improves predictability, strengthens management control, and supports sustained organisational success.",
@@ -112,6 +121,7 @@ const serviceAreas: ServiceArea[] = [
     title: "Business Process Re-Engineering",
     strapline: "Structure That Scales",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["business-process-reengineering"],
     paragraphs: [
       "As organisations grow, process weaknesses surface as control gaps, inefficiencies, and delayed decisions. Fragmented workflows and unclear accountability dilute execution quality and increase risk.",
       "We support leadership in reviewing and redesigning critical business and finance processes to ensure clarity of roles, strength of controls, and alignment with governance and regulatory expectations. Our approach is finance-led and outcome-driven, focused on improving decision visibility and execution discipline.",
@@ -130,6 +140,7 @@ const serviceAreas: ServiceArea[] = [
     title: "Digital Transformation & Systems Advisory",
     strapline: "Systems That Strengthen Control",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["digital-transformation-systems-advisory"],
     paragraphs: [
       "Automation initiatives require clarity on process ownership, system architecture, and reporting integrity. When automation is introduced without governance and design discipline, it weakens controls, increases rework, and reduces confidence in decision data.",
       "We advise organisations on automation strategy, software scope, and digital system design aligned with finance, compliance, and management reporting needs. Our role is independent and system-agnostic, ensuring automation strengthens governance, data integrity, cost efficiency, and decision reliability.",
@@ -149,6 +160,7 @@ const serviceAreas: ServiceArea[] = [
     title: "Business Revival & Organisational Revamping",
     strapline: "Recovery with discipline and direction",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["business-revival-organisational-revamping"],
     paragraphs: [
       "We have led multiple business revival and organisational revamping engagements, working with promoters, boards, and lenders to restore financial control, operational stability, and stakeholder confidence. Business stress typically reflects weakened controls, cost inefficiencies, and fragmented decision-making, requiring revenue and profit maximisation diagnosis alongside disciplined intervention.",
       "Our approach is reliable, achievable, and target-driven, focused on stabilisation before strengthening cash flows, improving cost efficiency, restoring profitability, and re-establishing governance and execution discipline.",
@@ -169,6 +181,7 @@ const serviceAreas: ServiceArea[] = [
     title: "Risk, Controls & Forensics",
     strapline: "Independent review for sensitive risk",
     subtitle: "Service Scope",
+    image: SITE_VISUALS.practiceAreas["risk-controls-forensics"],
     paragraphs: [
       "Risk rarely announces itself. It escalates quietly through weak controls, governance blind spots, and delayed intervention. We help organisations identify and manage risks before they become exposed.",
       "Our approach prioritises independence, discretion, and documentation that withstands regulatory and legal scrutiny.",
@@ -192,17 +205,18 @@ export default function PracticeAreasPage() {
     <div className="flex flex-col min-h-screen bg-surface">
       <PageBanner title="Our Services" />
 
-      <section className="mx-auto max-w-[1400px] px-6 py-16 md:px-12 relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-accent opacity-10 dark:opacity-20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+      <InteriorIntroSection
+        title="Specialized capabilities, organized for faster decision-making."
+        description="Our services are designed to strengthen financial decision-making, governance, controls, and execution discipline across every stage of growth. We combine structured analysis, regulatory awareness, and business context to help leadership teams act with clarity and confidence."
+        align="center"
+        className="border-b-0"
+      />
 
-        <p className="text-[16px] leading-relaxed text-muted mb-12 max-w-4xl text-center mx-auto relative z-10">
-          Our services are designed to strengthen financial decision-making, governance, controls, and execution discipline across every stage of growth. We combine structured analysis, regulatory awareness, and business context to help leadership teams act with clarity and confidence.
-        </p>
-
-        <div className="glass-panel rounded-3xl overflow-hidden flex flex-col md:flex-row relative z-10 shadow-2xl border border-[var(--glass-border)] bg-surface/60 backdrop-blur-xl min-h-[750px] md:min-h-[650px]">
-          <div className="w-full md:w-[380px] flex flex-col items-stretch gap-2 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[var(--glass-border)] bg-surface-raised/30 relative">
-            <div className="absolute inset-0 bg-gradient-to-b from-surface/40 to-transparent pointer-events-none"></div>
-            <h4 className="text-xs font-bold text-muted uppercase tracking-widest mb-6 px-4">Our Services</h4>
+      <section className="site-section">
+        <div className="site-container pb-16 md:pb-20">
+        <div className="site-card overflow-hidden rounded-[1.75rem] md:flex md:min-h-[650px]">
+          <div className="w-full border-b border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 md:w-[380px] md:border-b-0 md:border-r md:p-8">
+            <h4 className="text-xs font-bold text-muted uppercase tracking-[0.22em] mb-6 px-4">Our Services</h4>
             {serviceAreas.map((serviceArea) => {
               const isActive = activeTab === serviceArea.id;
               return (
@@ -212,7 +226,7 @@ export default function PracticeAreasPage() {
                     className={`block h-20 w-full min-w-full max-w-full px-6 py-4 text-left font-bold text-[13px] tracking-[0.08em] rounded-2xl transition-all duration-500 relative overflow-hidden group box-border ${
                       isActive
                         ? "bg-surface shadow-lg text-ink border border-[var(--glass-border)]"
-                        : "text-muted bg-surface/45 hover:bg-surface/65 hover:text-ink border border-[var(--glass-border)]/70"
+                        : "text-muted bg-transparent hover:bg-[color-mix(in_srgb,var(--surface)_65%,transparent)] hover:text-ink border border-[var(--glass-border)]/70"
                     }`}
                   >
                     {isActive && (
@@ -242,32 +256,31 @@ export default function PracticeAreasPage() {
             })}
           </div>
 
-          <div key={activeTab} className="flex-1 p-8 md:p-16 relative overflow-hidden flex flex-col justify-center min-h-[650px] md:min-h-[600px]">
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent opacity-[0.04] dark:opacity-[0.06] rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/4 animate-pulse" style={{ animationDuration: "4s" }}></div>
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent opacity-[0.02] dark:opacity-[0.03] rounded-full blur-[80px] pointer-events-none -translate-x-1/3 translate-y-1/3"></div>
-
-            <div className="relative z-10 max-w-3xl animate-fade-in" style={{ animationDuration: "600ms" }}>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-8 backdrop-blur-sm">
-                <div className="relative flex items-center justify-center w-2 h-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-accent animate-ping absolute"></div>
-                  <div className="w-1.5 h-1.5 rounded-full bg-accent absolute"></div>
-                </div>
-                <span className="text-xs font-bold text-accent uppercase tracking-widest ml-1">{activeContent.subtitle}</span>
+          <div key={activeTab} className="flex min-h-[600px] flex-1 flex-col overflow-hidden p-8 md:px-14 md:pt-10 md:pb-14 lg:px-16 lg:pt-12 lg:pb-16">
+            <div className="max-w-[46rem] animate-fade-in" style={{ animationDuration: "600ms" }}>
+              <div className="relative mb-8 aspect-[16/7] overflow-hidden rounded-[1.6rem]">
+                <Image
+                  src={activeContent.image}
+                  alt={activeContent.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.06),rgba(8,15,30,0.24))]" />
               </div>
+              <div className="section-kicker">{activeContent.subtitle}</div>
 
-              <p className="text-sm md:text-base uppercase tracking-[0.24em] text-accent/85 font-semibold mb-5">
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-accent/85 md:text-base">
                 {activeContent.strapline}
               </p>
 
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-ink mb-8 tracking-tight">
-                {activeContent.title}
-              </h2>
+              <h2 className="section-title">{activeContent.title}</h2>
 
-              <div className="w-20 h-1 bg-gradient-to-r from-accent to-transparent rounded-full mb-8"></div>
+              <div className="section-rule"></div>
 
               <div className="space-y-5 mb-10">
                 {activeContent.paragraphs.map((paragraph) => (
-                  <p key={paragraph} className="text-[17px] leading-relaxed text-muted">
+                  <p key={paragraph} className="section-copy mt-0 max-w-none text-[17px]">
                     {paragraph}
                   </p>
                 ))}
@@ -293,6 +306,7 @@ export default function PracticeAreasPage() {
               </ul>
             </div>
           </div>
+        </div>
         </div>
       </section>
     </div>

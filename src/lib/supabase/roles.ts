@@ -1,51 +1,69 @@
-import { createClient } from "@supabase/supabase-js";
-import { requireSupabaseEnv } from "@/lib/env";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createAdminSupabaseClient } from "@/lib/supabase/admin";
+import type { AdminUserView } from "@/types/cms";
 
-export type CmsRole = "admin" | "editor";
+type AllowedRole = NonNullable<AdminUserView["role"]>;
 
 type RoleLookupResult = {
-  role: CmsRole | null;
+  role: AllowedRole | null;
   error: string | null;
   errorCode: string | null;
-  source: "service_role" | "session_rls";
+  source: "service_role" | "session_rls" | null;
   serviceKeyPresent: boolean;
 };
 
-export async function getRoleForUser(userId: string): Promise<RoleLookupResult> {
-  const { NEXT_PUBLIC_SUPABASE_URL } = requireSupabaseEnv();
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const allowedRoles = new Set<AllowedRole>(["admin", "editor"]);
 
-  if (serviceRoleKey) {
-    const serviceClient = createClient(NEXT_PUBLIC_SUPABASE_URL, serviceRoleKey, { auth: { persistSession: false } });
-    const { data, error } = await serviceClient.from("user_roles").select("role").eq("user_id", userId).maybeSingle<{ role: CmsRole }>();
+export async function getRoleForUser(userId: string): Promise<RoleLookupResult> {
+  const serviceKeyPresent = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  try {
+    const supabase = createAdminSupabaseClient();
+    const { data, error } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .maybeSingle<{ role: string }>();
+
+    if (error) {
+      return {
+        role: null,
+        error: error.message,
+        errorCode: error.code ?? null,
+        source: "service_role",
+        serviceKeyPresent,
+      };
+    }
+
+    const role = data?.role;
     return {
-      role: data?.role ?? null,
-      error: error?.message ?? null,
-      errorCode: error?.code ?? null,
+      role: role && allowedRoles.has(role as AllowedRole) ? (role as AllowedRole) : null,
+      error: null,
+      errorCode: null,
       source: "service_role",
-      serviceKeyPresent: true,
+      serviceKeyPresent,
+    };
+  } catch (error) {
+    return {
+      role: null,
+      error: error instanceof Error ? error.message : "Role lookup failed.",
+      errorCode: null,
+      source: "service_role",
+      serviceKeyPresent,
     };
   }
-
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId).maybeSingle<{ role: CmsRole }>();
-  return {
-    role: data?.role ?? null,
-    error: error?.message ?? null,
-    errorCode: error?.code ?? null,
-    source: "session_rls",
-    serviceKeyPresent: false,
-  };
 }
 
-export async function checkRoleRowExistsByService(userId: string): Promise<boolean | null> {
-  const { NEXT_PUBLIC_SUPABASE_URL } = requireSupabaseEnv();
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!serviceRoleKey) return null;
+export async function checkRoleRowExistsByService(userId: string) {
+  try {
+    const supabase = createAdminSupabaseClient();
+    const { count, error } = await supabase
+      .from("user_roles")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userId);
 
-  const serviceClient = createClient(NEXT_PUBLIC_SUPABASE_URL, serviceRoleKey, { auth: { persistSession: false } });
-  const { data, error } = await serviceClient.from("user_roles").select("user_id").eq("user_id", userId).limit(1);
-  if (error) return null;
-  return (data?.length ?? 0) > 0;
+    if (error) return null;
+    return (count ?? 0) > 0;
+  } catch {
+    return null;
+  }
 }

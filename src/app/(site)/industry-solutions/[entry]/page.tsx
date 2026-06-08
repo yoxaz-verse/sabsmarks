@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { getEntry } from "@/lib/content/service";
 import { buildEntryMetadata } from "@/lib/seo";
 import { buildBreadcrumbSchema } from "@/lib/seo-schema";
@@ -24,7 +25,7 @@ export default async function IndustryDetail({ params }: { params: Promise<{ ent
 
   return (
     <article className="detail-shell">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <JsonLdScript id={`industry-solution-breadcrumb-${entry.id}`} data={breadcrumbSchema} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Industry Solutions", href: "/industry-solutions" }, { label: entry.title }]} />
       <div className="detail-card p-8 md:p-10">
         <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Industry Solution</p>

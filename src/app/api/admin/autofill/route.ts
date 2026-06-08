@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import { requireAdminApiSession } from "@/lib/admin-auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { getRoleForUser } from "@/lib/supabase/roles";
 
 type Row = { id: string; slug: string };
 
@@ -18,13 +18,9 @@ const pagesSeed = [
 
 export async function POST() {
   try {
+    const { error: authError } = await requireAdminApiSession();
+    if (authError) return authError;
     const supabase = await createServerSupabaseClient();
-    const { data: auth } = await supabase.auth.getUser();
-    if (!auth.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-    const roleLookup = await getRoleForUser(auth.user.id);
-    if (roleLookup.error) return NextResponse.json({ error: roleLookup.error }, { status: 400 });
-    if (roleLookup.role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     const now = new Date().toISOString();
 

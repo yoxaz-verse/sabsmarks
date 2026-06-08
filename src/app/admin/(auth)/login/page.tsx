@@ -35,8 +35,8 @@ function AdminLoginForm() {
 
     const email = String(formData.get("email") ?? "").trim().toLowerCase();
     const password = String(formData.get("password") ?? "");
-
     const supabase = createClient();
+
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {

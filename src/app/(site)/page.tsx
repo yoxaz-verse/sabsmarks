@@ -4,6 +4,8 @@ import { buildPageMetadata } from "@/lib/seo";
 
 import { ArrowRight, BarChart3, Building2, Calculator, Briefcase, ShieldCheck, Database, Network } from "lucide-react";
 import { AnimatedNumber } from "@/components/ui/animated-number";
+import { ImageFeatureCard } from "@/components/media/image-feature-card";
+import { SITE_VISUALS } from "@/lib/site-visuals";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/",
@@ -16,8 +18,8 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <section className="site-section relative flex min-h-[88vh] items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(9,17,31,0.94)_0%,rgba(9,17,31,0.88)_40%,rgba(9,17,31,0.56)_72%,rgba(9,17,31,0.3)_100%)] dark:bg-[linear-gradient(90deg,rgba(9,17,31,0.96)_0%,rgba(9,17,31,0.9)_42%,rgba(9,17,31,0.62)_72%,rgba(9,17,31,0.34)_100%)]" />
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 dark:opacity-42" />
+          <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(244,247,251,0.92)_0%,rgba(244,247,251,0.88)_42%,rgba(244,247,251,0.78)_72%,rgba(244,247,251,0.62)_100%)] dark:bg-[linear-gradient(90deg,rgba(9,17,31,0.96)_0%,rgba(9,17,31,0.9)_42%,rgba(9,17,31,0.62)_72%,rgba(9,17,31,0.34)_100%)]" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-18 dark:opacity-42" />
         </div>
 
         <div className="site-container relative z-20 w-full py-20 md:py-24">
@@ -27,11 +29,11 @@ export default function Home() {
                 Strategic Financial Advisory
               </div>
 
-              <h1 className="mt-8 max-w-4xl text-5xl font-extrabold tracking-tighter text-white md:text-6xl lg:text-[5.15rem] lg:leading-[1.02]">
+              <h1 className="mt-8 max-w-4xl text-5xl font-extrabold tracking-tighter text-ink dark:text-white md:text-6xl lg:text-[5.15rem] lg:leading-[1.02]">
                 Expert financial & business guidance.
               </h1>
 
-              <p className="mt-8 max-w-2xl border-l-2 border-white/12 pl-5 text-lg leading-relaxed text-slate-200 md:text-xl">
+              <p className="mt-8 max-w-2xl border-l-2 border-black/8 pl-5 text-lg leading-relaxed text-muted dark:border-white/12 dark:text-slate-200 md:text-xl">
                 We provide strategic accounting, taxation, audit, and compliance services engineered to scale your enterprise with absolute precision.
               </p>
 
@@ -40,7 +42,7 @@ export default function Home() {
                   <span>Explore Services</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/contact" className="inline-flex items-center gap-3 rounded-2xl border border-white/12 bg-white/6 px-8 py-4 text-sm font-semibold tracking-wide text-white backdrop-blur-sm hover:bg-white/10">
+                <Link href="/contact" className="inline-flex items-center gap-3 rounded-2xl border border-[var(--glass-border)] bg-white/72 px-8 py-4 text-sm font-semibold tracking-wide text-ink backdrop-blur-sm hover:bg-white dark:border-white/12 dark:bg-white/6 dark:text-white dark:hover:bg-white/10">
                   Contact Us
                 </Link>
               </div>
@@ -110,6 +112,41 @@ export default function Home() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section py-12 md:py-16">
+        <div className="site-container">
+          <div className="grid gap-6 lg:grid-cols-3">
+            <ImageFeatureCard
+              src={SITE_VISUALS.home.advisory}
+              alt="Finance leaders discussing advisory strategy around a boardroom table."
+              eyebrow="Advisory"
+              title="Boardroom clarity for complex financial decisions."
+              description="Partner-led engagements translate audit, tax, and governance complexity into practical decision-making frameworks."
+              href="/about"
+              ctaLabel="About the firm"
+              priority
+            />
+            <ImageFeatureCard
+              src={SITE_VISUALS.home.audit}
+              alt="Professional reviewing audit and compliance documents."
+              eyebrow="Execution"
+              title="Operational discipline that stands up to scrutiny."
+              description="Our teams structure reporting, control environments, and compliance execution for high-stakes business contexts."
+              href="/practice-areas"
+              ctaLabel="View services"
+            />
+            <ImageFeatureCard
+              src={SITE_VISUALS.home.industry}
+              alt="Business professionals reviewing industry reports and strategy documents."
+              eyebrow="Industry Context"
+              title="Cross-sector perspective that accelerates the right next step."
+              description="We pair regulatory awareness with commercial context so leadership teams can move faster with fewer blind spots."
+              href="/industry-solutions"
+              ctaLabel="See industries"
+            />
           </div>
         </div>
       </section>

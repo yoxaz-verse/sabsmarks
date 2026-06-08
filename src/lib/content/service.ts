@@ -79,6 +79,12 @@ export async function getTeamMembers({ featured }: { featured?: boolean } = {}) 
   return data ?? [];
 }
 
+export async function getTeamMemberBySlug(slug: string) {
+  const supabase = await createServerSupabaseClient();
+  const { data } = await supabase.from("team_members").select("*").eq("slug", slug).eq("status", "published").single<TeamMember>();
+  return data;
+}
+
 export async function getInsights({ category, tag, page = 1 }: { category?: string; tag?: string; page?: number }) {
   const supabase = await createServerSupabaseClient();
   const pageSize = 9;
@@ -128,5 +134,11 @@ export async function getInsightTags() {
 export async function getPublishedSlugs(type: EntryRecord["type"]) {
   const supabase = await createServerSupabaseClient();
   const { data } = await supabase.from(type).select("slug, updated_at").eq("status", "published");
+  return (data ?? []) as Array<{ slug: string; updated_at?: string | null }>;
+}
+
+export async function getPublishedTeamMemberSlugs() {
+  const supabase = await createServerSupabaseClient();
+  const { data } = await supabase.from("team_members").select("slug, updated_at").eq("status", "published");
   return (data ?? []) as Array<{ slug: string; updated_at?: string | null }>;
 }

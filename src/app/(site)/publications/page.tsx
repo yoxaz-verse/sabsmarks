@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { PageBanner } from "@/components/layout/page-banner";
 import { buildPageMetadata } from "@/lib/seo";
 import { FileText, Download } from "lucide-react";
+import Image from "next/image";
+import { SITE_VISUALS } from "@/lib/site-visuals";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/publications",
@@ -28,6 +30,16 @@ export default async function PublicationsPage() {
               href={`/publications/${entry.slug}`}
               className="glass-panel group hover-glow relative overflow-hidden transition-all duration-500 hover:-translate-y-2 bg-surface/50 hover:bg-surface rounded-3xl flex flex-col h-full"
             >
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <Image
+                  src={entry.image_url ?? SITE_VISUALS.publications.fallback}
+                  alt={entry.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.06),rgba(8,15,30,0.32))]" />
+              </div>
               <div className="absolute inset-0 bg-gradient-to-br from-accent-secondary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent-secondary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 

@@ -5,6 +5,8 @@ import { PageBanner } from "@/components/layout/page-banner";
 import { getLocations, getSiteSettings } from "@/lib/content/service";
 import { getSiteContact } from "@/lib/site-contact";
 import type { Location } from "@/types/cms";
+import Image from "next/image";
+import { SITE_VISUALS } from "@/lib/site-visuals";
 
 function sanitizePhone(phone: string) {
   return phone.replace(/\s+/g, "");
@@ -166,7 +168,6 @@ export default async function ContactPage() {
     <div className="flex min-h-screen flex-col bg-surface">
       <PageBanner
         title="Contact Us"
-        eyebrow="Direct Access"
         description="Reach our head office quickly, connect with the right branch, and move from search to conversation without hunting through the site."
         variant="contrast"
         actions={
@@ -199,7 +200,16 @@ export default async function ContactPage() {
       <section className="site-section">
         <div className="site-container py-10 md:py-14">
           <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-            <div className="overflow-hidden rounded-[2rem] bg-[linear-gradient(145deg,#1f3d8d_0%,#244aa9_52%,#173677_100%)] px-6 py-7 text-white shadow-[0_32px_80px_rgba(18,57,95,0.24)] md:px-8 md:py-8">
+            <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(145deg,#1f3d8d_0%,#244aa9_52%,#173677_100%)] px-6 py-7 text-white shadow-[0_32px_80px_rgba(18,57,95,0.24)] md:px-8 md:py-8">
+              <div className="absolute inset-0">
+                <Image
+                  src={SITE_VISUALS.contact.meeting}
+                  alt="Professional meeting room ready for client conversations."
+                  fill
+                  sizes="(max-width: 1280px) 100vw, 60vw"
+                  className="object-cover opacity-18"
+                />
+              </div>
               <div className="flex flex-wrap items-start justify-between gap-5">
                 <div className="max-w-2xl">
                   <p className="text-xs font-bold uppercase tracking-[0.28em] text-blue-100">Head Office Contact</p>

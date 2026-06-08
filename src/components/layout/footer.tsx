@@ -4,6 +4,7 @@ import { NewsletterForm } from "@/components/footer/newsletter-form";
 import { Logo } from "@/components/layout/logo";
 import { getSiteSettings } from "@/lib/content/service";
 import { getSiteContact } from "@/lib/site-contact";
+import { SiteOrnament } from "@/components/decorative/site-ornament";
 
 export async function Footer() {
   const settings = await getSiteSettings();
@@ -24,7 +25,8 @@ export async function Footer() {
           </div>
 
           <div className="lg:col-span-5">
-            <div className="site-card rounded-[1.75rem] p-7 md:p-8">
+            <div className="site-card decorated-panel rounded-[1.75rem] p-7 md:p-8">
+              <SiteOrnament mode="card" className="opacity-65" />
               <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Newsletter</p>
               <h4 className="mt-3 text-2xl font-bold text-ink">Stay Updated.</h4>
               <p className="mt-3 text-[14px] leading-7 text-muted">Subscribe to our newsletter to get the latest insights and firm updates.</p>
@@ -53,7 +55,8 @@ export async function Footer() {
           </div>
         </div>
 
-        <div className="site-card group relative mt-12 flex flex-col gap-6 overflow-hidden rounded-[1.75rem] p-8 transition-colors hover:border-accent">
+        <div className="site-card decorated-panel group relative mt-12 flex flex-col gap-6 overflow-hidden rounded-[1.75rem] p-8 transition-colors hover:border-accent">
+          <SiteOrnament mode="section" className="opacity-70" />
           <div className="pointer-events-none absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-[0.03]" />
 
           <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">

@@ -1,4 +1,4 @@
-import type { EntryRecord, PageRecord } from "@/types/cms";
+import type { EntryRecord, PageRecord, TeamMember } from "@/types/cms";
 import type { Metadata } from "next";
 
 export const SITE_NAME = "Sabs Marks JVS PVT LTD";
@@ -148,5 +148,32 @@ export function buildEntryMetadata(entry: EntryRecord, path: string, fallbackDes
       image: entry.og_image_url ?? entry.image_url,
     }),
     twitter: buildTwitter({ title, description, image: entry.og_image_url ?? entry.image_url }),
+  };
+}
+
+export function buildTeamMemberMetadata(member: TeamMember, path: string, fallbackDescription?: string): Metadata {
+  const title = resolveSeoTitle({
+    seoTitle: member.seo_title,
+    title: `${member.name}${member.designation ? ` | ${member.designation}` : ""}`,
+  });
+  const description = resolveSeoDescription({
+    seoDescription: member.seo_description,
+    excerpt: member.excerpt,
+    body: member.bio,
+    fallback: fallbackDescription ?? `${member.name}${member.designation ? `, ${member.designation}` : ""} at ${SITE_NAME}.`,
+  });
+  const canonical = resolveCanonical(path, member.canonical_url);
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: buildOpenGraph({
+      title,
+      description,
+      canonical,
+      image: member.og_image_url ?? member.photo_url,
+    }),
+    twitter: buildTwitter({ title, description, image: member.og_image_url ?? member.photo_url }),
   };
 }

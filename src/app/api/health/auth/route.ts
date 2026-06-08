@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAdminSessionHealth } from "@/lib/admin-auth";
 import { requireSupabaseEnv } from "@/lib/env";
-import { checkRoleRowExistsByService, getRoleForUser } from "@/lib/supabase/roles";
 
 export async function GET() {
   if (process.env.NODE_ENV === "production") {
@@ -9,52 +8,25 @@ export async function GET() {
   }
 
   const { NEXT_PUBLIC_SUPABASE_URL } = requireSupabaseEnv();
-  const supabase = await createServerSupabaseClient();
-
-  const [{ data: userData, error: userError }, { data: sessionData, error: sessionError }] = await Promise.all([
-    supabase.auth.getUser(),
-    supabase.auth.getSession(),
-  ]);
-
-  const userId = userData.user?.id ?? null;
-
-  let role: string | null = null;
-  let roleError: string | null = null;
-  let roleErrorCode: string | null = null;
-  let roleRowExistsByService: boolean | null = null;
-  let roleLookupSource: "service_role" | "session_rls" | null = null;
-  let serviceKeyPresent = false;
-
-  if (userId) {
-    const roleLookup = await getRoleForUser(userId);
-    role = roleLookup.role;
-    roleError = roleLookup.error;
-    roleErrorCode = roleLookup.errorCode;
-    roleLookupSource = roleLookup.source;
-    serviceKeyPresent = roleLookup.serviceKeyPresent;
-    roleRowExistsByService = await checkRoleRowExistsByService(userId);
-  }
+  const session = await getAdminSessionHealth();
 
   return NextResponse.json({
     ok: true,
     supabaseUrl: NEXT_PUBLIC_SUPABASE_URL,
     auth: {
-      hasUser: !!userData.user,
-      userId,
-      email: userData.user?.email ?? null,
-      hasSession: !!sessionData.session,
-      userError: userError?.message ?? null,
-      sessionError: sessionError?.message ?? null,
-    },
-    role: {
-      value: role,
-      isAdmin: role === "admin",
-      error: roleError,
-      errorCode: roleErrorCode,
-      rowExistsByService: roleRowExistsByService,
-      likelyPolicyFiltered: role === null && roleError === null && roleRowExistsByService === true,
-      lookupSource: roleLookupSource,
-      serviceKeyPresent,
+      model: "supabase-auth",
+      hasUser: session.hasUser,
+      userId: session.userId,
+      hasSession: session.hasSession,
+      email: session.email,
+      role: session.role,
+      isAdmin: session.role === "admin",
+      isEditor: session.role === "editor",
+      roleError: session.roleError,
+      roleErrorCode: session.roleErrorCode,
+      rowExistsByService: session.roleRowExistsByService,
+      lookupSource: session.roleLookupSource,
+      serviceKeyPresent: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
     },
   });
 }

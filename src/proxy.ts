@@ -13,18 +13,19 @@ const redirectMap: Record<string, string> = {
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = requireSupabaseEnv();
-  let res = NextResponse.next({ request: { headers: req.headers } });
+  const res = NextResponse.next({ request: { headers: req.headers } });
 
+  const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = requireSupabaseEnv();
   const supabase = createServerClient(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {
         return req.cookies.getAll();
       },
       setAll(items) {
-        items.forEach(({ name, value }) => req.cookies.set(name, value));
-        res = NextResponse.next({ request: { headers: req.headers } });
-        items.forEach(({ name, value, options }) => res.cookies.set(name, value, options));
+        items.forEach(({ name, value, options }) => {
+          req.cookies.set(name, value);
+          res.cookies.set(name, value, options);
+        });
       },
     },
   });
@@ -32,9 +33,7 @@ export async function proxy(req: NextRequest) {
   await supabase.auth.getUser();
 
   if (redirectMap[pathname]) {
-    const redirectRes = NextResponse.redirect(new URL(redirectMap[pathname], req.url), 308);
-    res.cookies.getAll().forEach((cookie) => redirectRes.cookies.set(cookie));
-    return redirectRes;
+    return NextResponse.redirect(new URL(redirectMap[pathname], req.url), 308);
   }
 
   return res;
