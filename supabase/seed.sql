@@ -73,6 +73,49 @@ select id, 'rich_text', jsonb_build_object(
   'content', 'Due to our ambitious growth plans and rapidly growing practice in different functional areas, we are in constant need of energetic and enthusiastic professionals who are keen on learning and taking up challenging roles within the organization.\n\nWe are always on the look-out for bright and passionate professionals with diverse educational qualifications and experience, who can think outside the box, are enthusiastic about learning, and love to accept challenges.'
 ), 1 from pages where slug='careers';
 
+insert into sections (page_id, section_type, payload, order_index)
+select id, 'hero', jsonb_build_object(
+  'kicker', 'Career',
+  'headline', 'Philosophy',
+  'subtext', 'Built on quality, ethics, and integrity.'
+), 0
+from pages
+where slug='careers/philosophy'
+and not exists (
+  select 1 from sections
+  where sections.page_id = pages.id
+    and sections.section_type = 'hero'
+    and sections.order_index = 0
+);
+
+insert into sections (page_id, section_type, payload, order_index)
+select id, 'rich_text', jsonb_build_object(
+  'title', 'Our People',
+  'content', 'We provide an extensive range of services and believe difficult problems are solved together. Our success depends upon the quality of our people.'
+), 1
+from pages
+where slug='careers/philosophy'
+and not exists (
+  select 1 from sections
+  where sections.page_id = pages.id
+    and sections.section_type = 'rich_text'
+    and sections.order_index = 1
+);
+
+insert into sections (page_id, section_type, payload, order_index)
+select id, 'rich_text', jsonb_build_object(
+  'title', 'Our Support',
+  'content', 'We balance experience and youth, constantly training teams to deliver excellent outcomes in challenging situations.'
+), 2
+from pages
+where slug='careers/philosophy'
+and not exists (
+  select 1 from sections
+  where sections.page_id = pages.id
+    and sections.section_type = 'rich_text'
+    and sections.order_index = 2
+);
+
 insert into practice_areas (slug, title, summary, excerpt, body, status, published_at)
 values
 ('tax-regulatory-services', 'Tax & Regulatory Services', 'Comprehensive tax, regulatory and compliance support.', 'Strategic and compliance-focused tax advisory.', 'End-to-end support for direct, indirect and regulatory compliance with practical implementation support.', 'published', now()),

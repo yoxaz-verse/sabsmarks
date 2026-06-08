@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, BriefcaseBusiness, Globe, MapPin, MoveLeft } from "lucide-react";
+import { ArrowUpRight, Globe, MapPin, MoveLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";

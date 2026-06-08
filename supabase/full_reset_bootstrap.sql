@@ -383,10 +383,24 @@ from pages where slug='careers';
 
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'hero', jsonb_build_object('kicker','Career','headline','Philosophy','subtext','Built on quality, ethics, and integrity.'), 0, true
-from pages where slug='careers/philosophy';
+from pages
+where slug='careers/philosophy'
+and not exists (
+  select 1 from sections
+  where sections.page_id = pages.id
+    and sections.section_type = 'hero'
+    and sections.order_index = 0
+);
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'rich_text', jsonb_build_object('title','Our People','content','We believe complex challenges are best solved together.'), 1, true
-from pages where slug='careers/philosophy';
+from pages
+where slug='careers/philosophy'
+and not exists (
+  select 1 from sections
+  where sections.page_id = pages.id
+    and sections.section_type = 'rich_text'
+    and sections.order_index = 1
+);
 
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'hero', jsonb_build_object('kicker','Career','headline','Alumni','subtext','Stay connected with the Sabs Marks JVS PVT LTD alumni network.'), 0, true

@@ -9,7 +9,7 @@ export default async function PhilosophyPage() {
         <div className="flex flex-col min-h-screen bg-surface">
           <PageBanner title="Philosophy" />
           <section className="mx-auto max-w-7xl px-6 py-16 text-muted">
-            <p>Career philosophy content is being migrated to CMS.</p>
+            <p>Content unavailable.</p>
           </section>
         </div>
       }

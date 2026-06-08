@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { PageSectionsEditor } from "@/components/admin/page-sections-editor";
 
-export default function AdminModuleDisabled() {
-  redirect("/admin");
+export default function AdminPagesPage() {
+  return <PageSectionsEditor />;
 }

@@ -6,7 +6,7 @@ type FeaturedCard = {
   label: string;
   href: string;
   description: string;
-  table: "team_members" | "locations" | "publications" | "careers";
+  table: "team_members" | "locations" | "publications" | "careers" | "pages";
 };
 
 const featuredCards: FeaturedCard[] = [
@@ -33,6 +33,12 @@ const featuredCards: FeaturedCard[] = [
     href: "/admin/careers",
     description: "Join Us page content and active openings.",
     table: "careers",
+  },
+  {
+    label: "Pages",
+    href: "/admin/pages",
+    description: "Structured CMS pages and section-driven content.",
+    table: "pages",
   },
 ];
 

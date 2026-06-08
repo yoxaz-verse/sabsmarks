@@ -37,6 +37,11 @@ export const adminNavigation: AdminNavItem[] = [
     featured: true,
   },
   {
+    label: "Pages",
+    href: "/admin/pages",
+    description: "Manage CMS pages and their sections.",
+  },
+  {
     label: "Insight Categories",
     href: "/admin/insight-categories",
     description: "Organize insights into categories.",

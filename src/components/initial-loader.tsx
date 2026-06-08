@@ -6,14 +6,17 @@ import { Logo } from "@/components/layout/logo";
 const LOADER_SESSION_KEY = "smjvs-initial-loader-complete";
 
 export function InitialLoader() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => {
+    if (typeof window !== "undefined" && window.sessionStorage.getItem(LOADER_SESSION_KEY) === "1") {
+      return false;
+    }
+
+    return true;
+  });
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.sessionStorage.getItem(LOADER_SESSION_KEY) === "1") {
-      setIsLoading(false);
-      return;
-    }
+    if (!isLoading) return;
 
     const timer1 = setTimeout(() => {
       setIsFadingOut(true);
@@ -30,7 +33,7 @@ export function InitialLoader() {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, []);
+  }, [isLoading]);
 
   if (!isLoading) return null;
 
