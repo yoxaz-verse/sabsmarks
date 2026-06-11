@@ -81,9 +81,22 @@ export function CanvasParticles() {
     const handleMouseMove = (e: MouseEvent) => {
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
-      mouse.active = true;
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Active only if mouse is within canvas boundaries
+      if (
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom
+      ) {
+        mouse.x = x;
+        mouse.y = y;
+        mouse.active = true;
+      } else {
+        mouse.active = false;
+      }
     };
 
     const handleMouseLeave = () => {
@@ -92,11 +105,8 @@ export function CanvasParticles() {
       mouse.active = false;
     };
 
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("mousemove", handleMouseMove);
-      container.addEventListener("mouseleave", handleMouseLeave);
-    }
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseleave", handleMouseLeave);
 
     // Animation Loop
     const draw = () => {
@@ -208,10 +218,8 @@ export function CanvasParticles() {
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-      if (container) {
-        container.removeEventListener("mousemove", handleMouseMove);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-      }
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseleave", handleMouseLeave);
       observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
@@ -220,7 +228,7 @@ export function CanvasParticles() {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-10 w-full h-full pointer-events-auto overflow-hidden opacity-80 dark:opacity-60"
+      className="absolute inset-0 z-10 w-full h-full pointer-events-none overflow-hidden opacity-80 dark:opacity-60"
     >
       <canvas
         ref={canvasRef}

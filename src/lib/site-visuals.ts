@@ -1,6 +1,6 @@
 export const SITE_VISUALS = {
   home: {
-    advisory: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=1400&q=80",
+    advisory: "/featured-advisory.jpg",
     audit: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1400&q=80",
     industry: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1400&q=80",
   },

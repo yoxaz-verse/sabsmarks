@@ -1,4 +1,4 @@
-export type AdminFieldType = "text" | "textarea" | "select" | "number" | "datetime" | "checkbox";
+export type AdminFieldType = "text" | "textarea" | "select" | "number" | "datetime" | "checkbox" | "branches";
 export type AdminFieldWidth = "half" | "full";
 
 export type AdminFieldConfig = {

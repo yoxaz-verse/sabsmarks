@@ -113,8 +113,19 @@ export interface Location {
   email: string | null;
   map_url: string | null;
   contact_person: string | null;
+  branches: LocationBranch[];
   featured: boolean;
   status: PublishStatus;
+}
+
+export interface LocationBranch {
+  id: string;
+  name: string;
+  address: string | null;
+  phone: string | null;
+  email: string | null;
+  contact_person: string | null;
+  map_url: string | null;
 }
 
 export interface MenuItem {

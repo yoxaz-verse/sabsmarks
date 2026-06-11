@@ -106,6 +106,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
       { key: "email", label: "Email", type: "text", section: "Contact" },
       { key: "map_url", label: "Map URL", type: "text", section: "Contact" },
       { key: "address", label: "Address", type: "textarea", required: true, section: "Address", width: "full" },
+      { key: "branches", label: "Sub Branches", type: "branches", section: "Sub Branches", width: "full" },
       { key: "featured", label: "Featured", type: "checkbox", section: "Publishing", width: "full" },
       { key: "status", label: "Status", type: "select", options: statusOptions, required: true, section: "Publishing" },
     ],

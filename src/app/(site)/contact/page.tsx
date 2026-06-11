@@ -4,7 +4,7 @@ import { ArrowRight, AtSign, Building2, ExternalLink, Link2, Mail, MapPin, Phone
 import { PageBanner } from "@/components/layout/page-banner";
 import { getLocations, getSiteSettings } from "@/lib/content/service";
 import { getSiteContact } from "@/lib/site-contact";
-import type { Location } from "@/types/cms";
+import type { Location, LocationBranch } from "@/types/cms";
 import Image from "next/image";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 
@@ -101,52 +101,108 @@ function SocialLink({
   );
 }
 
-function OfficeCard({ location }: { location: Location }) {
+function BranchSummary({ branch }: { branch: LocationBranch }) {
   return (
-    <article className="group rounded-[1.8rem] border border-white/10 bg-white/6 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm transition hover:border-white/18 hover:bg-white/8">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100/70">Sub Branch</p>
+          <h4 className="mt-1 text-sm font-bold text-white">{branch.name}</h4>
+        </div>
+        {branch.map_url ? (
+          <a href={branch.map_url} target="_blank" rel="noreferrer" className="shrink-0 rounded-lg border border-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-blue-100 transition hover:bg-white/10">
+            Map
+          </a>
+        ) : null}
+      </div>
+      {branch.address ? <p className="mt-3 line-clamp-2 text-xs leading-6 text-blue-50/70">{branch.address}</p> : null}
+      <div className="mt-3 space-y-2 text-xs text-blue-50/82">
+        {branch.phone ? (
+          <a href={`tel:${sanitizePhone(branch.phone)}`} className="flex items-center gap-2 transition hover:text-white">
+            <Phone className="h-3.5 w-3.5" />
+            <span className="font-medium">{branch.phone}</span>
+          </a>
+        ) : null}
+        {branch.email ? (
+          <a href={`mailto:${branch.email}`} className="flex min-w-0 items-center gap-2 transition hover:text-white">
+            <Mail className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate font-medium">{branch.email}</span>
+          </a>
+        ) : null}
+        {branch.contact_person ? (
+          <p className="flex items-center gap-2">
+            <Building2 className="h-3.5 w-3.5" />
+            <span className="font-medium">{branch.contact_person}</span>
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function OfficeCard({ location }: { location: Location }) {
+  const branches = location.branches ?? [];
+
+  return (
+    <article className="group rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-[0_20px_50px_rgba(59,130,246,0.12)]">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.24em] text-blue-100/85">{location.city}</p>
-          <h3 className="mt-3 text-xl font-semibold text-white">{location.office_name}</h3>
+          <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-accent">{location.city}</p>
+          <h3 className="mt-3 text-xl font-bold text-white transition-colors duration-300 group-hover:text-white/90">{location.office_name}</h3>
         </div>
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-blue-50">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-accent transition-all duration-500 group-hover:scale-105 group-hover:bg-accent group-hover:text-white group-hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]">
           <Building2 className="h-5 w-5" />
         </div>
       </div>
 
-      <p className="mt-4 line-clamp-3 text-sm leading-7 text-blue-50/82">{location.address}</p>
+      <p className="mt-4 line-clamp-3 text-sm leading-7 text-blue-50/75 min-h-[56px]">{location.address}</p>
 
-      <div className="mt-5 space-y-2 text-sm text-blue-50/90">
+      <div className="my-5 border-t border-dashed border-white/10" />
+
+      <div className="space-y-3 text-xs text-blue-50/85">
         {location.phone ? (
-          <a href={`tel:${sanitizePhone(location.phone)}`} className="flex items-center gap-2 transition hover:text-white">
-            <Phone className="h-4 w-4" />
-            <span>{location.phone}</span>
+          <a href={`tel:${sanitizePhone(location.phone)}`} className="flex items-center gap-3 transition-colors duration-300 hover:text-white group/link">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-blue-100 group-hover/link:border-accent/30 group-hover/link:bg-accent/10 group-hover/link:text-accent transition-all duration-300">
+              <Phone className="h-3.5 w-3.5" />
+            </div>
+            <span className="font-medium">{location.phone}</span>
           </a>
         ) : null}
         {location.email ? (
-          <a href={`mailto:${location.email}`} className="flex items-center gap-2 transition hover:text-white">
-            <Mail className="h-4 w-4" />
-            <span className="truncate">{location.email}</span>
+          <a href={`mailto:${location.email}`} className="flex items-center gap-3 transition-colors duration-300 hover:text-white group/link">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-blue-100 group-hover/link:border-accent/30 group-hover/link:bg-accent/10 group-hover/link:text-accent transition-all duration-300">
+              <Mail className="h-3.5 w-3.5" />
+            </div>
+            <span className="truncate font-medium">{location.email}</span>
           </a>
         ) : null}
       </div>
 
+      {branches.length > 0 ? (
+        <div className="mt-5 space-y-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100/70">Also at this location</p>
+          {branches.map((branch) => (
+            <BranchSummary key={branch.id} branch={branch} />
+          ))}
+        </div>
+      ) : null}
+
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <Link
           href={`/contact/${location.slug}`}
-          className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[var(--accent-secondary)] transition hover:bg-blue-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white shadow-md transition-all duration-300 hover:bg-accent/90 hover:scale-[1.02] hover:shadow-lg"
         >
           View office
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-3.5 w-3.5" />
         </Link>
         {location.map_url ? (
           <a
             href={location.map_url}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-white/14 px-4 py-2 text-sm font-medium text-blue-50 transition hover:border-white/24 hover:bg-white/8"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] text-blue-100 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white"
           >
-            <MapPin className="h-4 w-4" />
+            <MapPin className="h-3.5 w-3.5" />
             Open map
           </a>
         ) : null}
@@ -298,11 +354,11 @@ export default async function ContactPage() {
           </div>
 
           <div className="mt-6 grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
-            <div className="rounded-[2rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_92%,transparent)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] md:p-8">
+            <div className="rounded-[2rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-md md:p-8">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Head Office Base</p>
-              <div className="mt-5 flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] text-accent">
-                  <MapPin className="h-5 w-5" />
+              <div className="mt-6 flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent shadow-sm">
+                  <MapPin className="h-5 w-5 animate-pulse" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-ink">{contact.headOfficeLabel}</h3>
@@ -313,23 +369,27 @@ export default async function ContactPage() {
               <div className="mt-8 grid gap-3">
                 <a
                   href={`tel:${sanitizePhone(contact.primaryPhone)}`}
-                  className="flex items-center justify-between gap-4 rounded-[1.35rem] border border-[var(--glass-border)] bg-white/70 px-4 py-4 transition hover:border-accent/30 hover:bg-white dark:bg-white/4"
+                  className="flex items-center justify-between gap-4 rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_50%,transparent)] p-4 transition-all duration-300 hover:border-accent/40 hover:bg-[color-mix(in_srgb,var(--surface)_80%,transparent)] hover:-translate-y-0.5"
                 >
                   <div className="flex items-center gap-3">
-                    <Phone className="h-4 w-4 text-accent" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                      <Phone className="h-4 w-4" />
+                    </div>
                     <span className="text-sm font-medium text-muted">Call head office</span>
                   </div>
-                  <span className="text-base font-semibold text-ink">{contact.primaryPhone}</span>
+                  <span className="text-base font-bold text-ink">{contact.primaryPhone}</span>
                 </a>
                 <a
                   href={`mailto:${contact.primaryEmail}`}
-                  className="flex items-center justify-between gap-4 rounded-[1.35rem] border border-[var(--glass-border)] bg-white/70 px-4 py-4 transition hover:border-accent/30 hover:bg-white dark:bg-white/4"
+                  className="flex items-center justify-between gap-4 rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_50%,transparent)] p-4 transition-all duration-300 hover:border-accent/40 hover:bg-[color-mix(in_srgb,var(--surface)_80%,transparent)] hover:-translate-y-0.5"
                 >
                   <div className="flex items-center gap-3">
-                    <Mail className="h-4 w-4 text-accent" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                      <Mail className="h-4 w-4" />
+                    </div>
                     <span className="text-sm font-medium text-muted">Email head office</span>
                   </div>
-                  <span className="truncate text-base font-semibold text-ink">{contact.primaryEmail}</span>
+                  <span className="truncate text-base font-bold text-ink">{contact.primaryEmail}</span>
                 </a>
               </div>
             </div>

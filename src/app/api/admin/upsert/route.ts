@@ -38,6 +38,15 @@ const tablesWithStatus = new Set([
 ]);
 
 const statusSchema = z.enum(["draft", "review", "published"]);
+const locationBranchSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  address: z.string().optional().nullable(),
+  phone: z.string().optional().nullable(),
+  email: z.string().optional().nullable(),
+  map_url: z.string().optional().nullable(),
+  contact_person: z.string().optional().nullable(),
+});
 const contentEntitySchema = z.object({
   id: z.string().uuid().optional(),
   slug: z.string().min(1),
@@ -90,6 +99,31 @@ function nullableString(value: unknown) {
   return trimmed.length > 0 ? trimmed : null;
 }
 
+function normalizeLocationBranches(value: unknown) {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter(isRecord)
+    .map((branch) => ({
+      id: typeof branch.id === "string" && branch.id.trim().length > 0 ? branch.id.trim() : crypto.randomUUID(),
+      name: typeof branch.name === "string" ? branch.name.trim() : "",
+      address: nullableString(branch.address),
+      phone: nullableString(branch.phone),
+      email: nullableString(branch.email),
+      map_url: nullableString(branch.map_url),
+      contact_person: nullableString(branch.contact_person),
+    }))
+    .filter((branch) =>
+      [branch.name, branch.address, branch.phone, branch.email, branch.map_url, branch.contact_person].some(
+        (field) => typeof field === "string" && field.trim().length > 0
+      )
+    )
+    .map((branch) => ({
+      ...branch,
+      name: branch.name || "Branch Office",
+    }));
+}
+
 const tableSchemas: Record<string, z.ZodTypeAny> = {
   pages: z.object({
     id: z.string().uuid().optional(),
@@ -126,6 +160,7 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     email: z.string().optional().nullable(),
     map_url: z.string().optional().nullable(),
     contact_person: z.string().optional().nullable(),
+    branches: z.array(locationBranchSchema).default([]),
     featured: z.boolean().optional(),
     status: statusSchema,
   }),
@@ -211,6 +246,13 @@ export async function POST(req: Request) {
   if (typeof normalized.excerpt === "string" && normalized.excerpt.trim() === "") normalized.excerpt = null;
   if (typeof normalized.summary === "string" && normalized.summary.trim() === "") normalized.summary = null;
   if (typeof normalized.body === "string" && normalized.body.trim() === "") normalized.body = null;
+  if (table === "locations") {
+    normalized.phone = nullableString(normalized.phone);
+    normalized.email = nullableString(normalized.email);
+    normalized.map_url = nullableString(normalized.map_url);
+    normalized.contact_person = nullableString(normalized.contact_person);
+    normalized.branches = normalizeLocationBranches(normalized.branches);
+  }
   if (table === "site_settings") {
     normalized.logo_url = nullableString(normalized.logo_url);
     normalized.primary_email = nullableString(normalized.primary_email);

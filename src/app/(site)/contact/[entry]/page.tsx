@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ExternalLink, MapPin } from "lucide-react";
+import { Building2, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
@@ -7,6 +7,58 @@ import { getLocationBySlug } from "@/lib/content/service";
 import { getEmbeddableMapUrl, getPublicMapUrl } from "@/lib/map-utils";
 import { buildPageMetadata } from "@/lib/seo";
 import { buildBreadcrumbSchema } from "@/lib/seo-schema";
+import type { LocationBranch } from "@/types/cms";
+
+function sanitizePhone(phone: string) {
+  return phone.replace(/\s+/g, "");
+}
+
+function BranchDetailCard({ branch }: { branch: LocationBranch }) {
+  const publicMapUrl = getPublicMapUrl(branch.map_url);
+
+  return (
+    <article className="rounded-3xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_74%,transparent)] p-5">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Sub Branch</p>
+          <h3 className="mt-2 text-xl font-semibold tracking-tight text-ink">{branch.name}</h3>
+        </div>
+        {publicMapUrl ? (
+          <a
+            href={publicMapUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--glass-border)] px-4 py-2 text-sm font-semibold text-accent transition hover:border-accent/30 hover:bg-white/70"
+          >
+            <MapPin className="h-4 w-4" />
+            Map
+          </a>
+        ) : null}
+      </div>
+      {branch.address ? <p className="mt-4 whitespace-pre-wrap text-sm leading-7 text-muted">{branch.address}</p> : null}
+      <div className="mt-5 grid gap-3 text-sm text-muted md:grid-cols-2">
+        {branch.phone ? (
+          <a href={`tel:${sanitizePhone(branch.phone)}`} className="inline-flex items-center gap-2 transition hover:text-accent">
+            <Phone className="h-4 w-4" />
+            {branch.phone}
+          </a>
+        ) : null}
+        {branch.email ? (
+          <a href={`mailto:${branch.email}`} className="inline-flex min-w-0 items-center gap-2 transition hover:text-accent">
+            <Mail className="h-4 w-4 shrink-0" />
+            <span className="truncate">{branch.email}</span>
+          </a>
+        ) : null}
+        {branch.contact_person ? (
+          <p className="inline-flex items-center gap-2 md:col-span-2">
+            <Building2 className="h-4 w-4" />
+            {branch.contact_person}
+          </p>
+        ) : null}
+      </div>
+    </article>
+  );
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ entry: string }> }): Promise<Metadata> {
   const { entry } = await params;
@@ -25,6 +77,7 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
   if (!location) notFound();
   const publicMapUrl = getPublicMapUrl(location.map_url);
   const embeddedMapUrl = getEmbeddableMapUrl(location.map_url);
+  const branches = location.branches ?? [];
 
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: "Home", url: "/" },
@@ -44,6 +97,17 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
           {location.phone ? <p className="mt-4 text-muted">T: {location.phone}</p> : null}
           {location.email ? <p className="mt-1 text-muted">E: {location.email}</p> : null}
           {location.contact_person ? <p className="mt-3 text-sm text-muted">Contact Person: {location.contact_person}</p> : null}
+
+          {branches.length > 0 ? (
+            <section className="mt-8">
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Sub Branches</p>
+              <div className="mt-4 grid gap-4">
+                {branches.map((branch) => (
+                  <BranchDetailCard key={branch.id} branch={branch} />
+                ))}
+              </div>
+            </section>
+          ) : null}
         </div>
 
         {publicMapUrl ? (

@@ -5,7 +5,11 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { getEmbeddableMapUrl, getPublicMapUrl } from "@/lib/map-utils";
-import type { Location } from "@/types/cms";
+import type { Location, LocationBranch } from "@/types/cms";
+
+function sanitizePhone(phone: string) {
+  return phone.replace(/\s+/g, "");
+}
 
 function ContactRow({
   href,
@@ -39,6 +43,47 @@ function ContactRow({
   );
 }
 
+function BranchCard({ branch }: { branch: LocationBranch }) {
+  const publicMapUrl = getPublicMapUrl(branch.map_url);
+
+  return (
+    <article className="rounded-[1.35rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_84%,transparent)] p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-muted">Sub Branch</p>
+          <h4 className="mt-2 text-base font-bold text-ink">{branch.name}</h4>
+        </div>
+        {publicMapUrl ? (
+          <a href={publicMapUrl} target="_blank" rel="noreferrer" className="rounded-full border border-[var(--glass-border)] px-3 py-1.5 text-xs font-semibold text-accent">
+            Map
+          </a>
+        ) : null}
+      </div>
+      {branch.address ? <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted">{branch.address}</p> : null}
+      <div className="mt-4 grid gap-2 text-sm text-muted">
+        {branch.phone ? (
+          <a href={`tel:${sanitizePhone(branch.phone)}`} className="inline-flex items-center gap-2 transition hover:text-accent">
+            <Phone className="h-4 w-4" />
+            {branch.phone}
+          </a>
+        ) : null}
+        {branch.email ? (
+          <a href={`mailto:${branch.email}`} className="inline-flex min-w-0 items-center gap-2 transition hover:text-accent">
+            <Mail className="h-4 w-4 shrink-0" />
+            <span className="truncate">{branch.email}</span>
+          </a>
+        ) : null}
+        {branch.contact_person ? (
+          <p className="inline-flex items-center gap-2">
+            <Building2 className="h-4 w-4" />
+            {branch.contact_person}
+          </p>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
 export function LocationsBrowser({ locations }: { locations: Location[] }) {
   const [activeSlug, setActiveSlug] = useState(locations[0]?.slug ?? null);
   const activeLocation = locations.find((location) => location.slug === activeSlug) ?? locations[0] ?? null;
@@ -48,6 +93,7 @@ export function LocationsBrowser({ locations }: { locations: Location[] }) {
   const publicMapUrl = getPublicMapUrl(activeLocation.map_url);
   const embeddedMapUrl = getEmbeddableMapUrl(activeLocation.map_url);
   const hasMap = Boolean(publicMapUrl || embeddedMapUrl);
+  const branches = activeLocation.branches ?? [];
 
   return (
     <div className="mt-12 grid gap-6 xl:grid-cols-[0.42fr_0.58fr]">
@@ -122,6 +168,17 @@ export function LocationsBrowser({ locations }: { locations: Location[] }) {
                 />
               ) : null}
             </div>
+
+            {branches.length > 0 ? (
+              <div className="mt-7">
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Sub Branches</p>
+                <div className="mt-3 grid gap-3">
+                  {branches.map((branch) => (
+                    <BranchCard key={branch.id} branch={branch} />
+                  ))}
+                </div>
+              </div>
+            ) : null}
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link

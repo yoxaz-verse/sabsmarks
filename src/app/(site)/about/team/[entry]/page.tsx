@@ -29,7 +29,7 @@ function getOptimizedPhotoUrl(url: string | null) {
   if (url.includes("cloudinary.com")) {
     if (url.includes("/image/upload/")) {
       // Replace the extension with .png to support transparency
-      let pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
+      const pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
       // Add AI background removal to accurately cut out the subject and leave the background transparent
       return pngUrl.replace("/image/upload/", "/image/upload/e_background_removal/");
     }
@@ -69,7 +69,7 @@ export default async function TeamMemberDetail({ params }: { params: Promise<{ e
       <div className="mt-10 grid gap-8 lg:grid-cols-12 lg:items-start">
         {/* Left Column: Photo and Meta Info */}
         <div className="lg:col-span-4 flex flex-col gap-4">
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-[var(--glass-border)] bg-[#707070] dark:bg-[#52525b] shadow-lg shadow-accent/5">
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-[var(--glass-border)] bg-gradient-to-b from-neutral-300 via-neutral-400 to-neutral-500 dark:from-neutral-700 dark:via-neutral-800 dark:to-neutral-900 shadow-lg shadow-accent/5">
             <Image
               src={getOptimizedPhotoUrl(member.photo_url) || FALLBACK_TEAM_PHOTO}
               alt={member.name}

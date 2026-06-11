@@ -1,22 +1,31 @@
 import { PageBanner } from "@/components/layout/page-banner";
 import { InteriorIntroSection } from "@/components/sections/interior-intro-section";
 import { getTeamMembers } from "@/lib/content/service";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-const FALLBACK_TEAM_PHOTO = "/globe.svg";
 
 function getOptimizedPhotoUrl(url: string | null) {
   if (!url) return null;
   if (url.includes("cloudinary.com")) {
     if (url.includes("/image/upload/")) {
       // Replace the extension with .png to support transparency
-      let pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
+      const pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
       // Add AI background removal to accurately cut out the subject and leave the background transparent
       return pngUrl.replace("/image/upload/", "/image/upload/e_background_removal/");
     }
   }
   return url;
+}
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
 }
 
 export default async function TeamPage() {
@@ -32,90 +41,88 @@ export default async function TeamPage() {
         className="border-b-0"
       />
 
-      <section className="site-section">
-        <div className="site-container pb-16 md:pb-20">
-          <div className="mt-12 md:mt-16">
-            <div className="mb-8 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.28em] text-muted md:mb-10">
-              <span className="h-px flex-1 bg-[color:var(--section-border)]" />
-              <span>Leadership Profiles</span>
-              <span className="h-px flex-1 bg-[color:var(--section-border)]" />
-            </div>
+      <section className="relative overflow-hidden bg-bg py-14 text-ink sm:py-16 md:py-20">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--section-border)] to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent)_4%,transparent),transparent_24rem)]" />
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {team.map((member) => (
+        <div className="site-container relative">
+          <div className="mb-8 flex flex-col gap-3 md:mb-10 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-accent/80">Leadership Profiles</p>
+              <h2 className="mt-3 max-w-2xl text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+                Partners and senior professionals
+              </h2>
+            </div>
+            <p className="max-w-xl text-sm leading-7 text-muted md:text-right">
+              Meet the people guiding client engagements across assurance, tax, advisory, compliance, and governance.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {team.map((member) => {
+              const photoUrl = getOptimizedPhotoUrl(member.photo_url);
+
+              return (
                 <article
                   key={member.id}
-                  className="team-profile-card interactive-card group relative flex flex-col h-full overflow-hidden rounded-[1.5rem] bg-white dark:bg-surface border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] transition-all duration-300"
+                  className="team-profile-card group relative flex min-h-[23rem] flex-col overflow-hidden rounded-2xl border border-[var(--section-border)] bg-white shadow-[0_16px_42px_rgba(15,23,42,0.08)] dark:bg-surface dark:shadow-[0_20px_58px_rgba(2,6,23,0.34)]"
                 >
                   <Link
                     href={`/about/team/${member.slug}`}
                     aria-label={`Open ${member.name} profile`}
-                    className="absolute inset-0 z-10 rounded-[1.5rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    className="absolute inset-0 z-10 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
                   />
 
-                  <div className="relative aspect-square w-full overflow-hidden bg-[#707070] dark:bg-[#52525b]">
-                    <Image
-                      src={getOptimizedPhotoUrl(member.photo_url) || FALLBACK_TEAM_PHOTO}
-                      alt={member.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-103"
-                    />
+                  <div className="relative aspect-[4/3.35] overflow-hidden bg-[linear-gradient(135deg,#d4d4d4,#747474)]">
+                    {photoUrl ? (
+                      <Image
+                        src={photoUrl}
+                        alt={member.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                        className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.035]"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#e2e8f0,#94a3b8)] text-5xl font-semibold text-white">
+                        {getInitials(member.name)}
+                      </div>
+                    )}
+
+                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950/18 to-transparent" />
 
                     {member.linkedin_url ? (
-                      <div className="absolute right-4 top-4 z-20">
+                      <div className="absolute right-3 top-3 z-20">
                         <a
                           href={member.linkedin_url}
                           target="_blank"
                           rel="noreferrer"
                           aria-label={`${member.name} LinkedIn profile`}
-                          className="inline-flex items-center gap-2 rounded-full border border-white/45 bg-white/92 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#0b5c8f] shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 group-hover:border-white/70"
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/55 bg-white/90 text-[#0a66c2] shadow-sm backdrop-blur-sm transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 dark:border-white/20 dark:bg-surface/88 dark:text-accent dark:hover:bg-surface-raised"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                            <rect x="2" y="9" width="4" height="12"></rect>
-                            <circle cx="4" cy="4" r="2"></circle>
-                          </svg>
-                          LinkedIn
+                          <span className="text-[13px] font-black leading-none">in</span>
                         </a>
                       </div>
                     ) : null}
                   </div>
 
-                  <div className="flex flex-col flex-1 p-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-ink transition-colors group-hover:text-accent">{member.name}</h3>
-                        <p className="mt-1.5 text-sm font-semibold text-accent leading-6">{member.designation}</p>
-                      </div>
-                    </div>
+                  <div className="flex flex-1 flex-col px-6 py-6">
+                    <h3 className="text-[1.35rem] font-semibold leading-tight tracking-tight text-ink transition-colors group-hover:text-accent">
+                      {member.name}
+                    </h3>
+                    <p className="mt-2 text-sm font-semibold leading-6 text-accent">{member.designation}</p>
 
-                    {member.bio ? (
-                      <p className="site-prose mt-4 line-clamp-3 text-[14px] leading-relaxed">{member.bio}</p>
-                    ) : (
-                      <p className="mt-4 text-sm leading-relaxed text-muted/80">
-                        Senior leadership profile and advisory focus details will appear here as the team page evolves.
-                      </p>
-                    )}
-
-                    <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span>{member.location ?? "Location unavailable"}</span>
-                      </div>
-                      
-                      <div className="relative z-20 inline-flex items-center text-sm font-semibold text-accent transition-colors hover:text-ink">
-                        <span className="underline decoration-1 underline-offset-4 decoration-accent group-hover:decoration-ink">Read Bio</span>
-                        <span className="ml-1 text-[11px]">↗</span>
+                    <div className="mt-auto pt-7">
+                      <div className="relative z-20 inline-flex items-center gap-1.5 text-sm font-semibold text-ink">
+                        <span className="underline decoration-[color-mix(in_srgb,var(--ink)_35%,transparent)] decoration-1 underline-offset-8 transition group-hover:decoration-accent">
+                          Read Bio
+                        </span>
+                        <ArrowUpRight className="h-4 w-4 text-accent transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                       </div>
                     </div>
                   </div>
                 </article>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>

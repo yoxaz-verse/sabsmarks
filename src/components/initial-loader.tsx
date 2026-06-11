@@ -12,11 +12,13 @@ export function InitialLoader() {
   useEffect(() => {
     if (typeof window !== "undefined" && window.sessionStorage.getItem(LOADER_SESSION_KEY) === "1") {
       setIsLoading(false);
+      document.documentElement.classList.add("loader-complete");
       return;
     }
 
     const timer1 = setTimeout(() => {
       setIsFadingOut(true);
+      document.documentElement.classList.add("loader-complete");
     }, 1200);
 
     const timer2 = setTimeout(() => {

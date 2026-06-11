@@ -8,7 +8,7 @@ export function AdminShell({ children, email, role }: { children: React.ReactNod
   const pathname = usePathname();
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[250px_1fr]">
+    <div className="admin-console grid gap-6 lg:grid-cols-[250px_1fr]">
       <aside className="rounded-2xl border border-stone-200 bg-white p-4">
         <h2 className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-stone-500">CMS Navigation</h2>
         <nav className="grid gap-1">
