@@ -1,11 +1,11 @@
 import type { EntryRecord, PageRecord, TeamMember } from "@/types/cms";
 import type { Metadata } from "next";
 
-export const SITE_NAME = "Sabs Marks JVS PVT LTD";
+export const SITE_NAME = "Sabs Marks JVS & Co.";
 export const SITE_URL = "https://sabsmarks.com";
 export const DEFAULT_OG_IMAGE = "/globe.svg";
 const DEFAULT_DESCRIPTION =
-  "Sabs Marks JVS PVT LTD delivering audit, tax, advisory, and compliance services.";
+  "Sabs Marks JVS & Co. delivering audit, tax, advisory, and compliance services.";
 
 export function buildAbsoluteUrl(pathOrUrl: string) {
   if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;

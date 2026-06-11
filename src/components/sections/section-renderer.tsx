@@ -8,7 +8,7 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
   if (section.section_type === "hero") {
     return (
       <section className="site-card rounded-[2rem] px-8 py-14 text-ink">
-        <div className="section-kicker">{String(payload.kicker ?? "Sabs Marks JVS PVT LTD")}</div>
+        <div className="section-kicker">{String(payload.kicker ?? "Sabs Marks JVS & Co.")}</div>
         <h1 className="mt-6 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">{String(payload.headline ?? "Where knowledge meets execution")}</h1>
         <p className="mt-4 max-w-2xl text-muted">{String(payload.subtext ?? "A multi-disciplinary firm delivering practical and legally sound solutions.")}</p>
       </section>

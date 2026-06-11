@@ -6,6 +6,19 @@ import Link from "next/link";
 
 const FALLBACK_TEAM_PHOTO = "/globe.svg";
 
+function getOptimizedPhotoUrl(url: string | null) {
+  if (!url) return null;
+  if (url.includes("cloudinary.com")) {
+    if (url.includes("/image/upload/")) {
+      // Replace the extension with .png to support transparency
+      let pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
+      // Add make_transparent filter to key out whatever background color is at the edges (typically black/white/grey)
+      return pngUrl.replace("/image/upload/", "/image/upload/e_make_transparent:10/");
+    }
+  }
+  return url;
+}
+
 export default async function TeamPage() {
   const team = await getTeamMembers();
 
@@ -42,7 +55,7 @@ export default async function TeamPage() {
 
                   <div className="relative aspect-square w-full overflow-hidden bg-[#707070] dark:bg-[#52525b]">
                     <Image
-                      src={member.photo_url || FALLBACK_TEAM_PHOTO}
+                      src={getOptimizedPhotoUrl(member.photo_url) || FALLBACK_TEAM_PHOTO}
                       alt={member.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

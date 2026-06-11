@@ -1,4 +1,4 @@
--- Sabs Marks JVS PVT LTD CMS - Full Reset Bootstrap
+-- Sabs Marks JVS & Co. CMS - Full Reset Bootstrap
 -- Run this whole script in Supabase SQL Editor (same project as .env.local)
 -- WARNING: This resets CMS tables/data.
 
@@ -289,12 +289,12 @@ create policy "editor newsletter read" on newsletter_subscribers for select usin
 insert into site_settings (id, brand_name, primary_email, primary_phone, head_office_label, head_office_address, footer_text, social_links, service_locations)
 values (
   '00000000-0000-0000-0000-000000000001',
-  'Sabs Marks JVS PVT LTD',
+  'Sabs Marks JVS & Co.',
   'info@sabsmarksjvs.com',
   '8943115500',
   'H.O',
   'Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala',
-  'Copyright © 2026 Sabs Marks JVS PVT LTD. All rights reserved.',
+  'Copyright © 2026 Sabs Marks JVS & Co. All rights reserved.',
   '{"linkedin":"https://www.linkedin.com/company/sabs-marks-jvs-co/","instagram":"https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ=="}'::jsonb,
   '["Kochi","Angamaly","Thrissur","Bengaluru","Chennai","Tirupati","Gurgaon","Ettumanoor","Kottayam","Chengannur","Hyderabad","Dubai"]'::jsonb
 );
@@ -318,7 +318,7 @@ values
 -- Seed: sections (home)
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'hero', jsonb_build_object(
-  'kicker','Sabs Marks JVS PVT LTD',
+  'kicker','Sabs Marks JVS & Co.',
   'headline','Where knowledge meets experience',
   'subtext','Partner-led assurance, tax, and advisory services for domestic and multinational businesses.'
 ), 0, true from pages where slug='home';
@@ -403,7 +403,7 @@ and not exists (
 );
 
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
-select id, 'hero', jsonb_build_object('kicker','Career','headline','Alumni','subtext','Stay connected with the Sabs Marks JVS PVT LTD alumni network.'), 0, true
+select id, 'hero', jsonb_build_object('kicker','Career','headline','Alumni','subtext','Stay connected with the Sabs Marks JVS & Co. alumni network.'), 0, true
 from pages where slug='careers/alumni';
 insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'contact_form', jsonb_build_object('title','Alumni Connect','content','Name, contact number and email form managed by CMS.'), 1, true
@@ -434,9 +434,9 @@ values
 
 insert into locations (slug, city, office_name, address, phone, email, status)
 values
-('chennai', 'Chennai', 'Sabs Marks JVS PVT LTD Chennai', 'New No. 57, Kochu Bhavan, Ground Floor, McNicholas Road, Chetpet, Chennai 600 031', '+91 44 3500 3458', 'chennai@sabsmarksjvs.com', 'published'),
-('mumbai', 'Mumbai', 'Sabs Marks JVS PVT LTD Mumbai', 'Mistry Bhavan, 3rd Floor, Dinshaw Vachha Road, Churchgate, Mumbai 400020', '+91 22 6623 0600', 'mumbai@sabsmarksjvs.com', 'published'),
-('dubai', 'Dubai', 'Sabs Marks JVS PVT LTD Dubai', 'UAE associate office address placeholder', '+971 00 000 0000', 'dubai@sabsmarksjvs.com', 'published');
+('chennai', 'Chennai', 'Sabs Marks JVS & Co. Chennai', 'New No. 57, Kochu Bhavan, Ground Floor, McNicholas Road, Chetpet, Chennai 600 031', '+91 44 3500 3458', 'chennai@sabsmarksjvs.com', 'published'),
+('mumbai', 'Mumbai', 'Sabs Marks JVS & Co. Mumbai', 'Mistry Bhavan, 3rd Floor, Dinshaw Vachha Road, Churchgate, Mumbai 400020', '+91 22 6623 0600', 'mumbai@sabsmarksjvs.com', 'published'),
+('dubai', 'Dubai', 'Sabs Marks JVS & Co. Dubai', 'UAE associate office address placeholder', '+971 00 000 0000', 'dubai@sabsmarksjvs.com', 'published');
 
 insert into team_members (slug, name, designation, credentials, bio, display_order, featured, status, published_at)
 values

@@ -31,7 +31,7 @@ export default function AdminAuthLayout({ children }: { children: React.ReactNod
                   Secure Admin Access
                 </div>
                 <h1 className="mt-6 max-w-lg text-4xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
-                  Focused access to the Sabs Marks JVS PVT LTD CMS.
+                  Focused access to the Sabs Marks JVS & Co. CMS.
                 </h1>
                 <p className="mt-5 max-w-xl text-base leading-7 text-slate-200/88 md:text-lg">
                   Sign in to manage site content, editorial updates, and team information from a single protected workspace built for the internal operations team.

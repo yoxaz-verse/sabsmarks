@@ -10,7 +10,7 @@ import { SITE_VISUALS } from "@/lib/site-visuals";
 export const metadata: Metadata = buildPageMetadata({
   path: "/about",
   title: "About",
-  description: "Learn about Sabs Marks JVS PVT LTD, our legacy, leadership, and advisory philosophy.",
+  description: "Learn about Sabs Marks JVS & Co., our legacy, leadership, and advisory philosophy.",
 });
 
 export default function AboutPage() {

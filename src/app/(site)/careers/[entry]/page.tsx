@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ entry: st
   const { entry: slug } = await params;
   const entry = await getEntry("careers", slug);
   if (!entry) return { robots: { index: false, follow: false } };
-  return buildEntryMetadata(entry, `/careers/${entry.slug}`, "Career opportunities and insights at Sabs Marks JVS PVT LTD.");
+  return buildEntryMetadata(entry, `/careers/${entry.slug}`, "Career opportunities and insights at Sabs Marks JVS & Co.");
 }
 
 export default async function CareerDetail({ params }: { params: Promise<{ entry: string }> }) {

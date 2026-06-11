@@ -11,14 +11,14 @@ insert into site_settings (
 )
 values (
   '00000000-0000-0000-0000-000000000001',
-  'Sabs Marks JVS PVT LTD',
+  'Sabs Marks JVS & Co.',
   'info@sabsmarksjvs.com',
   '8943115500',
   'H.O',
   'Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala',
   '{"linkedin":"https://www.linkedin.com/company/sabs-marks-jvs-co/","instagram":"https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ=="}'::jsonb,
   '["Kochi","Angamaly","Thrissur","Bengaluru","Chennai","Tirupati","Gurgaon","Ettumanoor","Kottayam","Chengannur","Hyderabad","Dubai"]'::jsonb,
-  'Sabs Marks JVS PVT LTD. All rights reserved.'
+  'Sabs Marks JVS & Co. All rights reserved.'
 )
 on conflict (id) do update set
   brand_name = excluded.brand_name,
@@ -48,7 +48,7 @@ on conflict (slug) do update set title=excluded.title;
 
 insert into sections (page_id, section_type, payload, order_index)
 select id, 'hero', jsonb_build_object(
-  'kicker', 'Sabs Marks JVS PVT LTD',
+  'kicker', 'Sabs Marks JVS & Co.',
   'headline', 'Where knowledge meets experience',
   'subtext', 'Partner-led assurance, tax, and advisory services for domestic and multinational businesses.'
 ), 0 from pages where slug='home';
@@ -136,8 +136,8 @@ on conflict (slug) do update set title=excluded.title;
 
 insert into locations (slug, city, office_name, address, phone, email, status)
 values
-('chennai', 'Chennai', 'Sabs Marks JVS PVT LTD Chennai', 'New No. 57, Kochu Bhavan, Ground Floor, McNicholas Road, Chetpet, Chennai 600 031', '+91 44 3500 3458', 'chennai@sabsmarksjvs.com', 'published'),
-('mumbai', 'Mumbai', 'Sabs Marks JVS PVT LTD Mumbai', 'Business district office address placeholder for migration', '+91 22 0000 0000', 'mumbai@sabsmarksjvs.com', 'published')
+('chennai', 'Chennai', 'Sabs Marks JVS & Co. Chennai', 'New No. 57, Kochu Bhavan, Ground Floor, McNicholas Road, Chetpet, Chennai 600 031', '+91 44 3500 3458', 'chennai@sabsmarksjvs.com', 'published'),
+('mumbai', 'Mumbai', 'Sabs Marks JVS & Co. Mumbai', 'Business district office address placeholder for migration', '+91 22 0000 0000', 'mumbai@sabsmarksjvs.com', 'published')
 on conflict (slug) do update set city=excluded.city;
 
 insert into team_members (slug, name, designation, credentials, bio, display_order, featured, status, published_at)

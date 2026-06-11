@@ -39,7 +39,7 @@ export default function Home() {
               </div>
 
               <h1 className="mt-8 max-w-4xl text-5xl font-extrabold tracking-tighter text-ink dark:text-white md:text-6xl lg:text-[5.15rem] lg:leading-[1.02]">
-                Expert financial & business guidance.
+                Expert financial & <span className="text-gradient">business guidance.</span>
               </h1>
 
               <p className="mt-8 max-w-2xl border-l-2 border-black/8 pl-5 text-lg leading-relaxed text-muted dark:border-white/12 dark:text-slate-200 md:text-xl">
@@ -63,11 +63,12 @@ export default function Home() {
                   { number: "250+", label: "Professionals" },
                   { number: "08", label: "Global Offices" },
                 ].map((stat, i) => (
-                  <div key={i} className="site-card interactive-card rounded-2xl px-5 py-5">
-                    <div className="text-3xl data-number text-ink">
+                  <div key={i} className="creative-card decorated-panel group rounded-2xl px-5 py-5 overflow-hidden">
+                    <SiteOrnament mode="card" className="opacity-15 group-hover:opacity-30 transition-opacity" />
+                    <div className="text-3xl data-number font-black text-gradient bg-gradient-to-r from-accent to-blue-500">
                       <AnimatedNumber text={stat.number} />
                     </div>
-                    <div className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted">
+                    <div className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted group-hover:text-ink transition-colors relative z-10">
                       {stat.label}
                     </div>
                   </div>
@@ -77,7 +78,7 @@ export default function Home() {
 
             <div className="relative">
               <div className="absolute -inset-1 rounded-[2rem] bg-gradient-to-tr from-accent/30 via-blue-400/20 to-transparent blur-2xl opacity-60 animate-blob dark:from-accent/20 dark:via-indigo-500/10 dark:opacity-40" style={{ animationDelay: "1s" }} />
-              <aside className="site-card decorated-panel relative rounded-[2rem] p-7 md:p-8 overflow-hidden">
+              <aside className="creative-card decorated-panel relative rounded-[2rem] p-7 md:p-8 overflow-hidden">
                 <SiteOrnament mode="card" className="opacity-40" />
                 <div className="section-kicker">Why Clients Stay</div>
                 <h2 className="mt-6 text-3xl font-bold tracking-tight text-ink md:text-4xl">Institutional discipline, built for high-stakes work.</h2>
@@ -99,7 +100,7 @@ export default function Home() {
           <div className="grid gap-5 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
             <div className="section-header">
               <div className="section-kicker">Our Values</div>
-              <h2 className="section-title">Professional judgement presented with more clarity.</h2>
+              <h2 className="section-title">Professional judgement presented with <span className="text-gradient">more clarity.</span></h2>
               <div className="section-rule"></div>
               <p className="section-copy">
                 Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.
@@ -111,7 +112,7 @@ export default function Home() {
                 Learn About Us <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-
+            
             <div className="grid gap-5 sm:grid-cols-2">
               {[
                 { value: "35+", label: "Years of Trust" },
@@ -119,10 +120,10 @@ export default function Home() {
                 { value: "250+", label: "Professionals" },
                 { value: "08", label: "Global Locations" },
               ].map((item, index) => (
-                <div key={item.label} className={`site-card decorated-panel interactive-card group rounded-[1.6rem] p-6 overflow-hidden ${index % 2 === 1 ? "sm:translate-y-8" : ""}`}>
+                <div key={item.label} className={`creative-card decorated-panel group rounded-[1.6rem] p-6 overflow-hidden ${index % 2 === 1 ? "sm:translate-y-8" : ""}`}>
                   <SiteOrnament mode="card" className="opacity-20 group-hover:opacity-40 transition-opacity" />
-                  <div className="text-4xl font-black text-accent">{item.value}</div>
-                  <div className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-ink">{item.label}</div>
+                  <div className="text-4xl font-black text-gradient bg-gradient-to-r from-accent to-blue-500">{item.value}</div>
+                  <div className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-ink group-hover:text-accent transition-colors relative z-10">{item.label}</div>
                 </div>
               ))}
             </div>
@@ -169,7 +170,7 @@ export default function Home() {
         <div className="site-container">
           <div className="section-header mx-auto text-center">
             <div className="section-kicker mx-auto justify-center">Our Services</div>
-            <h2 className="section-title">Specialized capabilities, organized for faster decision-making.</h2>
+            <h2 className="section-title">Specialized capabilities, organized for <span className="text-gradient">faster decision-making.</span></h2>
             <div className="section-rule mx-auto"></div>
             <p className="section-copy mx-auto">Deploying specialized advisory, audit, and tax solutions configured for your business needs.</p>
           </div>
@@ -183,15 +184,15 @@ export default function Home() {
               { title: "Risk Advisory", desc: "Enterprise risk management, SOP compilation, and deep-level forensic audits.", icon: ShieldCheck },
               { title: "Outsourcing Services", desc: "End-to-end accounting, payroll execution, and compliance process outsourcing.", icon: Network },
             ].map((service, i) => (
-              <div key={i} className="site-card decorated-panel interactive-card group rounded-[1.75rem] p-7 overflow-hidden">
+              <div key={i} className="creative-card decorated-panel group rounded-[1.75rem] p-7 overflow-hidden">
                 <SiteOrnament mode="card" className="opacity-25 group-hover:opacity-45 transition-opacity" />
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent animate-float">
-                  <service.icon className="h-5 w-5" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition-all duration-300">
+                  <service.icon className="h-5 w-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
                 </div>
-                <h3 className="mt-6 text-xl font-bold text-ink">{service.title}</h3>
+                <h3 className="mt-6 text-xl font-bold text-ink group-hover:text-gradient transition-colors">{service.title}</h3>
                 <p className="mt-3 text-sm leading-7 text-muted">{service.desc}</p>
-                <Link href="/practice-areas" className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">
-                  Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                <Link href="/practice-areas" className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-accent relative z-10">
+                  Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1.5" />
                 </Link>
               </div>
             ))}
@@ -204,7 +205,7 @@ export default function Home() {
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="section-header">
               <div className="section-kicker">Industries We Serve</div>
-              <h2 className="section-title">Coverage that helps clients find the right entry point quickly.</h2>
+              <h2 className="section-title">Coverage that helps clients find the right <span className="text-gradient">entry point quickly.</span></h2>
               <div className="section-rule"></div>
               <p className="section-copy">Our industry-focused approach deploys customized solutions that address sector-specific challenges.</p>
             </div>
@@ -216,9 +217,10 @@ export default function Home() {
 
           <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4">
             {["Financial Services", "Manufacturing", "Real Estate & Infra", "IT & ITES", "Healthcare", "Retail & FMCG", "Logistics", "NGOs & Trusts"].map((industry, i) => (
-              <div key={i} className="site-card-soft interactive-card flex h-36 flex-col justify-between rounded-[1.5rem] p-5">
-                <Building2 className="h-6 w-6 text-accent" />
-                <span className="text-sm font-semibold leading-6 text-ink">{industry}</span>
+              <div key={i} className="creative-card decorated-panel group flex h-36 flex-col justify-between rounded-[1.5rem] p-5 overflow-hidden">
+                <SiteOrnament mode="card" className="opacity-15 group-hover:opacity-35 transition-opacity" />
+                <Building2 className="h-6 w-6 text-accent transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12" />
+                <span className="text-sm font-semibold leading-6 text-ink group-hover:text-gradient relative z-10">{industry}</span>
               </div>
             ))}
           </div>

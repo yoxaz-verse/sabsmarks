@@ -5,7 +5,7 @@ import { buildOpenGraph, buildTwitter, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const defaultDescription =
-  "Sabs Marks JVS PVT LTD delivering audit, tax, advisory, and compliance services.";
+  "Sabs Marks JVS & Co. delivering audit, tax, advisory, and compliance services.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

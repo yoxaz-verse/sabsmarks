@@ -242,6 +242,19 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 999px;
   background: var(--accent);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
+  animation: kickerPulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+@keyframes kickerPulse {
+  0% {
+    box-shadow: 0 0 0 0px color-mix(in srgb, var(--accent) 24%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
 }
 
 .section-title {

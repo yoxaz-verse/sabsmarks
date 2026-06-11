@@ -16,14 +16,14 @@ insert into site_settings (
 )
 values (
   '00000000-0000-0000-0000-000000000001',
-  'Sabs Marks JVS PVT LTD',
+  'Sabs Marks JVS & Co.',
   'info@sabsmarksjvs.com',
   '8943115500',
   'H.O',
   'Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala',
   '{"linkedin":"https://www.linkedin.com/company/sabs-marks-jvs-co/","instagram":"https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ=="}'::jsonb,
   '["Kochi","Angamaly","Thrissur","Bengaluru","Chennai","Tirupati","Gurgaon","Ettumanoor","Kottayam","Chengannur","Hyderabad","Dubai"]'::jsonb,
-  'Sabs Marks JVS PVT LTD. All rights reserved.'
+  'Sabs Marks JVS & Co. All rights reserved.'
 )
 on conflict (id) do update set
   brand_name = excluded.brand_name,
@@ -78,7 +78,7 @@ insert into sections (page_id, section_type, payload, order_index, is_enabled)
 select id, 'rich_text',
 jsonb_build_object(
   'title','Overview',
-  'content','Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.\n\nEstablished in 1936, Sabs Marks JVS PVT LTD serves diverse businesses with emphasis on the MSME sector.\n\nWith a wide network of people and locations, Sabs Marks JVS PVT LTD and its associate firms collaborate across service lines and geographies to deliver legally sound and practical solutions.'
+  'content','Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.\n\nEstablished in 1936, Sabs Marks JVS & Co. serves diverse businesses with emphasis on the MSME sector.\n\nWith a wide network of people and locations, Sabs Marks JVS & Co. and its associate firms collaborate across service lines and geographies to deliver legally sound and practical solutions.'
 ),
 1, true
 from pages where slug='about';

@@ -33,7 +33,7 @@ export async function POST() {
     await must(
       supabase.from("site_settings").upsert({
         id: "00000000-0000-0000-0000-000000000001",
-        brand_name: "Sabs Marks JVS PVT LTD",
+        brand_name: "Sabs Marks JVS & Co.",
         primary_email: "info@sabsmarksjvs.com",
         primary_phone: "8943115500",
         head_office_label: "H.O",
@@ -56,7 +56,7 @@ export async function POST() {
           "Hyderabad",
           "Dubai",
         ],
-        footer_text: "Sabs Marks JVS PVT LTD. All rights reserved.",
+        footer_text: "Sabs Marks JVS & Co. All rights reserved.",
         updated_at: now,
       }),
       "site_settings upsert"
@@ -83,7 +83,7 @@ export async function POST() {
 
     const sectionRows = [
       ["about", "hero", { kicker: "About", headline: "The Firm", subtext: "A full-service professional firm with deep-rooted client relationships and practical advisory expertise." }, 0],
-      ["about", "rich_text", { title: "Overview", content: "Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.\n\nEstablished in 1936, Sabs Marks JVS PVT LTD serves diverse businesses with emphasis on the MSME sector." }, 1],
+      ["about", "rich_text", { title: "Overview", content: "Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.\n\nEstablished in 1936, Sabs Marks JVS & Co. serves diverse businesses with emphasis on the MSME sector." }, 1],
       ["about/legacy", "hero", { kicker: "About", headline: "Legacy", subtext: "Our journey has been shaped by multiple professional legacies integrated into one organization." }, 0],
       ["about/legacy", "stats", { items: [{ label: "1936", value: "H.M Contractor & Co." }, { label: "1949", value: "R.B. Patel & Co." }, { label: "1951", value: "S.S. Nayak & Co." }] }, 1],
       ["about/locations", "hero", { kicker: "About", headline: "Locations", subtext: "Browse our offices and connect with the location most relevant to you." }, 0],

@@ -24,6 +24,19 @@ function getSafeExternalUrl(value: string | null | undefined) {
   }
 }
 
+function getOptimizedPhotoUrl(url: string | null) {
+  if (!url) return null;
+  if (url.includes("cloudinary.com")) {
+    if (url.includes("/image/upload/")) {
+      // Replace the extension with .png to support transparency
+      let pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
+      // Add make_transparent filter to key out whatever background color is at the edges (typically black/white/grey)
+      return pngUrl.replace("/image/upload/", "/image/upload/e_make_transparent:10/");
+    }
+  }
+  return url;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ entry: string }> }): Promise<Metadata> {
   const { entry } = await params;
   const member = await getTeamMemberBySlug(entry);
@@ -56,9 +69,9 @@ export default async function TeamMemberDetail({ params }: { params: Promise<{ e
       <div className="mt-10 grid gap-8 lg:grid-cols-12 lg:items-start">
         {/* Left Column: Photo and Meta Info */}
         <div className="lg:col-span-4 flex flex-col gap-4">
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-[var(--glass-border)] bg-surface-raised shadow-lg shadow-accent/5">
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-[var(--glass-border)] bg-[#707070] dark:bg-[#52525b] shadow-lg shadow-accent/5">
             <Image
-              src={member.photo_url || FALLBACK_TEAM_PHOTO}
+              src={getOptimizedPhotoUrl(member.photo_url) || FALLBACK_TEAM_PHOTO}
               alt={member.name}
               fill
               priority

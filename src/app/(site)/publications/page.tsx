@@ -10,7 +10,7 @@ import { SITE_VISUALS } from "@/lib/site-visuals";
 export const metadata: Metadata = buildPageMetadata({
   path: "/publications",
   title: "Publications",
-  description: "Explore reports, publications, and expert commentary from Sabs Marks JVS PVT LTD.",
+  description: "Explore reports, publications, and expert commentary from Sabs Marks JVS & Co.",
 });
 
 export default async function PublicationsPage() {

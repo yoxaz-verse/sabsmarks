@@ -1,6 +1,6 @@
 import type { SiteSettings } from "@/types/cms";
 
-const DEFAULT_BRAND_NAME = "Sabs Marks JVS PVT LTD";
+const DEFAULT_BRAND_NAME = "Sabs Marks JVS & Co.";
 const DEFAULT_PHONE = "8943115500";
 const DEFAULT_EMAIL = "info@sabsmarksjvs.com";
 const DEFAULT_HEAD_OFFICE_LABEL = "H.O";
