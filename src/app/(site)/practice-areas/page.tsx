@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PageBanner } from "@/components/layout/page-banner";
 import { InteriorIntroSection } from "@/components/sections/interior-intro-section";
 import Image from "next/image";
@@ -197,10 +198,6 @@ const serviceAreas: ServiceArea[] = [
 ];
 
 export default function PracticeAreasPage() {
-  const [activeTab, setActiveTab] = useState(serviceAreas[0].id);
-
-  const activeContent = serviceAreas.find((serviceArea) => serviceArea.id === activeTab) || serviceAreas[0];
-
   return (
     <div className="flex flex-col min-h-screen bg-surface">
       <PageBanner title="Our Services" />
@@ -214,101 +211,125 @@ export default function PracticeAreasPage() {
 
       <section className="site-section">
         <div className="site-container pb-16 md:pb-20">
-        <div className="site-card overflow-hidden rounded-[1.75rem] md:flex md:min-h-[650px]">
-          <div className="w-full border-b border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 md:w-[380px] md:border-b-0 md:border-r md:p-8">
-            <h4 className="text-xs font-bold text-muted uppercase tracking-[0.22em] mb-6 px-4">Our Services</h4>
-            {serviceAreas.map((serviceArea) => {
-              const isActive = activeTab === serviceArea.id;
-              return (
-                <div key={serviceArea.id} className="w-full md:w-[320px] md:max-w-[320px] md:min-w-[320px] md:mx-auto">
-                  <button
-                    onClick={() => setActiveTab(serviceArea.id)}
-                    className={`block h-20 w-full min-w-full max-w-full px-6 py-4 text-left font-bold text-[13px] tracking-[0.08em] rounded-2xl transition-all duration-500 relative overflow-hidden group box-border ${
-                      isActive
-                        ? "bg-surface shadow-lg text-ink border border-[var(--glass-border)]"
-                        : "text-muted bg-transparent hover:bg-[color-mix(in_srgb,var(--surface)_65%,transparent)] hover:text-ink border border-[var(--glass-border)]/70"
-                    }`}
-                  >
-                    {isActive && (
-                      <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent rounded-l-2xl shadow-[0_0_15px_var(--accent-glow)]"></div>
-                    )}
-                    {isActive && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-100"></div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                    <span className="relative z-10 flex h-full w-full items-center justify-between gap-4">
-                      <span className="line-clamp-2 leading-6">{serviceArea.title}</span>
-                      <span className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center">
-                        <svg
-                          className={`h-4 w-4 transition-opacity duration-300 ${isActive ? "text-accent opacity-100 animate-fade-in" : "text-muted opacity-35 group-hover:opacity-60"}`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </span>
-                    </span>
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-
-          <div key={activeTab} className="flex min-h-[600px] flex-1 flex-col overflow-hidden p-8 md:px-14 md:pt-10 md:pb-14 lg:px-16 lg:pt-12 lg:pb-16">
-            <div className="max-w-[46rem] animate-fade-in" style={{ animationDuration: "600ms" }}>
-              <div className="relative mb-8 aspect-[16/7] overflow-hidden rounded-[1.6rem]">
-                <Image
-                  src={activeContent.image}
-                  alt={activeContent.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 60vw"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.06),rgba(8,15,30,0.24))]" />
-              </div>
-              <div className="section-kicker">{activeContent.subtitle}</div>
-
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-accent/85 md:text-base">
-                {activeContent.strapline}
-              </p>
-
-              <h2 className="section-title">{activeContent.title}</h2>
-
-              <div className="section-rule"></div>
-
-              <div className="space-y-5 mb-10">
-                {activeContent.paragraphs.map((paragraph) => (
-                  <p key={paragraph} className="section-copy mt-0 max-w-none text-[17px]">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-
-              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-ink/80 mb-6">
-                {activeContent.bulletsLabel}
-              </h3>
-
-              <ul className="space-y-6">
-                {activeContent.bullets.map((bullet, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start group animate-fade-in"
-                    style={{ animationDelay: `${150 + index * 100}ms`, animationFillMode: "both" }}
-                  >
-                    <div className="w-10 h-10 rounded-2xl bg-surface-raised border border-[var(--glass-border)] flex items-center justify-center mr-6 flex-shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-500 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-accent/70 group-hover:bg-accent group-hover:scale-150 group-hover:shadow-[0_0_12px_var(--accent-glow)] transition-all duration-500"></span>
-                    </div>
-                    <span className="text-[17px] leading-relaxed text-muted pt-1.5 group-hover:text-ink transition-colors duration-500">{bullet}</span>
-                  </li>
-                ))}
-              </ul>
+          <Suspense fallback={
+            <div className="site-card overflow-hidden rounded-[1.75rem] flex items-center justify-center min-h-[650px] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] text-muted font-medium">
+              Loading services...
             </div>
-          </div>
-        </div>
+          }>
+            <PracticeAreasTabs />
+          </Suspense>
         </div>
       </section>
+    </div>
+  );
+}
+
+function PracticeAreasTabs() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  const activeTab = searchParams.get("tab") || serviceAreas[0].id;
+  const activeContent = serviceAreas.find((serviceArea) => serviceArea.id === activeTab) || serviceAreas[0];
+
+  const setActiveTab = (id: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", id);
+    router.push(`/practice-areas?${params.toString()}`, { scroll: false });
+  };
+
+  return (
+    <div className="site-card overflow-hidden rounded-[1.75rem] md:flex md:min-h-[650px]">
+      <div className="w-full border-b border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 md:w-[380px] md:border-b-0 md:border-r md:p-8">
+        <h4 className="text-xs font-bold text-muted uppercase tracking-[0.22em] mb-6 px-4">Our Services</h4>
+        {serviceAreas.map((serviceArea) => {
+          const isActive = activeTab === serviceArea.id;
+          return (
+            <div key={serviceArea.id} className="w-full md:w-[320px] md:max-w-[320px] md:min-w-[320px] md:mx-auto">
+              <button
+                onClick={() => setActiveTab(serviceArea.id)}
+                className={`block h-20 w-full min-w-full max-w-full px-6 py-4 text-left font-bold text-[13px] tracking-[0.08em] rounded-2xl transition-all duration-500 relative overflow-hidden group box-border ${
+                  isActive
+                    ? "bg-surface shadow-lg text-ink border border-[var(--glass-border)]"
+                    : "text-muted bg-transparent hover:bg-[color-mix(in_srgb,var(--surface)_65%,transparent)] hover:text-ink border border-[var(--glass-border)]/70"
+                }`}
+              >
+                {isActive && (
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent rounded-l-2xl shadow-[0_0_15px_var(--accent-glow)]"></div>
+                )}
+                {isActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-100"></div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                <span className="relative z-10 flex h-full w-full items-center justify-between gap-4">
+                  <span className="line-clamp-2 leading-6">{serviceArea.title}</span>
+                  <span className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center">
+                    <svg
+                      className={`h-4 w-4 transition-opacity duration-300 ${isActive ? "text-accent opacity-100 animate-fade-in" : "text-muted opacity-35 group-hover:opacity-60"}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      <div key={activeTab} className="flex min-h-[600px] flex-1 flex-col overflow-hidden p-8 md:px-14 md:pt-10 md:pb-14 lg:px-16 lg:pt-12 lg:pb-16">
+        <div className="max-w-[46rem] animate-fade-in" style={{ animationDuration: "600ms" }}>
+          <div className="relative mb-8 aspect-[16/7] overflow-hidden rounded-[1.6rem]">
+            <Image
+              src={activeContent.image}
+              alt={activeContent.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 60vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.06),rgba(8,15,30,0.24))]" />
+          </div>
+          <div className="section-kicker">{activeContent.subtitle}</div>
+
+          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-accent/85 md:text-base">
+            {activeContent.strapline}
+          </p>
+
+          <h2 className="section-title">{activeContent.title}</h2>
+
+          <div className="section-rule"></div>
+
+          <div className="space-y-5 mb-10">
+            {activeContent.paragraphs.map((paragraph) => (
+              <p key={paragraph} className="section-copy mt-0 max-w-none text-[17px]">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-ink/80 mb-6">
+            {activeContent.bulletsLabel}
+          </h3>
+
+          <ul className="space-y-6">
+            {activeContent.bullets.map((bullet, index) => (
+              <li
+                key={index}
+                className="flex items-start group animate-fade-in"
+                style={{ animationDelay: `${150 + index * 100}ms`, animationFillMode: "both" }}
+              >
+                <div className="w-10 h-10 rounded-2xl bg-surface-raised border border-[var(--glass-border)] flex items-center justify-center mr-6 flex-shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-500 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-accent/70 group-hover:bg-accent group-hover:scale-150 group-hover:shadow-[0_0_12px_var(--accent-glow)] transition-all duration-500"></span>
+                </div>
+                <span className="text-[17px] leading-relaxed text-muted pt-1.5 group-hover:text-ink transition-colors duration-500">{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

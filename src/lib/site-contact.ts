@@ -1,7 +1,7 @@
 import type { SiteSettings } from "@/types/cms";
 
-const DEFAULT_BRAND_NAME = "Sabs Marks JVS & Co.";
-const DEFAULT_PHONE = "8943115500";
+const DEFAULT_BRAND_NAME = "Sabs Marks JVS & Co";
+const DEFAULT_PHONE = "894-311-5500";
 const DEFAULT_EMAIL = "info@sabsmarksjvs.com";
 const DEFAULT_HEAD_OFFICE_LABEL = "H.O";
 const DEFAULT_HEAD_OFFICE_ADDRESS = "Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala";

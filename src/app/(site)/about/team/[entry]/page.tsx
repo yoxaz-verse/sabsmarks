@@ -30,8 +30,8 @@ function getOptimizedPhotoUrl(url: string | null) {
     if (url.includes("/image/upload/")) {
       // Replace the extension with .png to support transparency
       let pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
-      // Add make_transparent filter to key out whatever background color is at the edges (typically black/white/grey)
-      return pngUrl.replace("/image/upload/", "/image/upload/e_make_transparent:10/");
+      // Add AI background removal to accurately cut out the subject and leave the background transparent
+      return pngUrl.replace("/image/upload/", "/image/upload/e_background_removal/");
     }
   }
   return url;
