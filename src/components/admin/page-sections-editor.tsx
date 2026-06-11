@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import type { PageRecord, SectionRecord, SectionType, TemplateType } from "@/types/cms";
 
-type EditablePage = Pick<PageRecord, "id" | "slug" | "title" | "template_type" | "excerpt" | "status" | "published_at">;
-type EditableSection = Pick<SectionRecord, "id" | "section_type" | "variant" | "payload" | "order_index" | "is_enabled">;
+type EditablePage = Omit<Pick<PageRecord, "id" | "slug" | "title" | "template_type" | "excerpt" | "status" | "published_at">, "id"> & { id?: string };
+type EditableSection = Omit<Pick<SectionRecord, "id" | "section_type" | "variant" | "payload" | "order_index" | "is_enabled">, "id"> & { id?: string };
 
 const templateOptions: TemplateType[] = ["home", "about", "practice-area-list", "industry-list", "publication-list", "career-list", "contact-list", "insight-list", "generic"];
 const sectionOptions: SectionType[] = ["hero", "rich_text", "card_grid", "cta", "stats", "contact_form", "leadership_grid", "office_cards", "category_tabs", "newsletter_cta"];

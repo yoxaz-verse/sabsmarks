@@ -10,7 +10,7 @@ export default async function TeamPage() {
   const team = await getTeamMembers();
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface">
+    <div className="flex min-h-screen flex-col bg-bg">
       <PageBanner title="Leadership" />
 
       <InteriorIntroSection
@@ -32,25 +32,22 @@ export default async function TeamPage() {
               {team.map((member) => (
                 <article
                   key={member.id}
-                  className="team-profile-card site-card interactive-card group relative overflow-hidden rounded-[2rem] p-5"
+                  className="team-profile-card interactive-card group relative flex flex-col h-full overflow-hidden rounded-[1.5rem] bg-white dark:bg-surface border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] transition-all duration-300"
                 >
                   <Link
                     href={`/about/team/${member.slug}`}
                     aria-label={`Open ${member.name} profile`}
-                    className="absolute inset-0 z-10 rounded-[2rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    className="absolute inset-0 z-10 rounded-[1.5rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   />
 
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-surface-raised duotone-container shadow-inner">
+                  <div className="relative aspect-square w-full overflow-hidden bg-[#707070] dark:bg-[#52525b]">
                     <Image
                       src={member.photo_url || FALLBACK_TEAM_PHOTO}
                       alt={member.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="duotone-image h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-103"
                     />
-                    <div className="duotone-color-overlay" />
-                    <div className="duotone-multiply-overlay" />
-                    <div className="duotone-vignette" />
 
                     {member.linkedin_url ? (
                       <div className="absolute right-4 top-4 z-20">
@@ -72,40 +69,35 @@ export default async function TeamPage() {
                     ) : null}
                   </div>
 
-                  <div className="flex flex-col pt-5 pb-1 px-1">
+                  <div className="flex flex-col flex-1 p-6">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <h3 className="text-xl font-bold text-ink transition-colors group-hover:text-accent">{member.name}</h3>
-                        <p className="mt-2 text-sm font-medium leading-6 text-muted">{member.designation}</p>
+                        <p className="mt-1.5 text-sm font-semibold text-accent leading-6">{member.designation}</p>
                       </div>
                     </div>
 
                     {member.bio ? (
-                      <p className="site-prose mt-5 line-clamp-3 text-[15px] leading-7">{member.bio}</p>
+                      <p className="site-prose mt-4 line-clamp-3 text-[14px] leading-relaxed">{member.bio}</p>
                     ) : (
-                      <p className="mt-5 text-sm leading-7 text-muted/80">
+                      <p className="mt-4 text-sm leading-relaxed text-muted/80">
                         Senior leadership profile and advisory focus details will appear here as the team page evolves.
                       </p>
                     )}
 
-                    <div className="mt-6 border-t border-[var(--glass-border)] pt-4">
-                      <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.22em] text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                         <span>{member.location ?? "Location unavailable"}</span>
                       </div>
-                      <Link
-                        href={`/about/team/${member.slug}`}
-                        aria-label={`View full profile for ${member.name}`}
-                        className="relative z-20 mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-transform duration-200 hover:translate-x-1 hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-                      >
-                        <span>View full profile</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
+                      
+                      <div className="relative z-20 inline-flex items-center text-sm font-semibold text-accent transition-colors hover:text-ink">
+                        <span className="underline decoration-1 underline-offset-4 decoration-accent group-hover:decoration-ink">Read Bio</span>
+                        <span className="ml-1 text-[11px]">↗</span>
+                      </div>
                     </div>
                   </div>
                 </article>

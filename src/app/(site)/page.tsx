@@ -6,6 +6,7 @@ import { ArrowRight, BarChart3, Building2, Calculator, Briefcase, ShieldCheck, D
 import { AnimatedNumber } from "@/components/ui/animated-number";
 import { ImageFeatureCard } from "@/components/media/image-feature-card";
 import { SITE_VISUALS } from "@/lib/site-visuals";
+import { SiteOrnament } from "@/components/decorative/site-ornament";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/",
@@ -17,10 +18,18 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <section className="site-section relative flex min-h-[88vh] items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          {/* Creative floating elements (CSS-only for zero performance impact) */}
+          <div className="absolute -top-[10%] -left-[10%] w-[40rem] h-[40rem] rounded-full bg-accent/15 mix-blend-multiply blur-[120px] animate-blob dark:mix-blend-screen dark:bg-blue-500/10" />
+          <div className="absolute top-[20%] -right-[10%] w-[35rem] h-[35rem] rounded-full bg-blue-400/15 mix-blend-multiply blur-[120px] animate-blob dark:mix-blend-screen dark:bg-indigo-500/10" style={{ animationDelay: "2s" }} />
+          <div className="absolute -bottom-[20%] left-[20%] w-[45rem] h-[45rem] rounded-full bg-indigo-500/10 mix-blend-multiply blur-[130px] animate-blob dark:mix-blend-screen dark:bg-purple-500/10" style={{ animationDelay: "4s" }} />
+
           <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(244,247,251,0.92)_0%,rgba(244,247,251,0.88)_42%,rgba(244,247,251,0.78)_72%,rgba(244,247,251,0.62)_100%)] dark:bg-[linear-gradient(90deg,rgba(9,17,31,0.96)_0%,rgba(9,17,31,0.9)_42%,rgba(9,17,31,0.62)_72%,rgba(9,17,31,0.34)_100%)]" />
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-18 dark:opacity-42" />
         </div>
+
+        {/* Dynamic, interactive grid and orbit ornament */}
+        <SiteOrnament mode="hero" interactive className="opacity-70 dark:opacity-55" />
 
         <div className="site-container relative z-20 w-full py-20 md:py-24">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-end">
@@ -66,17 +75,21 @@ export default function Home() {
               </div>
             </div>
 
-            <aside className="site-card rounded-[2rem] p-7 md:p-8">
-              <div className="section-kicker">Why Clients Stay</div>
-              <h2 className="mt-6 text-3xl font-bold tracking-tight text-ink md:text-4xl">Institutional discipline, built for high-stakes work.</h2>
-              <div className="section-rule"></div>
-              <p className="section-copy mt-6 max-w-none">
-                Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.
-              </p>
-              <p className="site-prose mt-5">
-                We combine advisory depth, execution discipline, and regulator-aware thinking so leadership teams can move with clarity across audit, tax, finance, and governance decisions.
-              </p>
-            </aside>
+            <div className="relative">
+              <div className="absolute -inset-1 rounded-[2rem] bg-gradient-to-tr from-accent/30 via-blue-400/20 to-transparent blur-2xl opacity-60 animate-blob dark:from-accent/20 dark:via-indigo-500/10 dark:opacity-40" style={{ animationDelay: "1s" }} />
+              <aside className="site-card decorated-panel relative rounded-[2rem] p-7 md:p-8 overflow-hidden">
+                <SiteOrnament mode="card" className="opacity-40" />
+                <div className="section-kicker">Why Clients Stay</div>
+                <h2 className="mt-6 text-3xl font-bold tracking-tight text-ink md:text-4xl">Institutional discipline, built for high-stakes work.</h2>
+                <div className="section-rule"></div>
+                <p className="section-copy mt-6 max-w-none">
+                  Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.
+                </p>
+                <p className="site-prose mt-5">
+                  We combine advisory depth, execution discipline, and regulator-aware thinking so leadership teams can move with clarity across audit, tax, finance, and governance decisions.
+                </p>
+              </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -106,7 +119,8 @@ export default function Home() {
                 { value: "250+", label: "Professionals" },
                 { value: "08", label: "Global Locations" },
               ].map((item, index) => (
-                <div key={item.label} className={`site-card interactive-card rounded-[1.6rem] p-6 ${index % 2 === 1 ? "sm:translate-y-8" : ""}`}>
+                <div key={item.label} className={`site-card decorated-panel interactive-card group rounded-[1.6rem] p-6 overflow-hidden ${index % 2 === 1 ? "sm:translate-y-8" : ""}`}>
+                  <SiteOrnament mode="card" className="opacity-20 group-hover:opacity-40 transition-opacity" />
                   <div className="text-4xl font-black text-accent">{item.value}</div>
                   <div className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-ink">{item.label}</div>
                 </div>
@@ -169,8 +183,9 @@ export default function Home() {
               { title: "Risk Advisory", desc: "Enterprise risk management, SOP compilation, and deep-level forensic audits.", icon: ShieldCheck },
               { title: "Outsourcing Services", desc: "End-to-end accounting, payroll execution, and compliance process outsourcing.", icon: Network },
             ].map((service, i) => (
-              <div key={i} className="site-card interactive-card group rounded-[1.75rem] p-7">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent">
+              <div key={i} className="site-card decorated-panel interactive-card group rounded-[1.75rem] p-7 overflow-hidden">
+                <SiteOrnament mode="card" className="opacity-25 group-hover:opacity-45 transition-opacity" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent animate-float">
                   <service.icon className="h-5 w-5" />
                 </div>
                 <h3 className="mt-6 text-xl font-bold text-ink">{service.title}</h3>
