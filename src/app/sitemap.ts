@@ -17,7 +17,7 @@ const staticRoutes = [
   "/expertise/our-approach",
   "/expertise/uae",
   "/industry-solutions",
-  "/insights",
+  "/blog",
   "/practice-areas",
   "/publications",
 ] as const;
@@ -46,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
       },
       {
-        url: `${SITE_URL}/insights/${item.slug}`,
+        url: `${SITE_URL}/blog/${item.slug}`,
         lastModified: item.updated_at ? new Date(item.updated_at) : now,
         changeFrequency: "monthly" as const,
         priority: 0.7,

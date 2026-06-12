@@ -39,6 +39,30 @@ const ABOUT_LOCATIONS_ITEM: MenuItem = {
   status: "published",
 };
 
+function normalizeBlogMenuItem(item: MenuItem): MenuItem {
+  const href = item.href === "/insights" ? "/blog" : item.href.replace(/^\/insights\//, "/blog/");
+  const isInsightsGroup = item.group_name === "Insights";
+
+  return {
+    ...item,
+    href,
+    label: item.label === "Insights" ? "Blog" : item.label,
+    group_name: isInsightsGroup ? "Blog" : item.group_name,
+  };
+}
+
+function normalizeBlogGroup(groups: Record<string, MenuItem[]>) {
+  return Object.values(groups)
+    .flat()
+    .map(normalizeBlogMenuItem)
+    .reduce<Record<string, MenuItem[]>>((acc, item) => {
+      if (!acc[item.group_name]) acc[item.group_name] = [];
+      if (acc[item.group_name].some((existing) => existing.href === item.href)) return acc;
+      acc[item.group_name].push(item);
+      return acc;
+    }, {});
+}
+
 function ensureLocationsItem(groups: Record<string, MenuItem[]>) {
   const aboutItems = groups.About ?? [];
   if (aboutItems.some((item) => item.href === ABOUT_LOCATIONS_ITEM.href)) return groups;
@@ -69,7 +93,7 @@ const fallbackNavGroups: Record<string, MenuItem[]> = {
     { id: "expertise-1", parent_id: null, label: "Services", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },
     { id: "expertise-5", parent_id: null, label: "Our Approach", href: "/expertise/our-approach", group_name: "Expertise", display_order: 5, status: "published" },
   ],
-  Insights: [{ id: "insights-1", parent_id: null, label: "Insights", href: "/insights", group_name: "Insights", display_order: 1, status: "published" }],
+  Blog: [{ id: "blog-1", parent_id: null, label: "Blog", href: "/blog", group_name: "Blog", display_order: 1, status: "published" }],
   Career: [
     { id: "career-1", parent_id: null, label: "Philosophy", href: "/careers/philosophy", group_name: "Career", display_order: 1, status: "published" },
     { id: "career-2", parent_id: null, label: "Join Us", href: "/careers", group_name: "Career", display_order: 2, status: "published" },
@@ -80,7 +104,7 @@ const fallbackNavGroups: Record<string, MenuItem[]> = {
 export async function Header() {
   const cmsNavGroups = await getMegaNav();
   const hasCmsNav = Object.values(cmsNavGroups).some((items) => items.length > 0);
-  const navGroups = ensureLocationsItem(ensureHomeGroup(filterNavItems(hasCmsNav ? cmsNavGroups : fallbackNavGroups)));
+  const navGroups = normalizeBlogGroup(ensureLocationsItem(ensureHomeGroup(filterNavItems(hasCmsNav ? cmsNavGroups : fallbackNavGroups))));
 
   return (
     <header className="sticky top-0 z-[100] border-b border-[var(--section-border)] bg-[color-mix(in_srgb,var(--bg)_76%,transparent)]/95 backdrop-blur-xl">

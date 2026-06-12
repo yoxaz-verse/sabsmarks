@@ -51,7 +51,7 @@ function getBannerArt(title: string): BannerArtConfig {
     return { kind: "career", Icon: BriefcaseBusiness, SecondaryIcon: TrendingUp, TertiaryIcon: CheckCircle2 };
   }
 
-  if (/(insight|knowledge|publication|article|news)/.test(normalizedTitle)) {
+  if (/(blog|insight|knowledge|publication|article|news)/.test(normalizedTitle)) {
     return { kind: "insight", Icon: BookOpen, SecondaryIcon: FileText, TertiaryIcon: CheckCircle2 };
   }
 

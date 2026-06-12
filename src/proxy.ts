@@ -36,6 +36,12 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL(redirectMap[pathname], req.url), 308);
   }
 
+  if (pathname === "/insights" || pathname.startsWith("/insights/")) {
+    const target = req.nextUrl.clone();
+    target.pathname = pathname.replace(/^\/insights/, "/blog");
+    return NextResponse.redirect(target, 308);
+  }
+
   return res;
 }
 

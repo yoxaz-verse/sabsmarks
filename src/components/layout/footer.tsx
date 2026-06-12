@@ -29,7 +29,7 @@ export async function Footer() {
               <SiteOrnament mode="card" className="opacity-65" />
               <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Newsletter</p>
               <h4 className="mt-3 text-2xl font-bold text-ink">Stay Updated.</h4>
-              <p className="mt-3 text-[14px] leading-7 text-muted">Subscribe to our newsletter to get the latest insights and firm updates.</p>
+              <p className="mt-3 text-[14px] leading-7 text-muted">Subscribe to our newsletter to get the latest blog articles and firm updates.</p>
               <NewsletterForm />
             </div>
           </div>
@@ -40,7 +40,7 @@ export async function Footer() {
               <div className="flex flex-col gap-4 text-[14px] font-medium text-muted">
                 <Link href="/practice-areas" className="footer-link">Services</Link>
                 <Link href="/expertise/our-approach" className="footer-link">Our Approach</Link>
-                <Link href="/insights" className="footer-link">Publications</Link>
+                <Link href="/blog" className="footer-link">Blog</Link>
               </div>
             </div>
             <div>
@@ -48,8 +48,8 @@ export async function Footer() {
               <div className="flex flex-col gap-4 text-[14px] font-medium text-muted">
                 <Link href="/careers" className="footer-link">Join Us</Link>
                 <Link href="/contact" className="footer-link">Contact Us</Link>
-                <Link href="#" className="footer-link">Terms & Conditions</Link>
-                <Link href="#" className="footer-link">Privacy Policy</Link>
+                <Link href="/terms-and-conditions" className="footer-link">Terms & Conditions</Link>
+                <Link href="/privacy-policy" className="footer-link">Privacy Policy</Link>
               </div>
             </div>
           </div>
@@ -139,8 +139,8 @@ export async function Footer() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row md:px-12">
           <p className="text-sm font-medium text-muted">Copyright © {new Date().getFullYear()} {brand}. All rights reserved.</p>
           <div className="flex gap-6 text-sm font-bold uppercase tracking-widest text-muted">
-            <Link href="#" className="footer-link">Privacy</Link>
-            <Link href="#" className="footer-link">Terms</Link>
+            <Link href="/privacy-policy" className="footer-link">Privacy</Link>
+            <Link href="/terms-and-conditions" className="footer-link">Terms</Link>
           </div>
         </div>
       </div>

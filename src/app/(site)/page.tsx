@@ -4,28 +4,21 @@ import {
   ArrowRight,
   ArrowUpRight,
   Briefcase,
-  Building2,
   Calculator,
   CheckCircle2,
   ClipboardCheck,
   Compass,
   Cpu,
   Database,
-  Factory,
   FileSearch,
   GitBranch,
   Handshake,
-  Heart,
-  HeartPulse,
-  Landmark,
   Layers3,
   RefreshCw,
   Scale,
   ShieldCheck,
-  ShoppingBag,
   Target,
   TrendingUp,
-  Truck,
 } from "lucide-react";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -63,9 +56,9 @@ const advisorySnapshot = [
 
 const valueStats = [
   { value: "35+", label: "Years of Trust", text: "A long operating memory across business cycles, sectors, and regulatory change." },
-  { value: "15+", label: "Partners", text: "Senior attention for decisions where accuracy, judgement, and timing matter." },
+  { value: "18+", label: "Partners", text: "Senior attention for decisions where accuracy, judgement, and timing matter." },
   { value: "250+", label: "Professionals", text: "Specialist depth across tax, assurance, advisory, systems, and controls." },
-  { value: "08", label: "Global Locations", text: "Connected presence for domestic, cross-border, and multinational priorities." },
+  { value: "10", label: "Global Locations", text: "Connected presence for domestic, cross-border, and multinational priorities." },
 ];
 
 const processSteps = [
@@ -150,17 +143,6 @@ const services = [
     desc: "Enterprise risk management frameworks, information system audits, and forensic investigation assignments.",
     icon: ShieldCheck,
   },
-];
-
-const industries = [
-  { name: "Financial Services", icon: Landmark },
-  { name: "Manufacturing", icon: Factory },
-  { name: "Real Estate & Infra", icon: Building2 },
-  { name: "IT & ITES", icon: Cpu },
-  { name: "Healthcare", icon: HeartPulse },
-  { name: "Retail & FMCG", icon: ShoppingBag },
-  { name: "Logistics", icon: Truck },
-  { name: "NGOs & Trusts", icon: Heart },
 ];
 
 export default function Home() {
@@ -409,37 +391,6 @@ export default function Home() {
                     <Link href={`/practice-areas?tab=${service.id}`} className="relative z-10 mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">
                       Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1.5" />
                     </Link>
-                  </div>
-                </GlowCard>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="site-section py-16 md:py-20">
-        <div className="site-container">
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between reveal reveal-up">
-            <div className="section-header">
-              <div className="section-kicker">Industries We Serve</div>
-              <h2 className="section-title">Coverage that helps clients find the right <span className="text-gradient">entry point quickly.</span></h2>
-              <div className="section-rule"></div>
-              <p className="section-copy">Our industry-focused approach deploys customized solutions that address sector-specific challenges.</p>
-            </div>
-
-            <Link href="/industry-solutions" className="inline-flex items-center justify-center rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_74%,transparent)] px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] text-ink hover:border-accent hover:text-accent dark:text-white">
-              View All Industries
-            </Link>
-          </div>
-
-          <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {industries.map((industry, i) => (
-              <div key={industry.name} className="reveal reveal-up" style={{ transitionDelay: `${(i % 4) * 80}ms` }}>
-                <GlowCard className="industry-card creative-card decorated-panel group flex h-36 flex-col justify-between overflow-hidden rounded-[1.25rem]">
-                  <div className="flex h-full w-full flex-col justify-between p-5">
-                    <SiteOrnament mode="card" className="opacity-10 transition-opacity group-hover:opacity-30" />
-                    <industry.icon className="relative z-10 h-6 w-6 text-accent transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12" />
-                    <span className="relative z-10 text-sm font-semibold leading-6 text-ink transition-colors group-hover:text-accent dark:text-white">{industry.name}</span>
                   </div>
                 </GlowCard>
               </div>

@@ -51,12 +51,9 @@ export default async function TeamPage() {
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-accent/80">Leadership Profiles</p>
               <h2 className="mt-3 max-w-2xl text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                Partners and senior professionals
+                Meet our partners
               </h2>
             </div>
-            <p className="max-w-xl text-sm leading-7 text-muted md:text-right">
-              Meet the people guiding client engagements across assurance, tax, advisory, compliance, and governance.
-            </p>
           </div>
 
           {team.length === 0 ? (

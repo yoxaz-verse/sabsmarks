@@ -91,7 +91,7 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
     return (
       <section className="site-card rounded-3xl px-8 py-10">
         <h2 className="text-2xl font-semibold text-ink">Stay Updated</h2>
-        <p className="mt-2 text-sm text-muted">{String(payload.text ?? "Subscribe to insights and updates.")}</p>
+        <p className="mt-2 text-sm text-muted">{String(payload.text ?? "Subscribe to blog articles and updates.")}</p>
       </section>
     );
   }

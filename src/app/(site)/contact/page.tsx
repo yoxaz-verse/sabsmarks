@@ -356,8 +356,8 @@ export default async function ContactPage() {
           <div className="mt-6 grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
             <div className="rounded-[2rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-md md:p-8">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Head Office Base</p>
-              <div className="mt-6 flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent shadow-sm">
+              <div className="mt-6 flex flex-col items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent shadow-sm">
                   <MapPin className="h-5 w-5 animate-pulse" />
                 </div>
                 <div>

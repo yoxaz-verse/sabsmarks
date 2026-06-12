@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
   const pathname = usePathname();
-  const ordered = ["Home", "About", "Expertise", "Insights", "Career", "Contact"];
+  const ordered = ["Home", "About", "Expertise", "Blog", "Career", "Contact"];
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
 
   return (

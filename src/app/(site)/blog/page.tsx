@@ -8,23 +8,23 @@ import Image from "next/image";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 
 export const metadata: Metadata = buildPageMetadata({
-  path: "/insights",
-  title: "Insights",
-  description: "Insights and thought leadership on audit, tax, and business advisory matters.",
+  path: "/blog",
+  title: "Blog",
+  description: "Articles and thought leadership on audit, tax, and business advisory matters.",
 });
 
-export default async function InsightsPage() {
+export default async function BlogPage() {
   const insights = await getInsights({ page: 1 });
 
   return (
     <div className="flex flex-col min-h-screen bg-surface">
-      <PageBanner title="Insights & Knowledge" />
+      <PageBanner title="Blog" />
 
       <section className="site-section">
         <div className="site-container py-16 md:py-20">
           <div className="section-header">
-            <div className="section-kicker">Insights</div>
-            <h2 className="section-title">Knowledge presented in a format that is easier to scan and return to.</h2>
+            <div className="section-kicker">Blog</div>
+            <h2 className="section-title">Articles presented in a format that is easier to scan and return to.</h2>
             <div className="section-rule"></div>
           </div>
 
@@ -32,7 +32,7 @@ export default async function InsightsPage() {
           {insights.data.map((post) => (
             <Link
               key={post.id}
-              href={`/insights/${post.slug}`}
+              href={`/blog/${post.slug}`}
               className="site-card interactive-card group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-0"
             >
               <div className="relative aspect-[16/10] overflow-hidden">

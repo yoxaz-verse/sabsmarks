@@ -126,7 +126,7 @@ export async function POST() {
         { label: "Leadership", href: "/about/team", group_name: "About", display_order: 3, status: "published" },
         { label: "Services", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },
         { label: "Our Approach", href: "/expertise/our-approach", group_name: "Expertise", display_order: 4, status: "published" },
-        { label: "Insights", href: "/insights", group_name: "Insights", display_order: 1, status: "published" },
+        { label: "Blog", href: "/blog", group_name: "Blog", display_order: 1, status: "published" },
         { label: "Philosophy", href: "/careers/philosophy", group_name: "Career", display_order: 1, status: "published" },
         { label: "Join Us", href: "/careers", group_name: "Career", display_order: 2, status: "published" },
         { label: "Contact Us", href: "/contact", group_name: "Contact", display_order: 1, status: "published" },

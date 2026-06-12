@@ -46,9 +46,9 @@ export default function AboutPage() {
         }
         stats={[
           { value: "35+", label: "Years of Trust" },
-          { value: "15+", label: "Partners" },
+          { value: "18+", label: "Partners" },
           { value: "250+", label: "Professionals" },
-          { value: "08", label: "Global Locations" },
+          { value: "10", label: "Global Locations" },
         ]}
       />
 
