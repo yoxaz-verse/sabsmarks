@@ -45,6 +45,28 @@ export function CareerApplicationForm({ careerId, careerTitle }: CareerApplicati
     }
   }
 
+  if (state === "success") {
+    return (
+      <div className="mt-8 rounded-3xl border border-green-200 bg-green-50 p-6 text-green-900 shadow-sm">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-green-700 shadow-sm">
+            <CheckCircle2 className="h-6 w-6" strokeWidth={1.8} />
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-green-700">Application Submitted</p>
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-green-950">
+              Thank you for applying.
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-green-800">{message || `Application submitted for ${careerTitle}.`}</p>
+            <p className="mt-2 text-sm leading-6 text-green-800">
+              Our team will review your application and contact you if shortlisted.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <form ref={formRef} onSubmit={onSubmit} className="mt-8 grid gap-5">
       <input type="hidden" name="career_id" value={careerId} />

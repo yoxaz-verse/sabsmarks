@@ -166,7 +166,10 @@ export default function Home() {
               <div className="section-kicker text-accent animate-hero-kicker">Strategic Financial Advisory</div>
 
               <h1 className="home-hero-title mt-7 max-w-4xl font-extrabold text-ink dark:text-white animate-hero-title">
-                Expert financial & <span className="block text-gradient">compliance guidance.</span>
+                Expert financial <span className="home-hero-amp">&</span>{" "}
+                <span className="block text-gradient">
+                  compliance <span className="home-hero-gradient-break">guidance.</span>
+                </span>
               </h1>
 
               <p className="mt-7 max-w-2xl border-l-2 border-black/8 pl-5 text-lg leading-relaxed text-muted dark:border-white/12 dark:text-slate-200 md:text-xl animate-hero-desc">
@@ -197,7 +200,7 @@ export default function Home() {
                 </div>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   {advisoryEntryPoints.map((item, i) => (
-                    <div key={item.title} className="hero-entry-item group" style={{ transitionDelay: `${i * 80}ms` }}>
+                    <div key={item.title} className="hero-entry-item group" style={{ animationDelay: `${760 + i * 90}ms`, transitionDelay: `${i * 80}ms` }}>
                       <span className="hero-entry-icon">
                         <item.icon className="h-4 w-4" />
                       </span>
@@ -225,8 +228,8 @@ export default function Home() {
                     We turn complex compliance and finance questions into clear actions, owners, and review checkpoints.
                   </p>
                   <div className="mt-6 grid gap-3">
-                    {advisorySnapshot.map((item) => (
-                      <div key={item.title} className="hero-snapshot-row">
+                    {advisorySnapshot.map((item, i) => (
+                      <div key={item.title} className="hero-snapshot-row" style={{ animationDelay: `${780 + i * 120}ms` }}>
                         <span className="hero-snapshot-icon">
                           <item.icon className="h-4 w-4" />
                         </span>
