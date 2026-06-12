@@ -32,7 +32,6 @@ import { buildPageMetadata } from "@/lib/seo";
 import { CanvasParticles } from "@/components/decorative/canvas-particles";
 import { SiteOrnament } from "@/components/decorative/site-ornament";
 import { ImageFeatureCard } from "@/components/media/image-feature-card";
-import { AnimatedNumber } from "@/components/ui/animated-number";
 import { GlowCard } from "@/components/ui/glow-card";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 
@@ -42,13 +41,6 @@ export const metadata: Metadata = buildPageMetadata({
   description: "Chartered accounting services across audit, tax, advisory, and compliance for growing businesses.",
 });
 
-const heroStats = [
-  { number: "35+", label: "Years Experience" },
-  { number: "15+", label: "Partners" },
-  { number: "250+", label: "Professionals" },
-  { number: "08", label: "Global Offices" },
-];
-
 const credibilityItems = [
   { icon: ShieldCheck, label: "Regulator-aware advisory" },
   { icon: ClipboardCheck, label: "Partner-led execution" },
@@ -56,11 +48,24 @@ const credibilityItems = [
   { icon: Handshake, label: "Long-term client relationships" },
 ];
 
+const advisoryEntryPoints = [
+  { icon: FileSearch, title: "Audit readiness", text: "Evidence, controls, and review trails prepared before deadlines." },
+  { icon: Calculator, title: "Tax & regulatory clarity", text: "Direct and indirect tax decisions aligned with compliance risk." },
+  { icon: Briefcase, title: "CFO visibility", text: "MIS, forecasts, and cash-flow views shaped for leadership action." },
+  { icon: ShieldCheck, title: "Governance support", text: "Board-ready documentation for decisions that need to stand up." },
+];
+
+const advisorySnapshot = [
+  { icon: Target, title: "Decision-ready reporting", text: "Clear next steps, owners, and risks before leadership commits." },
+  { icon: ClipboardCheck, title: "Compliance documentation", text: "Audit, tax, and statutory records structured for scrutiny." },
+  { icon: Handshake, title: "Partner-led review", text: "Senior attention on judgement-heavy matters and closing calls." },
+];
+
 const valueStats = [
-  { value: "35+", label: "Years of Trust", text: "Institutional memory across cycles, sectors, and regulatory shifts." },
-  { value: "15+", label: "Partners", text: "Senior attention on decisions where accuracy and judgement matter." },
-  { value: "250+", label: "Professionals", text: "Specialist bench strength across tax, assurance, advisory, and systems." },
-  { value: "08", label: "Global Locations", text: "A connected presence for domestic and multinational priorities." },
+  { value: "35+", label: "Years of Trust", text: "A long operating memory across business cycles, sectors, and regulatory change." },
+  { value: "15+", label: "Partners", text: "Senior attention for decisions where accuracy, judgement, and timing matter." },
+  { value: "250+", label: "Professionals", text: "Specialist depth across tax, assurance, advisory, systems, and controls." },
+  { value: "08", label: "Global Locations", text: "Connected presence for domestic, cross-border, and multinational priorities." },
 ];
 
 const processSteps = [
@@ -196,18 +201,31 @@ export default function Home() {
                 </Link>
               </div>
 
-              <div className="mt-10 grid max-w-3xl gap-3 sm:grid-cols-2 xl:grid-cols-4 animate-hero-stats">
-                {heroStats.map((stat, i) => (
-                  <div key={stat.label} className="home-stat-card creative-card decorated-panel group overflow-hidden rounded-2xl px-5 py-4" style={{ transitionDelay: `${i * 80}ms` }}>
-                    <SiteOrnament mode="card" className="opacity-10 transition-opacity group-hover:opacity-25" />
-                    <div className="data-number text-3xl font-black text-gradient">
-                      <AnimatedNumber text={stat.number} />
-                    </div>
-                    <div className="relative z-10 mt-2 text-[11px] font-bold uppercase tracking-[0.16em] text-muted transition-colors group-hover:text-ink dark:group-hover:text-white">
-                      {stat.label}
-                    </div>
+              <div className="hero-entry-panel mt-10 animate-hero-stats">
+                <div className="flex flex-col gap-3 border-b border-[var(--glass-border)] pb-4 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <div className="text-xs font-black uppercase tracking-[0.2em] text-accent">Client priorities</div>
+                    <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
+                      Start with the workstream creating pressure, then bring the right specialists into one review rhythm.
+                    </p>
                   </div>
-                ))}
+                  <Link href="/practice-areas" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-accent">
+                    View capabilities <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {advisoryEntryPoints.map((item, i) => (
+                    <div key={item.title} className="hero-entry-item group" style={{ transitionDelay: `${i * 80}ms` }}>
+                      <span className="hero-entry-icon">
+                        <item.icon className="h-4 w-4" />
+                      </span>
+                      <span>
+                        <span className="block text-sm font-bold text-ink transition-colors group-hover:text-accent dark:text-white">{item.title}</span>
+                        <span className="mt-1 block text-xs leading-5 text-muted">{item.text}</span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -216,19 +234,24 @@ export default function Home() {
               <GlowCard className="hero-advisory-card decorated-panel relative overflow-hidden rounded-[2rem]">
                 <SiteOrnament mode="card" className="opacity-35" />
                 <div className="p-6 md:p-7">
-                  <div className="section-kicker">Why Clients Stay</div>
+                  <div className="section-kicker">Advisory Snapshot</div>
                   <h2 className="mt-5 text-2xl font-bold tracking-tight text-ink md:text-3xl dark:text-white">
-                    Institutional discipline, built for high-stakes work.
+                    One coordinated desk for audit, tax, finance, and governance calls.
                   </h2>
                   <div className="section-rule"></div>
                   <p className="section-copy mt-5 max-w-none">
-                    Sabs Marks JVS & Co. brings audit, tax, finance, and governance expertise into one coordinated advisory desk.
+                    We turn complex compliance and finance questions into clear actions, owners, and review checkpoints.
                   </p>
                   <div className="mt-6 grid gap-3">
-                    {["Sharper financial visibility", "Compliance-ready documentation", "Senior-led review cadence"].map((item) => (
-                      <div key={item} className="flex items-center gap-3 rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_66%,transparent)] px-4 py-3 text-sm font-semibold text-ink dark:text-white">
-                        <CheckCircle2 className="h-4 w-4 shrink-0 text-accent" />
-                        {item}
+                    {advisorySnapshot.map((item) => (
+                      <div key={item.title} className="hero-snapshot-row">
+                        <span className="hero-snapshot-icon">
+                          <item.icon className="h-4 w-4" />
+                        </span>
+                        <span>
+                          <span className="block text-sm font-bold text-ink dark:text-white">{item.title}</span>
+                          <span className="mt-1 block text-xs leading-5 text-muted">{item.text}</span>
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -239,11 +262,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="site-section py-5">
+      <section className="site-section credibility-section py-5">
         <div className="site-container">
           <div className="credibility-strip reveal reveal-up">
             {credibilityItems.map((item) => (
-              <div key={item.label} className="flex items-center gap-3">
+              <div key={item.label} className="credibility-item">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent">
                   <item.icon className="h-4 w-4" />
                 </span>
@@ -262,10 +285,10 @@ export default function Home() {
               <h2 className="section-title">Professional judgement presented with <span className="text-gradient">more clarity.</span></h2>
               <div className="section-rule"></div>
               <p className="section-copy">
-                Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.
+                Sabs Marks JVS & Co. brings audit, tax, finance, and regulatory experience together so clients can move with confidence instead of chasing disconnected opinions.
               </p>
               <p className="site-prose mt-5 max-w-3xl">
-                Driven by integrity, competence, and professionalism, our framework is backed by highly specialized professionals. We deliver strategic, legally sound solutions designed to help businesses navigate complex regulatory environments.
+                Our teams pair technical depth with clear ownership, practical documentation, and review discipline, helping businesses navigate complex obligations without losing sight of commercial priorities.
               </p>
               <Link href="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent">
                 Learn About Us <ArrowRight className="h-4 w-4" />

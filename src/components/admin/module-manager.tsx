@@ -188,21 +188,26 @@ function shapeCareersForm(record: AdminRecord) {
 
   return {
     ...record,
-    show_apply_cta: metadata.show_apply_cta === true,
-    apply_url: typeof metadata.apply_url === "string" ? metadata.apply_url : "",
+    location: typeof metadata.location === "string" ? metadata.location : "",
+    job_type: typeof metadata.job_type === "string" ? metadata.job_type : "",
+    experience: typeof metadata.experience === "string" ? metadata.experience : "",
+    department: typeof metadata.department === "string" ? metadata.department : "",
+    application_deadline: typeof metadata.application_deadline === "string" ? metadata.application_deadline : "",
   };
 }
 
 function serializeCareersForm(form: AdminRecord) {
   const existingMetadata = isRecord(form.metadata) ? { ...form.metadata } : {};
-  const showApplyCta = form.show_apply_cta === true;
-  const applyUrl = typeof form.apply_url === "string" ? form.apply_url.trim() : "";
+  const metadataKeys = ["location", "job_type", "experience", "department", "application_deadline"];
 
-  if (showApplyCta) existingMetadata.show_apply_cta = true;
-  else delete existingMetadata.show_apply_cta;
+  for (const key of metadataKeys) {
+    const value = typeof form[key] === "string" ? form[key].trim() : "";
+    if (value) existingMetadata[key] = value;
+    else delete existingMetadata[key];
+  }
 
-  if (applyUrl) existingMetadata.apply_url = applyUrl;
-  else delete existingMetadata.apply_url;
+  delete existingMetadata.show_apply_cta;
+  delete existingMetadata.apply_url;
 
   const serialized: AdminRecord = {
     ...form,
@@ -213,8 +218,7 @@ function serializeCareersForm(form: AdminRecord) {
     metadata: existingMetadata,
   };
 
-  delete serialized.show_apply_cta;
-  delete serialized.apply_url;
+  for (const key of metadataKeys) delete serialized[key];
 
   return serialized;
 }
@@ -327,10 +331,6 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
   async function save() {
     setMessage("");
     setError("");
-    if (config.table === "careers" && form.show_apply_cta === true && inputValue(form, "apply_url").trim().length === 0) {
-      setError("Add an Apply URL or turn off the Apply button before saving.");
-      return;
-    }
     setSaving(true);
     const payload =
       config.table === "site_settings"
@@ -514,8 +514,6 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     const wrapperClass = width === "full" ? "md:col-span-2" : "";
     const isTeamPhotoField = config.table === "team_members" && field.key === "photo_url";
     const isInsightImageField = config.table === "publications" && field.key === "image_url";
-    const isCareerApplyUrlField = config.table === "careers" && field.key === "apply_url";
-    const isCareerApplyEnabled = form.show_apply_cta === true;
     const photoUrl = isTeamPhotoField && typeof value === "string" ? value.trim() : "";
     const insightImageUrl = isInsightImageField && typeof value === "string" ? value.trim() : "";
     const showPhotoPreview = isTeamPhotoField && photoUrl.length > 0;
@@ -591,7 +589,6 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
         <input
           type={field.type === "datetime" ? "datetime-local" : field.type}
           required={field.required}
-          disabled={isCareerApplyUrlField && !isCareerApplyEnabled}
           value={field.type === "datetime" ? datetimeLocalValue(form[field.key]) : inputText(form, field.key)}
           placeholder={field.placeholder}
           onChange={(e) =>
@@ -611,13 +608,8 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
               }));
             }
           }
-          className={`admin-input ${isCareerApplyUrlField && !isCareerApplyEnabled ? "cursor-not-allowed opacity-60" : ""}`}
+          className="admin-input"
         />
-        {isCareerApplyUrlField ? (
-          <p className="mt-2 text-xs leading-5 text-stone-500">
-            {isCareerApplyEnabled ? "Applicants will be sent to this external URL when they click Apply." : "Turn on Show Apply Button to use this field."}
-          </p>
-        ) : null}
         {isTeamPhotoField ? (
           <>
             <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">

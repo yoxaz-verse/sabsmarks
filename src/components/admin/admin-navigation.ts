@@ -37,6 +37,12 @@ export const adminNavigation: AdminNavItem[] = [
     featured: true,
   },
   {
+    label: "Applications",
+    href: "/admin/applications",
+    description: "Review career applications and resumes.",
+    featured: true,
+  },
+  {
     label: "Pages",
     href: "/admin/pages",
     description: "Manage CMS pages and their sections.",

@@ -1,4 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createAdminSupabaseClient } from "@/lib/supabase/admin";
+import { decodeRouteSegment, normalizeSlug } from "@/lib/slug";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
   EntryRecord,
   InsightCategory,
@@ -10,6 +13,34 @@ import type {
   SiteSettings,
   TeamMember,
 } from "@/types/cms";
+
+async function queryPublishedTeamMembers(client: SupabaseClient, featured?: boolean) {
+  let query = client.from("team_members").select("*").eq("status", "published").order("display_order", { ascending: true });
+  if (featured !== undefined) query = query.eq("featured", featured);
+  const { data } = await query.returns<TeamMember[]>();
+  return data ?? [];
+}
+
+async function findPublishedTeamMember(client: SupabaseClient, entry: string, normalizedEntry: string) {
+  const { data: exact } = await client
+    .from("team_members")
+    .select("*")
+    .eq("slug", entry)
+    .eq("status", "published")
+    .maybeSingle<TeamMember>();
+  if (exact) return exact;
+
+  const { data: normalized } = await client
+    .from("team_members")
+    .select("*")
+    .eq("slug", normalizedEntry)
+    .eq("status", "published")
+    .maybeSingle<TeamMember>();
+  if (normalized) return normalized;
+
+  const team = await queryPublishedTeamMembers(client);
+  return team.find((member) => normalizeSlug(member.slug) === normalizedEntry || normalizeSlug(member.name) === normalizedEntry) ?? null;
+}
 
 export async function getPageBySlug(slug: string) {
   const supabase = await createServerSupabaseClient();
@@ -73,16 +104,29 @@ export async function getMegaNav() {
 
 export async function getTeamMembers({ featured }: { featured?: boolean } = {}) {
   const supabase = await createServerSupabaseClient();
-  let q = supabase.from("team_members").select("*").eq("status", "published").order("display_order", { ascending: true });
-  if (featured !== undefined) q = q.eq("featured", featured);
-  const { data } = await q.returns<TeamMember[]>();
-  return data ?? [];
+  const team = await queryPublishedTeamMembers(supabase, featured);
+  if (team.length > 0) return team;
+
+  try {
+    return await queryPublishedTeamMembers(createAdminSupabaseClient(), featured);
+  } catch {
+    return team;
+  }
 }
 
 export async function getTeamMemberBySlug(slug: string) {
   const supabase = await createServerSupabaseClient();
-  const { data } = await supabase.from("team_members").select("*").eq("slug", slug).eq("status", "published").single<TeamMember>();
-  return data;
+  const entry = decodeRouteSegment(slug);
+  const normalizedEntry = normalizeSlug(entry);
+
+  const member = await findPublishedTeamMember(supabase, entry, normalizedEntry);
+  if (member) return member;
+
+  try {
+    return await findPublishedTeamMember(createAdminSupabaseClient(), entry, normalizedEntry);
+  } catch {
+    return null;
+  }
 }
 
 export async function getInsights({ category, tag, page = 1 }: { category?: string; tag?: string; page?: number }) {

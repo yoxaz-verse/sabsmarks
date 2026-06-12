@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminApiSession } from "@/lib/admin-auth";
+import { normalizeSlug } from "@/lib/slug";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 const payloadSchema = z.object({
@@ -252,6 +253,20 @@ export async function POST(req: Request) {
     normalized.map_url = nullableString(normalized.map_url);
     normalized.contact_person = nullableString(normalized.contact_person);
     normalized.branches = normalizeLocationBranches(normalized.branches);
+  }
+  if (table === "team_members") {
+    if (typeof normalized.name === "string") normalized.name = normalized.name.trim();
+    if (typeof normalized.designation === "string") normalized.designation = normalized.designation.trim();
+    normalized.slug = normalizeSlug(
+      typeof normalized.slug === "string" && normalized.slug.trim().length > 0
+        ? normalized.slug
+        : typeof normalized.name === "string"
+          ? normalized.name
+          : ""
+    );
+    normalized.location = nullableString(normalized.location);
+    normalized.credentials = nullableString(normalized.credentials);
+    normalized.bio = nullableString(normalized.bio);
   }
   if (table === "site_settings") {
     normalized.logo_url = nullableString(normalized.logo_url);

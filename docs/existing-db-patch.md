@@ -5,19 +5,21 @@ Use this flow when your Supabase project already has CMS tables and you want to 
 ## Run order
 1. Run [`supabase/migrations/20260607_patch_existing_cms_db.sql`](/Users/jacoob/Documents/Dev/Sabs%20marks/cfa-cms/supabase/migrations/20260607_patch_existing_cms_db.sql) to apply non-destructive schema drift fixes.
 2. Run [`supabase/migrations/20260607_repair_existing_cms_auth_rls.sql`](/Users/jacoob/Documents/Dev/Sabs%20marks/cfa-cms/supabase/migrations/20260607_repair_existing_cms_auth_rls.sql) to normalize CMS auth and RLS policies for existing projects.
-3. Ensure `.env.local` contains:
+3. Run [`docs/career-applications-db-patch.sql`](/Users/jacoob/Documents/Dev/Sabs%20marks/cfa-cms/docs/career-applications-db-patch.sql) to add the private resume bucket and career applications table.
+4. Ensure `.env.local` contains:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` or `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`
-4. Restart the app after env changes.
-5. Confirm the intended CMS user exists in Supabase Authentication and can sign in with email/password.
-6. Confirm `public.user_roles` contains a row for that auth UUID with role `admin` or `editor`.
-7. Log into `/admin/login` with that Supabase Auth user.
-8. Open `http://localhost:3001/api/health/auth` to confirm the Supabase session is active.
+5. Restart the app after env changes.
+6. Confirm the intended CMS user exists in Supabase Authentication and can sign in with email/password.
+7. Confirm `public.user_roles` contains a row for that auth UUID with role `admin` or `editor`.
+8. Log into `/admin/login` with that Supabase Auth user.
+9. Open `http://localhost:3001/api/health/auth` to confirm the Supabase session is active.
 
 ## What each script does
 - [`supabase/migrations/20260607_patch_existing_cms_db.sql`](/Users/jacoob/Documents/Dev/Sabs%20marks/cfa-cms/supabase/migrations/20260607_patch_existing_cms_db.sql): adds missing non-destructive columns needed by the current CMS UI.
 - [`supabase/migrations/20260607_repair_existing_cms_auth_rls.sql`](/Users/jacoob/Documents/Dev/Sabs%20marks/cfa-cms/supabase/migrations/20260607_repair_existing_cms_auth_rls.sql): re-enables the expected CMS auth/RLS model by restoring `public.user_role()`, `public.can_edit()`, the canonical `user_roles` read policy, and the editor write policies used by the admin API.
+- [`docs/career-applications-db-patch.sql`](/Users/jacoob/Documents/Dev/Sabs%20marks/cfa-cms/docs/career-applications-db-patch.sql): adds the `career_applications` table and private `career-resumes` storage bucket.
 
 ## Do not run for this case
 - [`supabase/full_reset_bootstrap.sql`](/Users/jacoob/Documents/Dev/Sabs%20marks/cfa-cms/supabase/full_reset_bootstrap.sql): destructive reset, drops and recreates CMS tables.

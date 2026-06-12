@@ -1,4 +1,18 @@
 import type { ReactNode } from "react";
+import {
+  BookOpen,
+  BriefcaseBusiness,
+  Building2,
+  Calculator,
+  CheckCircle2,
+  Factory,
+  FileText,
+  Landmark,
+  MapPin,
+  ShieldCheck,
+  TrendingUp,
+  type LucideIcon,
+} from "lucide-react";
 import { SiteOrnament } from "@/components/decorative/site-ornament";
 
 interface PageBannerProps {
@@ -7,6 +21,90 @@ interface PageBannerProps {
   description?: string;
   variant?: "default" | "contrast";
   actions?: ReactNode;
+}
+
+type BannerArtKind = "network" | "firm" | "service" | "career" | "insight" | "industry" | "advisory";
+
+interface BannerArtConfig {
+  kind: BannerArtKind;
+  Icon: LucideIcon;
+  SecondaryIcon: LucideIcon;
+  TertiaryIcon: LucideIcon;
+}
+
+function getBannerArt(title: string): BannerArtConfig {
+  const normalizedTitle = title.toLowerCase();
+
+  if (/(location|contact|office|branch)/.test(normalizedTitle)) {
+    return { kind: "network", Icon: MapPin, SecondaryIcon: Building2, TertiaryIcon: Landmark };
+  }
+
+  if (/(firm|legacy|leadership|team|approach)/.test(normalizedTitle)) {
+    return { kind: "firm", Icon: ShieldCheck, SecondaryIcon: FileText, TertiaryIcon: Landmark };
+  }
+
+  if (/(service|expertise|practice|ifsc|uae)/.test(normalizedTitle)) {
+    return { kind: "service", Icon: Calculator, SecondaryIcon: CheckCircle2, TertiaryIcon: FileText };
+  }
+
+  if (/(career|alumni|join|philosophy)/.test(normalizedTitle)) {
+    return { kind: "career", Icon: BriefcaseBusiness, SecondaryIcon: TrendingUp, TertiaryIcon: CheckCircle2 };
+  }
+
+  if (/(insight|knowledge|publication|article|news)/.test(normalizedTitle)) {
+    return { kind: "insight", Icon: BookOpen, SecondaryIcon: FileText, TertiaryIcon: CheckCircle2 };
+  }
+
+  if (/(industry|solution|sector)/.test(normalizedTitle)) {
+    return { kind: "industry", Icon: Factory, SecondaryIcon: Building2, TertiaryIcon: TrendingUp };
+  }
+
+  return { kind: "advisory", Icon: Landmark, SecondaryIcon: FileText, TertiaryIcon: TrendingUp };
+}
+
+function BannerIllustration({ title, isContrast }: { title: string; isContrast: boolean }) {
+  const { kind, Icon, SecondaryIcon, TertiaryIcon } = getBannerArt(title);
+
+  return (
+    <div
+      aria-hidden="true"
+      className={`banner-art banner-art--${kind} ${isContrast ? "banner-art--contrast" : ""}`}
+    >
+      <div className="banner-art__halo"></div>
+      <div className="banner-art__rail banner-art__rail--top"></div>
+      <div className="banner-art__rail banner-art__rail--bottom"></div>
+
+      <svg className="banner-art__lines" viewBox="0 0 520 360" preserveAspectRatio="none">
+        <path d="M72 238 C138 170 190 174 254 206 S370 254 448 124" />
+        <path d="M92 112 C166 130 196 74 262 98 S348 166 430 86" />
+        <path d="M126 292 H374" />
+      </svg>
+
+      <div className="banner-art__panel banner-art__panel--main">
+        <span className="banner-art__icon banner-art__icon--main">
+          <Icon className="h-10 w-10" strokeWidth={1.8} />
+        </span>
+        <span className="banner-art__mini banner-art__mini--one">
+          <SecondaryIcon className="h-5 w-5" strokeWidth={1.8} />
+        </span>
+        <span className="banner-art__mini banner-art__mini--two">
+          <TertiaryIcon className="h-5 w-5" strokeWidth={1.8} />
+        </span>
+      </div>
+
+      <div className="banner-art__panel banner-art__panel--metric">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <span className="banner-art__node banner-art__node--a"></span>
+      <span className="banner-art__node banner-art__node--b"></span>
+      <span className="banner-art__node banner-art__node--c"></span>
+      <span className="banner-art__node banner-art__node--d"></span>
+      <span className="banner-art__marker"></span>
+    </div>
+  );
 }
 
 export function PageBanner({
@@ -73,52 +171,58 @@ export function PageBanner({
         ></div>
       </div>
 
-      <div className="relative z-20 mx-auto flex max-w-7xl flex-col items-start px-6 pt-4 md:px-12 md:pt-6">
-        {eyebrow ? (
-          <div
-            className={`mb-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 shadow-sm backdrop-blur-md transition-colors duration-500 sm:mb-6 ${
-              isContrast
-                ? "border border-white/12 bg-white/8"
-                : "border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_78%,transparent)]"
-            }`}
-          >
-            <div className={`h-2 w-2 rounded-full animate-pulse ${isContrast ? "bg-[#9cc0ff]" : "bg-accent"}`}></div>
-            <span
-              suppressHydrationWarning
-              className={`text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors duration-500 ${
-                isContrast ? "text-white/90" : "text-ink/80 dark:text-white/95"
+      <div className="relative z-20 mx-auto grid max-w-7xl gap-10 px-6 pt-4 md:px-12 md:pt-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(21rem,0.72fr)] lg:items-center">
+        <div className="flex flex-col items-start">
+          {eyebrow ? (
+            <div
+              className={`mb-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 shadow-sm backdrop-blur-md transition-colors duration-500 sm:mb-6 ${
+                isContrast
+                  ? "border border-white/12 bg-white/8"
+                  : "border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_78%,transparent)]"
               }`}
             >
-              {eyebrow}
-            </span>
-          </div>
-        ) : null}
+              <div className={`h-2 w-2 rounded-full animate-pulse ${isContrast ? "bg-[#9cc0ff]" : "bg-accent"}`}></div>
+              <span
+                suppressHydrationWarning
+                className={`text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors duration-500 ${
+                  isContrast ? "text-white/90" : "text-ink/80 dark:text-white/95"
+                }`}
+              >
+                {eyebrow}
+              </span>
+            </div>
+          ) : null}
 
-        <h1
-          className={`mb-3 max-w-4xl py-1 text-4xl font-bold tracking-[-0.05em] transition-colors duration-500 sm:text-5xl md:mb-4 md:text-6xl lg:text-[4.5rem] ${
-            isContrast
-              ? "text-white [text-shadow:0_16px_40px_rgba(2,6,23,0.35)]"
-              : "text-ink dark:text-white"
-          }`}
-        >
-          {title}
-        </h1>
-
-        {description ? (
-          <p
-            className={`max-w-3xl text-base leading-8 md:text-lg ${
-              isContrast ? "text-blue-50/92" : "text-muted dark:text-white/78"
+          <h1
+            className={`mb-3 max-w-4xl py-1 text-4xl font-bold tracking-[-0.05em] transition-colors duration-500 sm:text-5xl md:mb-4 md:text-6xl lg:text-[4.5rem] ${
+              isContrast
+                ? "text-white [text-shadow:0_16px_40px_rgba(2,6,23,0.35)]"
+                : "text-ink dark:text-white"
             }`}
           >
-            {description}
-          </p>
-        ) : null}
+            {title}
+          </h1>
 
-        {actions ? <div className="mt-8 flex w-full flex-wrap items-center gap-3">{actions}</div> : null}
+          {description ? (
+            <p
+              className={`max-w-3xl text-base leading-8 md:text-lg ${
+                isContrast ? "text-blue-50/92" : "text-muted dark:text-white/78"
+              }`}
+            >
+              {description}
+            </p>
+          ) : null}
 
-        <div className="mt-6 flex items-center gap-3 sm:mt-8 sm:gap-4">
-          <div className={`h-[3px] w-14 rounded-full transition-shadow duration-500 ${isContrast ? "bg-[#8db3ff] shadow-[0_0_20px_rgba(141,179,255,0.4)]" : "bg-accent shadow-[0_0_10px_var(--accent-glow)]"}`}></div>
-          <div className={`h-[3px] w-7 rounded-full transition-colors duration-500 ${isContrast ? "bg-white/35" : "bg-accent/45"}`}></div>
+          {actions ? <div className="mt-8 flex w-full flex-wrap items-center gap-3">{actions}</div> : null}
+
+          <div className="mt-6 flex items-center gap-3 sm:mt-8 sm:gap-4">
+            <div className={`h-[3px] w-14 rounded-full transition-shadow duration-500 ${isContrast ? "bg-[#8db3ff] shadow-[0_0_20px_rgba(141,179,255,0.4)]" : "bg-accent shadow-[0_0_10px_var(--accent-glow)]"}`}></div>
+            <div className={`h-[3px] w-7 rounded-full transition-colors duration-500 ${isContrast ? "bg-white/35" : "bg-accent/45"}`}></div>
+          </div>
+        </div>
+
+        <div className="hidden justify-end md:flex">
+          <BannerIllustration title={title} isContrast={isContrast} />
         </div>
       </div>
     </div>

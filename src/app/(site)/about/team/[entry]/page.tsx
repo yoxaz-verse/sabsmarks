@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, Globe, MapPin, MoveLeft } from "lucide-react";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
@@ -9,6 +9,7 @@ import { getTeamMemberBySlug } from "@/lib/content/service";
 import { buildAbsoluteUrl, buildTeamMemberMetadata } from "@/lib/seo";
 import { buildBreadcrumbSchema } from "@/lib/seo-schema";
 import { SITE_VISUALS } from "@/lib/site-visuals";
+import { decodeRouteSegment, normalizeSlug } from "@/lib/slug";
 
 const FALLBACK_TEAM_PHOTO = SITE_VISUALS.about.team;
 
@@ -42,12 +43,19 @@ export async function generateMetadata({ params }: { params: Promise<{ entry: st
   const member = await getTeamMemberBySlug(entry);
   if (!member) return { robots: { index: false, follow: false } };
 
-  return buildTeamMemberMetadata(member, `/about/team/${member.slug}`, "Meet the leadership team behind Sabs Marks JVS.");
+  const canonicalSlug = normalizeSlug(member.slug || member.name);
+  return buildTeamMemberMetadata(member, `/about/team/${canonicalSlug}`, "Meet the leadership team behind Sabs Marks JVS.");
 }
 
 export default async function TeamMemberDetail({ params }: { params: Promise<{ entry: string }> }) {
-  const member = await getTeamMemberBySlug((await params).entry);
+  const { entry } = await params;
+  const member = await getTeamMemberBySlug(entry);
   if (!member) notFound();
+  const canonicalSlug = normalizeSlug(member.slug || member.name);
+  if (decodeRouteSegment(entry) !== canonicalSlug) {
+    permanentRedirect(`/about/team/${canonicalSlug}`);
+  }
+
   const biography = (member.bio ?? `${member.name} is part of the Sabs Marks JVS leadership team.`)
     .split(/\n{2,}/)
     .map((paragraph) => paragraph.trim())
@@ -58,7 +66,7 @@ export default async function TeamMemberDetail({ params }: { params: Promise<{ e
     { name: "Home", url: "/" },
     { name: "About", url: "/about" },
     { name: "Leadership", url: "/about/team" },
-    { name: member.name, url: `/about/team/${member.slug}` },
+    { name: member.name, url: `/about/team/${canonicalSlug}` },
   ]);
 
   return (
@@ -204,7 +212,7 @@ export default async function TeamMemberDetail({ params }: { params: Promise<{ e
           description: member.bio ?? undefined,
           image: member.photo_url ? [buildAbsoluteUrl(member.photo_url)] : undefined,
           sameAs: member.linkedin_url ? [member.linkedin_url] : undefined,
-          url: buildAbsoluteUrl(`/about/team/${member.slug}`),
+          url: buildAbsoluteUrl(`/about/team/${canonicalSlug}`),
         }}
       />
     </article>

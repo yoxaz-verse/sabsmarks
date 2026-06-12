@@ -1,6 +1,7 @@
 import { PageBanner } from "@/components/layout/page-banner";
 import { InteriorIntroSection } from "@/components/sections/interior-intro-section";
 import { getTeamMembers } from "@/lib/content/service";
+import { normalizeSlug } from "@/lib/slug";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -58,9 +59,18 @@ export default async function TeamPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {team.length === 0 ? (
+            <div className="rounded-2xl border border-[var(--section-border)] bg-surface-raised px-6 py-10 text-center shadow-[0_16px_42px_rgba(15,23,42,0.06)]">
+              <h3 className="text-xl font-semibold text-ink">Leadership profiles are not available right now.</h3>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-muted">
+                Published leadership entries will appear here as soon as public CMS access is available.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {team.map((member) => {
               const photoUrl = getOptimizedPhotoUrl(member.photo_url);
+              const profileSlug = normalizeSlug(member.slug || member.name);
 
               return (
                 <article
@@ -68,7 +78,7 @@ export default async function TeamPage() {
                   className="team-profile-card group relative flex min-h-[23rem] flex-col overflow-hidden rounded-2xl border border-[var(--section-border)] bg-white shadow-[0_16px_42px_rgba(15,23,42,0.08)] dark:bg-surface dark:shadow-[0_20px_58px_rgba(2,6,23,0.34)]"
                 >
                   <Link
-                    href={`/about/team/${member.slug}`}
+                    href={`/about/team/${profileSlug}`}
                     aria-label={`Open ${member.name} profile`}
                     className="absolute inset-0 z-10 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
                   />
@@ -123,7 +133,8 @@ export default async function TeamPage() {
                 </article>
               );
             })}
-          </div>
+            </div>
+          )}
         </div>
       </section>
     </div>

@@ -17,10 +17,12 @@ const allowed = new Set([
   "menu_items",
   "site_settings",
   "newsletter_subscribers",
+  "career_applications",
 ]);
 
 const tableOrderColumn: Record<string, string> = {
   newsletter_subscribers: "created_at",
+  career_applications: "created_at",
 };
 
 const querySchema = z.object({ table: z.string().min(1) });
