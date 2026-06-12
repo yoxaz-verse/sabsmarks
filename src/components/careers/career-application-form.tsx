@@ -49,21 +49,54 @@ export function CareerApplicationForm({ careerId, careerTitle }: CareerApplicati
     <form ref={formRef} onSubmit={onSubmit} className="mt-8 grid gap-5">
       <input type="hidden" name="career_id" value={careerId} />
 
+      <div>
+        <p className="text-xs font-bold uppercase tracking-[0.24em] text-muted">1. Personal Information</p>
+      </div>
+
       <div className="grid gap-5 md:grid-cols-2">
         <label className="admin-field">
           <span className="admin-label">Full Name<span className="text-red-600">*</span></span>
           <input name="name" required minLength={2} className="admin-input" placeholder="Your name" />
         </label>
         <label className="admin-field">
-          <span className="admin-label">Email<span className="text-red-600">*</span></span>
+          <span className="admin-label">Date of Birth<span className="text-red-600">*</span></span>
+          <input name="date_of_birth" type="date" required className="admin-input" />
+        </label>
+      </div>
+
+      <div className="grid gap-5 md:grid-cols-2">
+        <label className="admin-field">
+          <span className="admin-label">Mobile Number<span className="text-red-600">*</span></span>
+          <input name="phone" required minLength={7} className="admin-input" placeholder="+91 ..." />
+        </label>
+        <label className="admin-field">
+          <span className="admin-label">Email Address<span className="text-red-600">*</span></span>
           <input name="email" type="email" required className="admin-input" placeholder="you@example.com" />
         </label>
       </div>
 
-      <label className="admin-field">
-        <span className="admin-label">Phone<span className="text-red-600">*</span></span>
-        <input name="phone" required minLength={7} className="admin-input" placeholder="+91 ..." />
-      </label>
+      <fieldset className="admin-field">
+        <legend className="admin-label">Gender<span className="text-red-600">*</span></legend>
+        <div className="flex flex-wrap gap-4 rounded-2xl border border-[var(--glass-border)] bg-surface-raised px-4 py-3">
+          {["Male", "Female", "Other"].map((gender) => (
+            <label key={gender} className="inline-flex items-center gap-2 text-sm font-medium text-ink">
+              <input name="gender" type="radio" value={gender.toLowerCase()} required className="h-4 w-4 accent-stone-900" />
+              {gender}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div className="pt-2">
+        <p className="text-xs font-bold uppercase tracking-[0.24em] text-muted">4. Position Applied For</p>
+        <div className="mt-3 rounded-2xl border border-[var(--glass-border)] bg-surface-raised px-4 py-3 text-sm font-semibold text-ink">
+          {careerTitle}
+        </div>
+      </div>
+
+      <div className="pt-2">
+        <p className="text-xs font-bold uppercase tracking-[0.24em] text-muted">7. Documents to Upload</p>
+      </div>
 
       <label className="admin-field">
         <span className="admin-label">Resume / CV<span className="text-red-600">*</span></span>
@@ -86,14 +119,9 @@ export function CareerApplicationForm({ careerId, careerTitle }: CareerApplicati
         </div>
       </label>
 
-      <label className="admin-field">
-        <span className="admin-label">Cover Note</span>
-        <textarea
-          name="message"
-          rows={5}
-          className="admin-textarea"
-          placeholder={`Tell us why you are interested in the ${careerTitle} role.`}
-        />
+      <label className="flex items-start gap-3 rounded-2xl border border-[var(--glass-border)] bg-surface-raised px-4 py-3 text-sm leading-6 text-ink">
+        <input name="declaration" type="checkbox" value="true" required className="mt-1 h-4 w-4 shrink-0 accent-stone-900" />
+        <span>I hereby declare that the information furnished above is true and correct to the best of my knowledge.</span>
       </label>
 
       {message ? (

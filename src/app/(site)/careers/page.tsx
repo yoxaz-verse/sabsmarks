@@ -1,13 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BriefcaseBusiness } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, CheckCircle2 } from "lucide-react";
 import { PageBanner } from "@/components/layout/page-banner";
 import { buildCmsPageMetadata, buildPageMetadata } from "@/lib/seo";
 import { getCollection, getPageBySlug } from "@/lib/content/service";
-import { ImageFeatureCard } from "@/components/media/image-feature-card";
-import { SITE_VISUALS } from "@/lib/site-visuals";
 
-const fallbackDescription = "Join our teams across audit, tax, and advisory practices.";
+const fallbackDescription =
+  "Join a firm where values matter, people come first, and excellence is a way of life.";
+
+const opportunitiesAvailable = [
+  "Articles & Industrial Trainees",
+  "Audit & Tax Trainees",
+  "HR & Administration Professionals",
+];
+
+const reasonsToJoin = [
+  "Ethical and professional work environment",
+  "Hands-on learning and mentorship",
+  "Exposure to diverse industries and assignments",
+  "Continuous professional development",
+  "Merit-based career growth",
+  "Supportive, family-oriented culture",
+];
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug("careers");
@@ -37,15 +51,15 @@ export default async function JoinUsPage() {
   const description =
     typeof hero?.subtext === "string"
       ? hero.subtext
-      : "Explore opportunities to grow with Sabs Marks JVS across audit, tax, and advisory.";
+      : fallbackDescription;
   const introTitle =
     typeof intro?.title === "string"
       ? intro.title
-      : "Build your career with a firm that values curiosity and responsibility.";
+      : "Build your career with SABS Marks JVS & Co.";
   const introBody =
     typeof intro?.content === "string"
       ? intro.content
-      : "Due to our ambitious growth plans and rapidly growing practice in different functional areas, we are in constant need of energetic and enthusiastic professionals who are keen on learning and taking up challenging roles within the organization.\n\nWe are always on the look-out for bright and passionate professionals with diverse educational qualifications and experience, who can think outside the box, are enthusiastic about learning, and love to accept challenges.";
+      : "At SABS Marks JVS & Co., we believe that professional success is built on a foundation of ethics, integrity, teamwork, and continuous learning. We foster a supportive work environment where every team member is respected, encouraged to grow, and empowered to make a meaningful contribution.\n\nWhether you are a Chartered Accountant, Article Assistant, HR Professional, or a young graduate starting your career, you will find opportunities to learn, develop, and excel alongside experienced professionals.\n\nJoin a firm where values matter, people come first, and excellence is a way of life.";
 
   return (
     <div className="flex min-h-screen flex-col bg-surface">
@@ -68,12 +82,26 @@ export default async function JoinUsPage() {
               </div>
             </div>
 
-            <div className="site-card rounded-[1.75rem] p-8">
-              <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Open Roles</p>
-              <p className="mt-4 text-4xl font-bold tracking-tight text-ink">{opportunities.length}</p>
-              <p className="mt-3 text-[15px] leading-7 text-muted">
-                Published opportunities appear below automatically. Add new openings from the Careers module to keep this page current.
-              </p>
+            <div className="grid gap-6">
+              <div className="site-card rounded-[1.75rem] p-8">
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Opportunities Available</p>
+                <ul className="mt-6 space-y-4">
+                  {opportunitiesAvailable.map((opportunity) => (
+                    <li key={opportunity} className="flex gap-3 text-[15px] font-semibold leading-7 text-ink">
+                      <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-accent" strokeWidth={1.8} />
+                      <span>{opportunity}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="site-card rounded-[1.75rem] p-8">
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Open Roles</p>
+                <p className="mt-4 text-4xl font-bold tracking-tight text-ink">{opportunities.length}</p>
+                <p className="mt-3 text-[15px] leading-7 text-muted">
+                  Published opportunities appear below automatically. Add new openings from the Careers module to keep this page current.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -81,14 +109,22 @@ export default async function JoinUsPage() {
 
       <section className="site-section pt-0">
         <div className="site-container pb-16">
-          <ImageFeatureCard
-            src={SITE_VISUALS.careers.culture}
-            alt="Young professionals collaborating in an office meeting."
-            eyebrow="Working Here"
-            title="A growth environment built on responsibility, curiosity, and client exposure."
-            description="We want people who enjoy learning quickly, solving practical business issues, and working closely with experienced professionals across advisory disciplines."
-            className="max-w-5xl"
-          />
+          <div className="site-card rounded-[1.75rem] p-8 md:p-10">
+            <div className="section-header">
+              <div className="section-kicker">Why Join Us?</div>
+              <h2 className="section-title">A place to learn, contribute, and grow with purpose.</h2>
+              <div className="section-rule"></div>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {reasonsToJoin.map((reason) => (
+                <div key={reason} className="rounded-2xl border border-[var(--glass-border)] bg-surface-raised p-5">
+                  <CheckCircle2 className="h-5 w-5 text-accent" strokeWidth={1.8} />
+                  <p className="mt-4 text-[15px] font-semibold leading-7 text-ink">{reason}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

@@ -5,8 +5,11 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 type CareerApplicationRow = {
   id: string;
   applicant_name: string;
+  applicant_date_of_birth: string | null;
   applicant_email: string;
   applicant_phone: string;
+  applicant_gender: string | null;
+  declaration_accepted: boolean | null;
   message: string | null;
   resume_filename: string | null;
   status: string;
@@ -20,11 +23,23 @@ function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short" }).format(date);
 }
 
+function formatDateOnly(value: string | null) {
+  if (!value) return "-";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat("en-IN", { dateStyle: "medium" }).format(date);
+}
+
+function formatGender(value: string | null) {
+  if (!value) return "-";
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
 export async function CareerApplicationsTable() {
   const supabase = await createServerSupabaseClient();
   const { data, error } = await supabase
     .from("career_applications")
-    .select("id, applicant_name, applicant_email, applicant_phone, message, resume_filename, status, created_at, career:careers(title, slug)")
+    .select("id, applicant_name, applicant_date_of_birth, applicant_email, applicant_phone, applicant_gender, declaration_accepted, message, resume_filename, status, created_at, career:careers(title, slug)")
     .order("created_at", { ascending: false })
     .returns<CareerApplicationRow[]>();
 
@@ -44,7 +59,7 @@ export async function CareerApplicationsTable() {
             <tr>
               <th className="px-4 py-3 text-left font-semibold text-stone-700">Applicant</th>
               <th className="px-4 py-3 text-left font-semibold text-stone-700">Role</th>
-              <th className="px-4 py-3 text-left font-semibold text-stone-700">Phone</th>
+              <th className="px-4 py-3 text-left font-semibold text-stone-700">Details</th>
               <th className="px-4 py-3 text-left font-semibold text-stone-700">Status</th>
               <th className="px-4 py-3 text-left font-semibold text-stone-700">Submitted</th>
               <th className="px-4 py-3 text-left font-semibold text-stone-700">Resume</th>
@@ -69,7 +84,12 @@ export async function CareerApplicationsTable() {
                     "-"
                   )}
                 </td>
-                <td className="px-4 py-4 text-stone-600">{application.applicant_phone}</td>
+                <td className="px-4 py-4 text-xs leading-6 text-stone-600">
+                  <p><span className="font-semibold text-stone-700">Mobile:</span> {application.applicant_phone}</p>
+                  <p><span className="font-semibold text-stone-700">DOB:</span> {formatDateOnly(application.applicant_date_of_birth)}</p>
+                  <p><span className="font-semibold text-stone-700">Gender:</span> {formatGender(application.applicant_gender)}</p>
+                  <p><span className="font-semibold text-stone-700">Declaration:</span> {application.declaration_accepted ? "Accepted" : "-"}</p>
+                </td>
                 <td className="px-4 py-4">
                   <span className="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-stone-700">
                     {application.status}

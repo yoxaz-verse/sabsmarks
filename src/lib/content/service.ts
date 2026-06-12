@@ -42,12 +42,11 @@ async function findPublishedTeamMember(client: SupabaseClient, entry: string, no
   return team.find((member) => normalizeSlug(member.slug) === normalizedEntry || normalizeSlug(member.name) === normalizedEntry) ?? null;
 }
 
-export async function getPageBySlug(slug: string) {
-  const supabase = await createServerSupabaseClient();
-  const { data: page } = await supabase.from("pages").select("*").eq("slug", slug).eq("status", "published").single<PageRecord>();
+async function queryPublishedPageWithSections(client: SupabaseClient, slug: string) {
+  const { data: page } = await client.from("pages").select("*").eq("slug", slug).eq("status", "published").maybeSingle<PageRecord>();
   if (!page) return null;
 
-  const { data: sections } = await supabase
+  const { data: sections } = await client
     .from("sections")
     .select("*")
     .eq("page_id", page.id)
@@ -58,9 +57,8 @@ export async function getPageBySlug(slug: string) {
   return { page, sections: sections ?? [] };
 }
 
-export async function getCollection(type: EntryRecord["type"], limit = 12) {
-  const supabase = await createServerSupabaseClient();
-  const { data } = await supabase
+async function queryPublishedCollection(client: SupabaseClient, type: EntryRecord["type"], limit = 12) {
+  const { data } = await client
     .from(type)
     .select("*")
     .eq("status", "published")
@@ -71,10 +69,47 @@ export async function getCollection(type: EntryRecord["type"], limit = 12) {
   return data ?? [];
 }
 
-export async function getEntry(type: EntryRecord["type"], slug: string) {
-  const supabase = await createServerSupabaseClient();
-  const { data } = await supabase.from(type).select("*").eq("slug", slug).eq("status", "published").single<EntryRecord>();
+async function queryPublishedEntry(client: SupabaseClient, type: EntryRecord["type"], slug: string) {
+  const { data } = await client.from(type).select("*").eq("slug", slug).eq("status", "published").maybeSingle<EntryRecord>();
   return data;
+}
+
+async function queryPublishedSlugs(client: SupabaseClient, type: EntryRecord["type"]) {
+  const { data } = await client.from(type).select("slug, updated_at").eq("status", "published");
+  return (data ?? []) as Array<{ slug: string; updated_at?: string | null }>;
+}
+
+export async function getPageBySlug(slug: string) {
+  const page = await queryPublishedPageWithSections(await createServerSupabaseClient(), slug);
+  if (page?.sections.length) return page;
+
+  try {
+    return (await queryPublishedPageWithSections(createAdminSupabaseClient(), slug)) ?? page;
+  } catch {
+    return page;
+  }
+}
+
+export async function getCollection(type: EntryRecord["type"], limit = 12) {
+  const entries = await queryPublishedCollection(await createServerSupabaseClient(), type, limit);
+  if (entries.length > 0) return entries;
+
+  try {
+    return await queryPublishedCollection(createAdminSupabaseClient(), type, limit);
+  } catch {
+    return entries;
+  }
+}
+
+export async function getEntry(type: EntryRecord["type"], slug: string) {
+  const entry = await queryPublishedEntry(await createServerSupabaseClient(), type, slug);
+  if (entry) return entry;
+
+  try {
+    return await queryPublishedEntry(createAdminSupabaseClient(), type, slug);
+  } catch {
+    return entry;
+  }
 }
 
 export async function getSiteSettings() {
@@ -176,9 +211,14 @@ export async function getInsightTags() {
 }
 
 export async function getPublishedSlugs(type: EntryRecord["type"]) {
-  const supabase = await createServerSupabaseClient();
-  const { data } = await supabase.from(type).select("slug, updated_at").eq("status", "published");
-  return (data ?? []) as Array<{ slug: string; updated_at?: string | null }>;
+  const slugs = await queryPublishedSlugs(await createServerSupabaseClient(), type);
+  if (slugs.length > 0) return slugs;
+
+  try {
+    return await queryPublishedSlugs(createAdminSupabaseClient(), type);
+  } catch {
+    return slugs;
+  }
 }
 
 export async function getPublishedTeamMemberSlugs() {

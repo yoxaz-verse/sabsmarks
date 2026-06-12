@@ -16,10 +16,10 @@ const formSchema = z.object({
 const fallbackContent = {
   heroEyebrow: "Career",
   heroTitle: "Join Us",
-  heroDescription: "Explore opportunities to grow with Sabs Marks JVS across audit, tax, and advisory.",
-  introTitle: "Build your career with a firm that values curiosity and responsibility.",
+  heroDescription: "Join a firm where values matter, people come first, and excellence is a way of life.",
+  introTitle: "Build your career with SABS Marks JVS & Co.",
   introBody:
-    "Due to our ambitious growth plans and rapidly growing practice in different functional areas, we are in constant need of energetic and enthusiastic professionals who are keen on learning and taking up challenging roles within the organization.\n\nWe are always on the look-out for bright and passionate professionals with diverse educational qualifications and experience, who can think outside the box, are enthusiastic about learning, and love to accept challenges.",
+    "At SABS Marks JVS & Co., we believe that professional success is built on a foundation of ethics, integrity, teamwork, and continuous learning. We foster a supportive work environment where every team member is respected, encouraged to grow, and empowered to make a meaningful contribution.\n\nWhether you are a Chartered Accountant, Article Assistant, HR Professional, or a young graduate starting your career, you will find opportunities to learn, develop, and excel alongside experienced professionals.\n\nJoin a firm where values matter, people come first, and excellence is a way of life.",
 };
 
 async function requireEditor() {
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
         slug: pageSlug,
         title: "Careers",
         template_type: "career-list",
-        excerpt: "Join our teams across audit, tax, and advisory practices.",
+        excerpt: fallbackContent.heroDescription,
         status: "published",
         published_at: now,
         updated_at: now,
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
       .update({
         title: "Careers",
         template_type: "career-list",
-        excerpt: "Join our teams across audit, tax, and advisory practices.",
+        excerpt: fallbackContent.heroDescription,
         updated_at: now,
       })
       .eq("id", pageId);

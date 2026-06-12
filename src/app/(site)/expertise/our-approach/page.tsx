@@ -5,23 +5,28 @@ export default function ApproachPage() {
   const steps = [
     {
       num: "01",
-      title: "Understanding Context",
-      desc: "We begin by developing a deep understanding of your business, industry dynamics, and specific challenges before formulating any strategy."
+      title: "Precision over assumptions",
+      desc: "We work from facts, context, and clear analysis before drawing conclusions."
     },
     {
       num: "02",
-      title: "Partner-Led Delivery",
-      desc: "Every engagement is spearheaded by a Partner, ensuring that you receive seasoned expertise and authoritative decision-making at every stage."
+      title: "Structure over chaos",
+      desc: "We bring disciplined processes to complex matters so decisions stay organized and actionable."
     },
     {
       num: "03",
-      title: "Cross-Functional Integration",
-      desc: "We break down silos, bringing together tax, audit, and advisory professionals to provide holistic solutions that address multi-faceted business issues."
+      title: "Compliance without friction",
+      desc: "We make regulatory obligations easier to manage without slowing the business down."
     },
     {
       num: "04",
-      title: "Actionable Insights",
-      desc: "Beyond mere compliance, our focus is on delivering practical, actionable recommendations that add tangible value to your organization's bottom line."
+      title: "Insight before actions",
+      desc: "We prioritize understanding the issue fully before recommending the next step."
+    },
+    {
+      num: "05",
+      title: "Accountability at every level",
+      desc: "We maintain ownership, transparency, and follow-through from strategy to execution."
     }
   ];
 
@@ -31,10 +36,13 @@ export default function ApproachPage() {
 
       <section className="mx-auto max-w-7xl px-6 py-20 md:py-32 w-full">
         <div className="mb-20 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-ink mb-6">A Structured, Client-Centric Methodology</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-ink mb-6">Our Approach</h2>
           <div className="h-1 w-24 bg-accent-secondary mx-auto mb-8"></div>
-          <p className="text-lg text-muted leading-relaxed">
-            Our approach is built on decades of professional experience. We combine technical rigor with practical business acumen to deliver solutions that are not only compliant but highly effective in real-world scenarios.
+          <p className="text-2xl md:text-3xl font-semibold leading-snug text-ink">
+            &ldquo;How you do anything is how you do everything&rdquo;
+          </p>
+          <p className="mt-6 text-lg text-muted leading-relaxed">
+            Our approach is guided by five operating principles:
           </p>
         </div>
 

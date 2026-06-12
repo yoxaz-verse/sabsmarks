@@ -14,9 +14,11 @@ const allowedResumeExtensions = new Set(["pdf", "doc", "docx"]);
 const applicationSchema = z.object({
   career_id: z.string().uuid(),
   name: z.string().trim().min(2).max(120),
+  date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Please enter a valid date of birth."),
   email: z.string().trim().email().max(180),
   phone: z.string().trim().min(7).max(40),
-  message: z.string().trim().max(2500).optional(),
+  gender: z.enum(["male", "female", "other"]),
+  declaration: z.string().refine((value) => value === "true", "Please accept the declaration."),
 });
 
 function textValue(formData: FormData, key: string) {
@@ -39,14 +41,25 @@ export async function POST(req: Request) {
   const parsed = applicationSchema.safeParse({
     career_id: textValue(formData, "career_id"),
     name: textValue(formData, "name"),
+    date_of_birth: textValue(formData, "date_of_birth"),
     email: textValue(formData, "email"),
     phone: textValue(formData, "phone"),
-    message: textValue(formData, "message"),
+    gender: textValue(formData, "gender"),
+    declaration: textValue(formData, "declaration"),
   });
 
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
     return NextResponse.json({ error: issue?.message ?? "Please check the application form." }, { status: 400 });
+  }
+
+  const dateOfBirth = new Date(`${parsed.data.date_of_birth}T00:00:00.000Z`);
+  if (
+    Number.isNaN(dateOfBirth.getTime()) ||
+    dateOfBirth.toISOString().slice(0, 10) !== parsed.data.date_of_birth ||
+    dateOfBirth > new Date()
+  ) {
+    return NextResponse.json({ error: "Please enter a valid date of birth." }, { status: 400 });
   }
 
   const resume = formData.get("resume");
@@ -89,9 +102,12 @@ export async function POST(req: Request) {
   const { error: insertError } = await supabase.from("career_applications").insert({
     career_id: parsed.data.career_id,
     applicant_name: parsed.data.name,
+    applicant_date_of_birth: parsed.data.date_of_birth,
     applicant_email: parsed.data.email.toLowerCase(),
     applicant_phone: parsed.data.phone,
-    message: parsed.data.message || null,
+    applicant_gender: parsed.data.gender,
+    declaration_accepted: true,
+    message: null,
     resume_bucket: resumeBucket,
     resume_path: resumePath,
     resume_filename: resume.name,
