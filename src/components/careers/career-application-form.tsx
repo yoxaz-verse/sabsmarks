@@ -147,14 +147,7 @@ export function CareerApplicationForm({ careerId, careerTitle }: CareerApplicati
       </label>
 
       {message ? (
-        <div
-          className={`rounded-2xl border px-4 py-3 text-sm leading-6 ${
-            state === "success"
-              ? "border-green-200 bg-green-50 text-green-800"
-              : "border-red-200 bg-red-50 text-red-700"
-          }`}
-        >
-          {state === "success" ? <CheckCircle2 className="mr-2 inline h-4 w-4" /> : null}
+        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
           {message}
         </div>
       ) : null}
