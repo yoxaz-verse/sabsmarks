@@ -100,7 +100,7 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
                 onClick={() => setSelectedSlug(office.slug)}
                 className={`w-full text-left p-4.5 rounded-[1.35rem] border transition-all duration-300 flex items-center justify-between group cursor-pointer ${
                   isSelected
-                    ? "bg-accent border-accent text-white shadow-[0_12px_28px_rgba(30,58,138,0.2)]"
+                    ? "bg-accent border-accent text-white shadow-[0_12px_28px_color-mix(in_srgb,var(--accent)_24%,transparent)]"
                     : "bg-surface/40 border-[var(--glass-border)] text-ink hover:bg-surface"
                 }`}
               >

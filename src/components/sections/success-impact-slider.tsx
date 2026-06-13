@@ -152,28 +152,28 @@ export function SuccessImpactSlider() {
 
         {/* Large Stats Display Card */}
         <div className="lg:col-span-5">
-          <div className="creative-card decorated-panel bg-gradient-to-tr from-accent to-blue-900 text-white rounded-[2rem] p-8 md:p-10 flex flex-col justify-between h-full min-h-[440px] shadow-strong relative overflow-hidden border-none">
+          <div className="creative-card decorated-panel bg-[linear-gradient(135deg,var(--accent)_0%,#064b77_58%,#063c24_100%)] text-white rounded-[2rem] p-8 md:p-10 flex flex-col justify-between h-full min-h-[440px] shadow-strong relative overflow-hidden border-none">
             {/* Background elements */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent_50%)]" />
-            <div className="absolute top-[40%] -left-[20%] w-[18rem] h-[18rem] rounded-full bg-blue-500/10 blur-[80px]" />
+            <div className="absolute top-[40%] -left-[20%] w-[18rem] h-[18rem] rounded-full bg-accent-secondary/14 blur-[80px]" />
             
             <div className="relative z-10 flex items-center justify-between border-b border-white/10 pb-5">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-blue-200">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[color-mix(in_srgb,var(--accent-secondary)_25%,white)]">
                 Key Performance Impact
               </span>
-              <Icon className="h-6 w-6 text-blue-300" />
+              <Icon className="h-6 w-6 text-[color-mix(in_srgb,var(--accent-secondary)_35%,white)]" />
             </div>
 
             <div className="relative z-10 py-8">
               <div className="text-6xl md:text-7xl font-black tracking-tight text-white leading-none">
                 {activeStudy.metric}
               </div>
-              <div className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-blue-200 leading-relaxed max-w-xs">
+              <div className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--accent-secondary)_25%,white)] leading-relaxed max-w-xs">
                 {activeStudy.metricLabel}
               </div>
             </div>
 
-            <div className="relative z-10 border-t border-white/10 pt-5 text-xs text-blue-200 leading-relaxed font-semibold">
+            <div className="relative z-10 border-t border-white/10 pt-5 text-xs text-[color-mix(in_srgb,var(--accent-secondary)_25%,white)] leading-relaxed font-semibold">
               Delivering data-backed confidence for corporate auditing and global supply operations.
             </div>
           </div>

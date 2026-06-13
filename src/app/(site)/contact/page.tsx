@@ -62,7 +62,7 @@ function QuickAction({
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">{label}</p>
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">{label}</p>
         <p className="mt-2 truncate text-lg font-semibold text-white">{value}</p>
       </div>
     </a>
@@ -106,17 +106,17 @@ function BranchSummary({ branch }: { branch: LocationBranch }) {
     <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100/70">Sub Branch</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Sub Branch</p>
           <h4 className="mt-1 text-sm font-bold text-white">{branch.name}</h4>
         </div>
         {branch.map_url ? (
-          <a href={branch.map_url} target="_blank" rel="noreferrer" className="shrink-0 rounded-lg border border-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-blue-100 transition hover:bg-white/10">
+          <a href={branch.map_url} target="_blank" rel="noreferrer" className="shrink-0 rounded-lg border border-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-white/82 transition hover:bg-white/10">
             Map
           </a>
         ) : null}
       </div>
-      {branch.address ? <p className="mt-3 line-clamp-2 text-xs leading-6 text-blue-50/70">{branch.address}</p> : null}
-      <div className="mt-3 space-y-2 text-xs text-blue-50/82">
+      {branch.address ? <p className="mt-3 line-clamp-2 text-xs leading-6 text-white/70">{branch.address}</p> : null}
+      <div className="mt-3 space-y-2 text-xs text-white/82">
         {branch.phone ? (
           <a href={`tel:${sanitizePhone(branch.phone)}`} className="flex items-center gap-2 transition hover:text-white">
             <Phone className="h-3.5 w-3.5" />
@@ -144,25 +144,25 @@ function OfficeCard({ location }: { location: Location }) {
   const branches = location.branches ?? [];
 
   return (
-    <article className="group rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-[0_20px_50px_rgba(59,130,246,0.12)]">
+    <article className="group rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-accent-secondary/40 hover:shadow-[0_20px_50px_color-mix(in_srgb,var(--accent)_18%,transparent)]">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-accent">{location.city}</p>
           <h3 className="mt-3 text-xl font-bold text-white transition-colors duration-300 group-hover:text-white/90">{location.office_name}</h3>
         </div>
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-accent transition-all duration-500 group-hover:scale-105 group-hover:bg-accent group-hover:text-white group-hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-accent-secondary transition-all duration-500 group-hover:scale-105 group-hover:bg-accent-secondary group-hover:text-white group-hover:shadow-[0_0_15px_var(--accent-secondary-glow)]">
           <Building2 className="h-5 w-5" />
         </div>
       </div>
 
-      <p className="mt-4 line-clamp-3 text-sm leading-7 text-blue-50/75 min-h-[56px]">{location.address}</p>
+      <p className="mt-4 line-clamp-3 text-sm leading-7 text-white/75 min-h-[56px]">{location.address}</p>
 
       <div className="my-5 border-t border-dashed border-white/10" />
 
-      <div className="space-y-3 text-xs text-blue-50/85">
+      <div className="space-y-3 text-xs text-white/85">
         {location.phone ? (
           <a href={`tel:${sanitizePhone(location.phone)}`} className="flex items-center gap-3 transition-colors duration-300 hover:text-white group/link">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-blue-100 group-hover/link:border-accent/30 group-hover/link:bg-accent/10 group-hover/link:text-accent transition-all duration-300">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-white/80 group-hover/link:border-accent-secondary/30 group-hover/link:bg-accent-secondary/10 group-hover/link:text-accent-secondary transition-all duration-300">
               <Phone className="h-3.5 w-3.5" />
             </div>
             <span className="font-medium">{location.phone}</span>
@@ -170,7 +170,7 @@ function OfficeCard({ location }: { location: Location }) {
         ) : null}
         {location.email ? (
           <a href={`mailto:${location.email}`} className="flex items-center gap-3 transition-colors duration-300 hover:text-white group/link">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-blue-100 group-hover/link:border-accent/30 group-hover/link:bg-accent/10 group-hover/link:text-accent transition-all duration-300">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-white/80 group-hover/link:border-accent-secondary/30 group-hover/link:bg-accent-secondary/10 group-hover/link:text-accent-secondary transition-all duration-300">
               <Mail className="h-3.5 w-3.5" />
             </div>
             <span className="truncate font-medium">{location.email}</span>
@@ -180,7 +180,7 @@ function OfficeCard({ location }: { location: Location }) {
 
       {branches.length > 0 ? (
         <div className="mt-5 space-y-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100/70">Also at this location</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Also at this location</p>
           {branches.map((branch) => (
             <BranchSummary key={branch.id} branch={branch} />
           ))}
@@ -200,7 +200,7 @@ function OfficeCard({ location }: { location: Location }) {
             href={location.map_url}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] text-blue-100 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] text-white/82 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white"
           >
             <MapPin className="h-3.5 w-3.5" />
             Open map
@@ -230,7 +230,7 @@ export default async function ContactPage() {
           <>
             <a
               href={`tel:${sanitizePhone(contact.primaryPhone)}`}
-              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[var(--accent-secondary)] shadow-[0_14px_32px_rgba(2,6,23,0.22)] transition hover:bg-blue-50"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[var(--accent)] shadow-[0_14px_32px_rgba(2,6,23,0.22)] transition hover:bg-[color-mix(in_srgb,var(--accent-secondary)_8%,white)]"
             >
               <Phone className="h-4 w-4" />
               Call head office
@@ -244,7 +244,7 @@ export default async function ContactPage() {
             </a>
             <a
               href="#office-network"
-              className="inline-flex items-center gap-2 rounded-full border border-white/12 px-5 py-3 text-sm font-medium text-blue-50 transition hover:border-white/24 hover:bg-white/8"
+              className="inline-flex items-center gap-2 rounded-full border border-white/12 px-5 py-3 text-sm font-medium text-white/88 transition hover:border-white/24 hover:bg-white/8"
             >
               <Building2 className="h-4 w-4" />
               View offices
@@ -256,7 +256,7 @@ export default async function ContactPage() {
       <section className="site-section">
         <div className="site-container py-10 md:py-14">
           <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-            <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(145deg,#1f3d8d_0%,#244aa9_52%,#173677_100%)] px-6 py-7 text-white shadow-[0_32px_80px_rgba(18,57,95,0.24)] md:px-8 md:py-8">
+            <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(145deg,#06121d_0%,#005c9d_54%,#063c24_100%)] px-6 py-7 text-white shadow-[0_32px_80px_rgba(18,57,95,0.24)] md:px-8 md:py-8">
               <div className="absolute inset-0">
                 <Image
                   src={SITE_VISUALS.contact.meeting}
@@ -268,9 +268,9 @@ export default async function ContactPage() {
               </div>
               <div className="flex flex-wrap items-start justify-between gap-5">
                 <div className="max-w-2xl">
-                  <p className="text-xs font-bold uppercase tracking-[0.28em] text-blue-100">Head Office Contact</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Head Office Contact</p>
                   <h2 className="mt-4 text-3xl font-bold leading-tight md:text-[2.4rem]">{contact.brandName}</h2>
-                  <p className="mt-4 max-w-xl text-[15px] leading-7 text-blue-50/88">
+                  <p className="mt-4 max-w-xl text-[15px] leading-7 text-white/88">
                     Reach our headquarters directly for appointments, engagement enquiries, and help choosing the most relevant office.
                   </p>
                 </div>
@@ -295,8 +295,8 @@ export default async function ContactPage() {
               </div>
 
               <div className="mt-8 rounded-[1.75rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.24em] text-blue-100">Registered Address</p>
-                <p className="mt-3 whitespace-pre-line text-sm leading-7 text-blue-50/90">{contact.headOfficeAddress}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Registered Address</p>
+                <p className="mt-3 whitespace-pre-line text-sm leading-7 text-white/90">{contact.headOfficeAddress}</p>
                 <a
                   href={headOfficeMapUrl}
                   target="_blank"
@@ -396,14 +396,14 @@ export default async function ContactPage() {
 
             <div
               id="office-network"
-              className="rounded-[2rem] bg-[linear-gradient(135deg,rgba(12,18,32,0.98),rgba(20,40,82,0.96))] p-6 text-white shadow-[0_32px_80px_rgba(15,23,42,0.24)] md:p-8"
+              className="rounded-[2rem] bg-[linear-gradient(135deg,#06121d_0%,#064b77_58%,#063c24_100%)] p-6 text-white shadow-[0_32px_80px_rgba(15,23,42,0.24)] md:p-8"
             >
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.28em] text-blue-100">Office Network</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Office Network</p>
                   <h3 className="mt-3 text-2xl font-bold">Find the branch closest to the conversation you need.</h3>
                 </div>
-                <p className="max-w-md text-sm leading-7 text-blue-50/78">
+                <p className="max-w-md text-sm leading-7 text-white/78">
                   Published office records drive this section, so local contact details and map links stay useful instead of decorative.
                 </p>
               </div>
@@ -415,7 +415,7 @@ export default async function ContactPage() {
                   ))}
                 </div>
               ) : (
-                <div className="mt-8 rounded-[1.75rem] border border-white/10 bg-white/6 p-6 text-blue-50/88">
+                <div className="mt-8 rounded-[1.75rem] border border-white/10 bg-white/6 p-6 text-white/88">
                   No published office records are available yet. Once locations are published in the CMS, they will appear here automatically.
                 </div>
               )}

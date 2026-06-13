@@ -97,13 +97,13 @@ export function LocationsBrowser({ locations }: { locations: Location[] }) {
 
   return (
     <div className="mt-12 grid gap-6 xl:grid-cols-[0.42fr_0.58fr]">
-      <section className="rounded-[2rem] bg-[linear-gradient(135deg,rgba(12,18,32,0.98),rgba(20,40,82,0.96))] p-5 text-white shadow-[0_32px_80px_rgba(15,23,42,0.24)] md:p-6">
+      <section className="rounded-[2rem] bg-[linear-gradient(135deg,#06121d_0%,#064b77_58%,#063c24_100%)] p-5 text-white shadow-[0_32px_80px_rgba(15,23,42,0.24)] md:p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.28em] text-blue-100">Office Directory</p>
+            <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Office Directory</p>
             <h2 className="mt-3 text-2xl font-bold">Switch offices without leaving the page.</h2>
           </div>
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-blue-50">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white/90">
             <Building2 className="h-5 w-5" />
           </div>
         </div>
@@ -119,17 +119,17 @@ export function LocationsBrowser({ locations }: { locations: Location[] }) {
                 onClick={() => setActiveSlug(location.slug)}
                 className={`flex w-full items-center justify-between gap-4 rounded-[1.35rem] border px-4 py-4 text-left transition ${
                   isActive
-                    ? "border-[#f0b13e] bg-[#f0b13e] text-[#132756] shadow-[0_20px_40px_rgba(240,177,62,0.18)]"
+                    ? "border-accent-secondary bg-accent-secondary text-white shadow-[0_20px_40px_color-mix(in_srgb,var(--accent-secondary)_24%,transparent)]"
                     : "border-white/10 bg-white/6 text-white hover:border-white/18 hover:bg-white/9"
                 }`}
               >
                 <div>
-                  <p className={`text-[11px] font-bold uppercase tracking-[0.22em] ${isActive ? "text-[#132756]/70" : "text-blue-100/80"}`}>
+                  <p className={`text-[11px] font-bold uppercase tracking-[0.22em] ${isActive ? "text-white/75" : "text-white/75"}`}>
                     {location.city}
                   </p>
                   <p className="mt-2 text-lg font-semibold leading-tight">{location.office_name}</p>
                 </div>
-                <MapPin className={`h-5 w-5 shrink-0 ${isActive ? "text-[#132756]" : "text-blue-100/85"}`} />
+                <MapPin className={`h-5 w-5 shrink-0 ${isActive ? "text-white" : "text-white/82"}`} />
               </button>
             );
           })}
@@ -183,7 +183,7 @@ export function LocationsBrowser({ locations }: { locations: Location[] }) {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link
                 href={`/contact/${activeLocation.slug}`}
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_38px_rgba(30,58,138,0.22)] transition hover:bg-[color-mix(in_srgb,var(--accent)_88%,black)]"
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_38px_color-mix(in_srgb,var(--accent)_24%,transparent)] transition hover:bg-[color-mix(in_srgb,var(--accent)_88%,black)]"
               >
                 View office details
                 <ExternalLink className="h-4 w-4" />

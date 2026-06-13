@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, CheckCircle2, ShieldAlert, Award, Rocket, TrendingUp, Landmark } from "lucide-react";
+import { ArrowRight, CheckCircle2, Award, Rocket, TrendingUp, Landmark } from "lucide-react";
 import Link from "next/link";
 
 interface RoadmapStep {
@@ -91,7 +91,7 @@ export function InteractiveRoadmap() {
               onClick={() => setActiveTab(phase.id)}
               className={`flex items-center gap-3 rounded-2xl px-5 py-4 text-sm font-semibold tracking-wide border transition-all duration-300 cursor-pointer ${
                 isActive
-                  ? "bg-accent border-accent text-white shadow-[0_12px_30px_rgba(30,58,138,0.24)]"
+                  ? "bg-accent border-accent text-white shadow-[0_12px_30px_color-mix(in_srgb,var(--accent)_26%,transparent)]"
                   : "bg-surface/50 border-[var(--glass-border)] text-muted hover:bg-surface hover:text-ink"
               }`}
             >
@@ -124,8 +124,8 @@ export function InteractiveRoadmap() {
             </p>
 
             {/* Glowing Metric Box */}
-            <div className="mt-8 flex items-center gap-5 bg-gradient-to-r from-accent/5 to-blue-500/5 border border-accent/10 rounded-2xl p-5">
-              <div className="text-4xl font-black text-gradient bg-gradient-to-r from-accent to-blue-500">
+            <div className="mt-8 flex items-center gap-5 bg-gradient-to-r from-accent/5 to-accent-secondary/5 border border-accent/10 rounded-2xl p-5">
+              <div className="text-4xl font-black text-gradient bg-gradient-to-r from-accent to-accent-secondary">
                 {activePhase.stats.value}
               </div>
               <div className="text-xs font-bold uppercase tracking-wider text-muted">

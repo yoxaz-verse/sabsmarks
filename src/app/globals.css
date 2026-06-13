@@ -3,47 +3,58 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --brand-blue: #005c9d;
+  --brand-blue-deep: #004675;
+  --brand-green: #009028;
+  --brand-green-soft: #26a946;
+  --brand-ink: #030002;
   --bg: #f4f7fb;
   --surface: #ffffff;
   --surface-raised: #eef3fb;
   --surface-strong: #dfe8f4;
-  --ink: #0f172a;
-  --muted: #5f6f84;
-  --accent: #1e3a8a;
-  --accent-secondary: #0f172a;
-  --accent-glow: rgba(30, 58, 138, 0.16);
+  --ink: #101820;
+  --muted: #586879;
+  --accent: var(--brand-blue);
+  --accent-secondary: var(--brand-green);
+  --accent-glow: rgba(0, 92, 157, 0.16);
+  --accent-secondary-glow: rgba(0, 144, 40, 0.16);
   --glass: rgba(255, 255, 255, 0.84);
   --glass-border: rgba(15, 23, 42, 0.1);
   --grid-color: rgba(15, 23, 42, 0.06);
   --section-border: rgba(15, 23, 42, 0.08);
   --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.08);
   --shadow-strong: 0 28px 90px rgba(15, 23, 42, 0.12);
-  --logo-text: #1e3a8a;
+  --logo-text: var(--brand-blue);
   --ornament-stroke: color-mix(in srgb, var(--accent) 30%, transparent);
-  --ornament-stroke-strong: color-mix(in srgb, var(--accent-secondary) 20%, var(--accent) 32%);
+  --ornament-stroke-strong: color-mix(in srgb, var(--accent-secondary) 34%, var(--accent) 30%);
   --ornament-stroke-soft: color-mix(in srgb, var(--glass-border) 88%, transparent);
-  --ornament-grid: color-mix(in srgb, var(--accent) 10%, transparent);
-  --ornament-dot: color-mix(in srgb, var(--accent) 65%, white 35%);
+  --ornament-grid: color-mix(in srgb, var(--accent-secondary) 12%, transparent);
+  --ornament-dot: color-mix(in srgb, var(--accent-secondary) 65%, white 35%);
   --ornament-glow: color-mix(in srgb, var(--accent) 18%, transparent);
-  --ornament-glow-strong: color-mix(in srgb, var(--accent-secondary) 12%, transparent);
+  --ornament-glow-strong: color-mix(in srgb, var(--accent-secondary) 18%, transparent);
   --ornament-motion: 240ms;
-  --duotone-shadow: #0f172a;
-  --duotone-start: #1e3a8a;
-  --duotone-end: #3b82f6;
+  --duotone-shadow: var(--brand-ink);
+  --duotone-start: var(--brand-blue);
+  --duotone-end: var(--brand-green);
   --duotone-color-opacity: 0.24;
   --duotone-multiply-opacity: 0.08;
 }
 
 .dark {
+  --brand-blue: #4bb3ff;
+  --brand-blue-deep: #005c9d;
+  --brand-green: #3bd264;
+  --brand-green-soft: #65e07f;
   --bg: #09111f;
   --surface: #101a2b;
   --surface-raised: #162338;
   --surface-strong: #22314a;
   --ink: #f7f9fc;
   --muted: #9aa9bc;
-  --accent: #4a89ff;
-  --accent-secondary: #dbe7ff;
-  --accent-glow: rgba(74, 137, 255, 0.24);
+  --accent: var(--brand-blue);
+  --accent-secondary: var(--brand-green);
+  --accent-glow: rgba(75, 179, 255, 0.24);
+  --accent-secondary-glow: rgba(59, 210, 100, 0.2);
   --glass: rgba(16, 26, 43, 0.78);
   --glass-border: rgba(219, 231, 255, 0.08);
   --grid-color: rgba(219, 231, 255, 0.035);
@@ -52,15 +63,15 @@
   --shadow-strong: 0 28px 90px rgba(2, 6, 23, 0.4);
   --logo-text: #ffffff;
   --ornament-stroke: color-mix(in srgb, var(--accent) 46%, transparent);
-  --ornament-stroke-strong: color-mix(in srgb, white 20%, var(--accent) 42%);
+  --ornament-stroke-strong: color-mix(in srgb, var(--accent-secondary) 24%, var(--accent) 38%);
   --ornament-stroke-soft: color-mix(in srgb, rgba(219, 231, 255, 0.22) 92%, transparent);
-  --ornament-grid: color-mix(in srgb, rgba(148, 181, 255, 0.22) 78%, transparent);
-  --ornament-dot: color-mix(in srgb, white 38%, var(--accent) 62%);
+  --ornament-grid: color-mix(in srgb, var(--accent-secondary) 16%, transparent);
+  --ornament-dot: color-mix(in srgb, white 28%, var(--accent-secondary) 72%);
   --ornament-glow: color-mix(in srgb, var(--accent) 22%, transparent);
-  --ornament-glow-strong: color-mix(in srgb, rgba(219, 231, 255, 0.16) 82%, transparent);
+  --ornament-glow-strong: color-mix(in srgb, var(--accent-secondary) 18%, transparent);
   --duotone-shadow: #09111f;
-  --duotone-start: #4a89ff;
-  --duotone-end: #60a5fa;
+  --duotone-start: var(--accent);
+  --duotone-end: var(--accent-secondary);
   --duotone-color-opacity: 0.32;
   --duotone-multiply-opacity: 0.22;
 }
@@ -73,6 +84,8 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-secondary: var(--accent-secondary);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-green: var(--brand-green);
 }
 
 * {
@@ -374,7 +387,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 1.5rem;
   height: 2px;
   width: 6rem;
-  background: linear-gradient(90deg, var(--accent), transparent);
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary), transparent);
 }
 
 .section-copy {
@@ -1138,36 +1151,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .banner-art--contrast {
-  --banner-art-line: rgba(160, 194, 255, 0.42);
-  --banner-art-soft-line: rgba(219, 231, 255, 0.14);
+  --banner-art-line: color-mix(in srgb, var(--accent) 44%, transparent);
+  --banner-art-soft-line: color-mix(in srgb, var(--accent-secondary) 18%, transparent);
   --banner-art-panel: rgba(255, 255, 255, 0.08);
   --banner-art-raised: rgba(255, 255, 255, 0.13);
-  --banner-art-ink: #b9d3ff;
+  --banner-art-ink: color-mix(in srgb, var(--accent) 72%, white 28%);
   opacity: 0.98;
 }
 
 .banner-art--network {
-  --banner-art-accent: #4a89ff;
+  --banner-art-accent: var(--accent);
 }
 
 .banner-art--firm {
-  --banner-art-accent: #79a7ff;
+  --banner-art-accent: color-mix(in srgb, var(--accent) 72%, var(--accent-secondary) 28%);
 }
 
 .banner-art--service {
-  --banner-art-accent: #60a5fa;
+  --banner-art-accent: color-mix(in srgb, var(--accent) 84%, white 16%);
 }
 
 .banner-art--career {
-  --banner-art-accent: #7dd3fc;
+  --banner-art-accent: var(--accent-secondary);
 }
 
 .banner-art--insight {
-  --banner-art-accent: #93c5fd;
+  --banner-art-accent: color-mix(in srgb, var(--accent-secondary) 70%, white 30%);
 }
 
 .banner-art--industry {
-  --banner-art-accent: #38bdf8;
+  --banner-art-accent: color-mix(in srgb, var(--accent) 60%, var(--accent-secondary) 40%);
 }
 
 .banner-art__halo,
@@ -1500,7 +1513,7 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   border-radius: inherit;
   padding: 1.5px;
-  background: linear-gradient(135deg, var(--accent) 0%, #60a5fa 50%, transparent 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 55%, transparent 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -1522,7 +1535,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Gradient Text Utilities */
 .text-gradient {
-  background: linear-gradient(135deg, var(--accent) 0%, #3b82f6 60%, var(--accent-secondary) 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 70%, var(--accent-secondary) 30%) 55%, var(--accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1581,7 +1594,7 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent) 0%, #3b82f6 50%, #60a5fa 100%);
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
   z-index: 1000;
   width: 0%;
   transition: width 80ms ease-out;

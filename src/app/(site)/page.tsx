@@ -150,9 +150,9 @@ export default function Home() {
     <div className="flex min-h-screen flex-col">
       <section className="home-hero site-section relative flex min-h-[86vh] items-center overflow-hidden">
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute -left-[14%] -top-[12%] h-[38rem] w-[38rem] rounded-full bg-accent/14 blur-[118px] mix-blend-multiply dark:bg-blue-500/10 dark:mix-blend-screen" />
-          <div className="absolute -right-[12%] top-[18%] h-[34rem] w-[34rem] rounded-full bg-sky-300/14 blur-[120px] mix-blend-multiply dark:bg-indigo-500/10 dark:mix-blend-screen" />
-          <div className="absolute bottom-[-24%] left-[28%] h-[42rem] w-[42rem] rounded-full bg-cyan-300/10 blur-[130px] mix-blend-multiply dark:bg-slate-100/5 dark:mix-blend-screen" />
+          <div className="absolute -left-[14%] -top-[12%] h-[38rem] w-[38rem] rounded-full bg-accent/14 blur-[118px] mix-blend-multiply dark:bg-accent/10 dark:mix-blend-screen" />
+          <div className="absolute -right-[12%] top-[18%] h-[34rem] w-[34rem] rounded-full bg-accent-secondary/14 blur-[120px] mix-blend-multiply dark:bg-accent-secondary/10 dark:mix-blend-screen" />
+          <div className="absolute bottom-[-24%] left-[28%] h-[42rem] w-[42rem] rounded-full bg-accent/8 blur-[130px] mix-blend-multiply dark:bg-white/5 dark:mix-blend-screen" />
           <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(244,247,251,0.96)_0%,rgba(244,247,251,0.9)_46%,rgba(244,247,251,0.72)_78%,rgba(244,247,251,0.58)_100%)] dark:bg-[linear-gradient(90deg,rgba(9,17,31,0.98)_0%,rgba(9,17,31,0.91)_48%,rgba(9,17,31,0.66)_78%,rgba(9,17,31,0.44)_100%)]" />
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-14 animate-slow-zoom-out dark:opacity-38" />
           <CanvasParticles />
@@ -177,7 +177,7 @@ export default function Home() {
               </p>
 
               <div className="mt-9 flex flex-wrap gap-4 animate-hero-ctas">
-                <Link href="/practice-areas" className="group inline-flex items-center gap-3 rounded-2xl bg-accent px-7 py-4 text-sm font-semibold tracking-wide text-white shadow-[0_18px_40px_rgba(30,58,138,0.32)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_48px_rgba(30,58,138,0.45)] active:translate-y-0">
+                <Link href="/practice-areas" className="group inline-flex items-center gap-3 rounded-2xl bg-accent px-7 py-4 text-sm font-semibold tracking-wide text-white shadow-[0_18px_40px_color-mix(in_srgb,var(--accent)_32%,transparent)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_48px_color-mix(in_srgb,var(--accent)_42%,transparent)] active:translate-y-0">
                   <span>Explore Services</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -215,7 +215,7 @@ export default function Home() {
             </div>
 
             <div className="relative animate-hero-aside">
-              <div className="absolute -inset-4 rounded-[2.25rem] bg-gradient-to-tr from-accent/22 via-sky-300/14 to-transparent opacity-70 blur-3xl dark:from-accent/16 dark:via-indigo-500/10" />
+              <div className="absolute -inset-4 rounded-[2.25rem] bg-gradient-to-tr from-accent/22 via-accent-secondary/14 to-transparent opacity-70 blur-3xl dark:from-accent/16 dark:via-accent-secondary/10" />
               <GlowCard className="hero-advisory-card decorated-panel relative overflow-hidden rounded-[2rem]">
                 <SiteOrnament mode="card" className="opacity-35" />
                 <div className="p-6 md:p-7">
@@ -357,7 +357,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-black uppercase tracking-[0.24em] text-slate-400">{step.step}</span>
-                      <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-blue-200">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-[color-mix(in_srgb,var(--accent-secondary)_35%,white)]">
                         <step.icon className="h-5 w-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
                       </span>
                     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calculator, ArrowRight, ArrowLeft, CheckCircle2, ShieldAlert, FileText, Send, Sparkles } from "lucide-react";
+import { Calculator, ArrowLeft, CheckCircle2, Send, Sparkles } from "lucide-react";
 
 interface Option {
   label: string;
@@ -202,7 +202,7 @@ export function ComplianceDiagnostic() {
             <div className="md:col-span-4 flex flex-col items-center justify-center p-4">
               <div className="relative flex items-center justify-center h-32 w-32 rounded-full border-4 border-dashed border-accent/20 score-pulse">
                 <div className="absolute inset-2 rounded-full bg-accent/5 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-black text-gradient bg-gradient-to-r from-accent to-blue-500">
+                  <span className="text-3xl font-black text-gradient bg-gradient-to-r from-accent to-accent-secondary">
                     {score}%
                   </span>
                   <span className="text-[10px] font-extrabold uppercase tracking-widest text-muted mt-1">
@@ -248,7 +248,7 @@ export function ComplianceDiagnostic() {
                 </div>
                 <button
                   type="submit"
-                  className="flex items-center justify-center gap-2.5 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(30,58,138,0.2)] hover:bg-accent/95 transition-all cursor-pointer"
+                  className="flex items-center justify-center gap-2.5 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_24px_color-mix(in_srgb,var(--accent)_22%,transparent)] hover:bg-accent/95 transition-all cursor-pointer"
                 >
                   <span>Request Full PDF & Consultation</span>
                   <Send className="h-4 w-4" />

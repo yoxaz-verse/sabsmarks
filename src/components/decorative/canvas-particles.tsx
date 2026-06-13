@@ -116,8 +116,8 @@ export function CanvasParticles() {
 
       ctx.clearRect(0, 0, width, height);
 
-      // Node colors based on theme
-      const nodeColor = isDarkMode ? "74, 137, 255" : "30, 58, 138"; // Accent colors
+      // Node colors based on the logo-matched accent palette.
+      const nodeColor = isDarkMode ? "75, 179, 255" : "0, 92, 157";
 
       // Update and draw particles
       particles.forEach((p) => {

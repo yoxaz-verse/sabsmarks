@@ -43,8 +43,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased selection:bg-[#0ea5e9] selection:text-white relative">
-        <NextTopLoader color="#20a447" height={3} showSpinner={false} shadow="0 0 10px #20a447,0 0 5px #20a447" zIndex={100000} />
+      <body className="antialiased selection:bg-accent selection:text-white relative">
+        <NextTopLoader color="#009028" height={3} showSpinner={false} shadow="0 0 10px #009028,0 0 5px #009028" zIndex={100000} />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <div className="scanline-overlay"></div>
           <div className="relative z-10 flex flex-col min-h-screen">{children}</div>
