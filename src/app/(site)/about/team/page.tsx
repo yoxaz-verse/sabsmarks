@@ -37,8 +37,8 @@ export default async function TeamPage() {
       <PageBanner title="Leadership" />
 
       <InteriorIntroSection
-        title="Our partners bring deep judgment to every engagement."
-        description="Our leadership team brings decades of combined experience across diverse financial and advisory disciplines. Partner-led teams ensure deep domain expertise and exceptional service delivery."
+        title="Partner-Led Institution-Driven"
+        description="With decades of combined experience, our partners provide trusted leadership and strategic guidance, supported by the strength, systems, and excellence of a well-established institution."
         className="border-b-0"
       />
 

@@ -13,6 +13,9 @@ type AdminLocationBranch = {
   email: string;
   contact_person: string;
   map_url: string;
+  latitude: string;
+  longitude: string;
+  photo_url: string;
 };
 
 function inputValue(record: AdminRecord, key: string) {
@@ -39,6 +42,12 @@ function nullableText(value: unknown) {
   if (typeof value !== "string") return value ?? null;
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : null;
+}
+
+function nullableNumber(value: unknown) {
+  if (value === null || value === undefined || value === "") return null;
+  const numberValue = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(numberValue) ? numberValue : null;
 }
 
 function displayValue(value: unknown) {
@@ -73,7 +82,8 @@ function createBranchId() {
 }
 
 function normalizeBranchText(value: unknown) {
-  return typeof value === "string" ? value : "";
+  if (value === null || value === undefined) return "";
+  return String(value);
 }
 
 function normalizeLocationBranches(value: unknown): AdminLocationBranch[] {
@@ -87,6 +97,9 @@ function normalizeLocationBranches(value: unknown): AdminLocationBranch[] {
     email: normalizeBranchText(branch.email),
     contact_person: normalizeBranchText(branch.contact_person),
     map_url: normalizeBranchText(branch.map_url),
+    latitude: normalizeBranchText(branch.latitude),
+    longitude: normalizeBranchText(branch.longitude),
+    photo_url: normalizeBranchText(branch.photo_url),
   }));
 }
 
@@ -107,21 +120,29 @@ function serializeLocationBranches(value: unknown) {
       email: nullableText(branch.email),
       contact_person: nullableText(branch.contact_person),
       map_url: nullableText(branch.map_url),
+      latitude: nullableNumber(branch.latitude),
+      longitude: nullableNumber(branch.longitude),
+      photo_url: nullableText(branch.photo_url),
     }))
     .filter((branch) =>
-      [branch.name, branch.address, branch.phone, branch.email, branch.contact_person, branch.map_url].some(
+      [branch.name, branch.address, branch.phone, branch.email, branch.contact_person, branch.map_url, branch.photo_url].some(
         (value) => typeof value === "string" && value.trim().length > 0
-      )
+      ) || branch.latitude !== null || branch.longitude !== null
     );
 }
 
 function serializeLocationsForm(form: AdminRecord) {
   return {
     ...form,
+    office_name: nullableText(form.office_name),
+    address: nullableText(form.address),
     phone: nullableText(form.phone),
     email: nullableText(form.email),
     map_url: nullableText(form.map_url),
     contact_person: nullableText(form.contact_person),
+    latitude: nullableNumber(form.latitude),
+    longitude: nullableNumber(form.longitude),
+    photo_url: nullableText(form.photo_url),
     branches: serializeLocationBranches(form.branches),
   };
 }
@@ -231,7 +252,7 @@ function resolveFieldWidth(field: AdminFieldConfig) {
 
 function fieldDescription(configTitle: string) {
   if (configTitle === "Leadership") return "Add profile details, photo, and publishing settings for the leadership page.";
-  if (configTitle === "Locations") return "Keep each office profile crisp, complete, and ready for the contact pages.";
+  if (configTitle === "Locations") return "Use the branch location as the primary detail; office name and address can stay blank when unavailable.";
   if (configTitle === "Insights") return "Structure article metadata first, then add the content that will appear on the site.";
   if (configTitle === "Careers / Join Us") return "Use this form for individual opportunities that will feed the careers listing.";
   return "Complete the essential details, then review publishing settings before saving.";
@@ -359,11 +380,12 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     setSaving(false);
   }
 
-  async function uploadAsset(file: File, fieldKey: string) {
+  async function uploadAsset(file: File, fieldKey: string, branchId?: string) {
     if (!file) return;
     setError("");
     setMessage("");
-    setUploadingField(fieldKey);
+    const uploadKey = branchId ? `branch:${branchId}:${fieldKey}` : fieldKey;
+    setUploadingField(uploadKey);
     try {
       const timestamp = Math.floor(Date.now() / 1000);
       const signRes = await fetch("/api/cloudinary/sign", {
@@ -403,7 +425,17 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
       const persistJson = (await persistRes.json()) as { error?: string };
       if (!persistRes.ok) throw new Error(persistJson.error ?? "Failed to persist media asset.");
 
-      setForm((prev) => ({ ...prev, [fieldKey]: uploadJson.secure_url }));
+      if (branchId) {
+        setForm((prev) => ({
+          ...prev,
+          branches: normalizeLocationBranches(prev.branches).map((branch) =>
+            branch.id === branchId ? { ...branch, [fieldKey]: uploadJson.secure_url } : branch
+          ),
+        }));
+      } else {
+        setForm((prev) => ({ ...prev, [fieldKey]: uploadJson.secure_url }));
+      }
+
       if (fieldKey === "photo_url") {
         setPhotoPreviewFailed(false);
         setMessage("Photo uploaded.");
@@ -432,7 +464,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
       ...prev,
       branches: [
         ...normalizeLocationBranches(prev.branches),
-        { id: createBranchId(), name: "", address: "", phone: "", email: "", contact_person: "", map_url: "" },
+        { id: createBranchId(), name: "", address: "", phone: "", email: "", contact_person: "", map_url: "", latitude: "", longitude: "", photo_url: "" },
       ],
     }));
   }
@@ -472,7 +504,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                 </div>
                 <div className="mt-4 grid gap-4 md:grid-cols-2">
                   <label className="admin-field">
-                    <span className="admin-label">Branch Name</span>
+                    <span className="admin-label">Branch Location</span>
                     <input value={branch.name} onChange={(e) => updateLocationBranch(branch.id, "name", e.target.value)} className="admin-input" />
                   </label>
                   <label className="admin-field">
@@ -491,6 +523,37 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                     <span className="admin-label">Map URL</span>
                     <input value={branch.map_url} onChange={(e) => updateLocationBranch(branch.id, "map_url", e.target.value)} className="admin-input" />
                   </label>
+                  <label className="admin-field">
+                    <span className="admin-label">Latitude</span>
+                    <input type="number" step="any" value={branch.latitude} onChange={(e) => updateLocationBranch(branch.id, "latitude", e.target.value)} className="admin-input" />
+                  </label>
+                  <label className="admin-field">
+                    <span className="admin-label">Longitude</span>
+                    <input type="number" step="any" value={branch.longitude} onChange={(e) => updateLocationBranch(branch.id, "longitude", e.target.value)} className="admin-input" />
+                  </label>
+                  <label className="admin-field md:col-span-2">
+                    <span className="admin-label">Branch Photo URL</span>
+                    <input value={branch.photo_url} onChange={(e) => updateLocationBranch(branch.id, "photo_url", e.target.value)} className="admin-input" />
+                  </label>
+                  <div className="admin-upload-panel md:col-span-2">
+                    <div>
+                      <p className="text-sm font-medium text-stone-800">Upload branch photo</p>
+                      <p className="mt-1 text-xs leading-5 text-stone-500">Upload an image to populate the Branch Photo URL field automatically.</p>
+                    </div>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) void uploadAsset(file, "photo_url", branch.id);
+                          e.currentTarget.value = "";
+                        }}
+                        className="block w-full text-xs text-stone-600 file:mr-3 file:rounded-xl file:border-0 file:bg-stone-900 file:px-3 file:py-2.5 file:text-xs file:font-semibold file:text-white"
+                      />
+                      {uploadingField === `branch:${branch.id}:photo_url` ? <span className="text-xs font-medium text-stone-500">Uploading...</span> : null}
+                    </div>
+                  </div>
                   <label className="admin-field md:col-span-2">
                     <span className="admin-label">Address</span>
                     <textarea value={branch.address} onChange={(e) => updateLocationBranch(branch.id, "address", e.target.value)} className="admin-textarea" />
@@ -501,7 +564,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-5 text-sm leading-6 text-stone-600">
-            No sub branches added yet. Use Add Branch when one city has multiple offices or contact points.
+            No branches added yet. Use Add Branch when a location has additional branch contact points.
           </div>
         )}
       </div>
@@ -513,13 +576,19 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     const width = resolveFieldWidth(field);
     const wrapperClass = width === "full" ? "md:col-span-2" : "";
     const isTeamPhotoField = config.table === "team_members" && field.key === "photo_url";
+    const isLocationPhotoField = config.table === "locations" && field.key === "photo_url";
     const isInsightImageField = config.table === "publications" && field.key === "image_url";
-    const photoUrl = isTeamPhotoField && typeof value === "string" ? value.trim() : "";
+    const isPhotoField = isTeamPhotoField || isLocationPhotoField;
+    const photoUrl = isPhotoField && typeof value === "string" ? value.trim() : "";
     const insightImageUrl = isInsightImageField && typeof value === "string" ? value.trim() : "";
-    const showPhotoPreview = isTeamPhotoField && photoUrl.length > 0;
+    const showPhotoPreview = isPhotoField && photoUrl.length > 0;
     const showInsightPreview = isInsightImageField && insightImageUrl.length > 0;
     const photoAlt =
-      typeof form.name === "string" && form.name.trim().length > 0 ? `${form.name.trim()} photo preview` : "Leadership photo preview";
+      typeof form.name === "string" && form.name.trim().length > 0
+        ? `${form.name.trim()} photo preview`
+        : typeof form.city === "string" && form.city.trim().length > 0
+          ? `${form.city.trim()} branch photo preview`
+          : "Photo preview";
     const insightAlt =
       typeof form.title === "string" && form.title.trim().length > 0 ? `${form.title.trim()} feature image preview` : "Insight feature image preview";
 
@@ -593,13 +662,15 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
           placeholder={field.placeholder}
           onChange={(e) =>
             {
-              if (isTeamPhotoField) setPhotoPreviewFailed(false);
+              if (isPhotoField) setPhotoPreviewFailed(false);
               if (isInsightImageField) setInsightPreviewFailed(false);
               setForm((prev) => ({
                 ...prev,
                 [field.key]:
                   field.type === "number"
-                    ? Number(e.target.value || 0)
+                    ? e.target.value === ""
+                      ? ""
+                      : Number(e.target.value)
                     : field.type === "datetime"
                       ? e.target.value
                         ? new Date(e.target.value).toISOString()
@@ -610,7 +681,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
           }
           className="admin-input"
         />
-        {isTeamPhotoField ? (
+        {isPhotoField ? (
           <>
             <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
               <p className="text-sm font-medium text-stone-800">Photo preview</p>
@@ -633,12 +704,12 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                   </div>
                 )
               ) : (
-                <p className="mt-3 text-xs leading-5 text-stone-500">Add or upload a photo URL to preview the leadership image here.</p>
+                <p className="mt-3 text-xs leading-5 text-stone-500">Add or upload a photo URL to preview the image here.</p>
               )}
             </div>
             <div className="admin-upload-panel">
               <div>
-                <p className="text-sm font-medium text-stone-800">Upload leadership photo</p>
+                <p className="text-sm font-medium text-stone-800">{isLocationPhotoField ? "Upload branch photo" : "Upload leadership photo"}</p>
                 <p className="mt-1 text-xs leading-5 text-stone-500">Upload an image to populate the Photo URL field automatically.</p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

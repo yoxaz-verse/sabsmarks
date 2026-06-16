@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, AtSign, Building2, ExternalLink, Link2, Mail, MapPin, Phone } from "lucide-react";
 import { PageBanner } from "@/components/layout/page-banner";
 import { getLocations, getSiteSettings } from "@/lib/content/service";
+import { locationRoleLabel } from "@/lib/location-labels";
 import { getSiteContact } from "@/lib/site-contact";
 import type { Location, LocationBranch } from "@/types/cms";
 import Image from "next/image";
@@ -14,6 +15,18 @@ function sanitizePhone(phone: string) {
 
 function buildGoogleMapsUrl(query: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+function locationName(location: Location) {
+  return location.city;
+}
+
+function officeName(location: Location) {
+  return location.office_name?.trim() || null;
+}
+
+function branchName(branch: LocationBranch) {
+  return branch.name?.trim() || "Branch Location";
 }
 
 function getSocialHandle(url: string, fallback: string) {
@@ -106,8 +119,8 @@ function BranchSummary({ branch }: { branch: LocationBranch }) {
     <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Sub Branch</p>
-          <h4 className="mt-1 text-sm font-bold text-white">{branch.name}</h4>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Branch</p>
+          <h4 className="mt-1 text-sm font-bold text-white">{branchName(branch)}</h4>
         </div>
         {branch.map_url ? (
           <a href={branch.map_url} target="_blank" rel="noreferrer" className="shrink-0 rounded-lg border border-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-white/82 transition hover:bg-white/10">
@@ -142,20 +155,23 @@ function BranchSummary({ branch }: { branch: LocationBranch }) {
 
 function OfficeCard({ location }: { location: Location }) {
   const branches = location.branches ?? [];
+  const secondaryName = officeName(location);
+  const roleLabel = locationRoleLabel(location);
 
   return (
     <article className="group rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-accent-secondary/40 hover:shadow-[0_20px_50px_color-mix(in_srgb,var(--accent)_18%,transparent)]">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-accent">{location.city}</p>
-          <h3 className="mt-3 text-xl font-bold text-white transition-colors duration-300 group-hover:text-white/90">{location.office_name}</h3>
+          <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-accent">{roleLabel}</p>
+          <h3 className="mt-3 text-xl font-bold text-white transition-colors duration-300 group-hover:text-white/90">{locationName(location)}</h3>
+          {secondaryName ? <p className="mt-1 text-sm font-medium text-white/68">{secondaryName}</p> : null}
         </div>
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-accent-secondary transition-all duration-500 group-hover:scale-105 group-hover:bg-accent-secondary group-hover:text-white group-hover:shadow-[0_0_15px_var(--accent-secondary-glow)]">
           <Building2 className="h-5 w-5" />
         </div>
       </div>
 
-      <p className="mt-4 line-clamp-3 text-sm leading-7 text-white/75 min-h-[56px]">{location.address}</p>
+      {location.address ? <p className="mt-4 line-clamp-3 min-h-[56px] text-sm leading-7 text-white/75">{location.address}</p> : null}
 
       <div className="my-5 border-t border-dashed border-white/10" />
 
@@ -180,7 +196,7 @@ function OfficeCard({ location }: { location: Location }) {
 
       {branches.length > 0 ? (
         <div className="mt-5 space-y-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Also at this location</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Additional branches</p>
           {branches.map((branch) => (
             <BranchSummary key={branch.id} branch={branch} />
           ))}
@@ -192,7 +208,7 @@ function OfficeCard({ location }: { location: Location }) {
           href={`/contact/${location.slug}`}
           className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white shadow-md transition-all duration-300 hover:bg-accent/90 hover:scale-[1.02] hover:shadow-lg"
         >
-          View office
+          View branch
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
         {location.map_url ? (
@@ -243,11 +259,11 @@ export default async function ContactPage() {
               Email the team
             </a>
             <a
-              href="#office-network"
+              href="#branch-network"
               className="inline-flex items-center gap-2 rounded-full border border-white/12 px-5 py-3 text-sm font-medium text-white/88 transition hover:border-white/24 hover:bg-white/8"
             >
               <Building2 className="h-4 w-4" />
-              View offices
+              View branches
             </a>
           </>
         }
@@ -271,7 +287,7 @@ export default async function ContactPage() {
                   <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Head Office Contact</p>
                   <h2 className="mt-4 text-3xl font-bold leading-tight md:text-[2.4rem]">{contact.brandName}</h2>
                   <p className="mt-4 max-w-xl text-[15px] leading-7 text-white/88">
-                    Reach our headquarters directly for appointments, engagement enquiries, and help choosing the most relevant office.
+                    Reach our headquarters directly for appointments, engagement enquiries, and help choosing the most relevant branch.
                   </p>
                 </div>
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.25rem] bg-white/10 text-white shadow-[0_18px_40px_rgba(2,6,23,0.2)]">
@@ -313,7 +329,7 @@ export default async function ContactPage() {
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Social & Routing</p>
               <h3 className="mt-4 text-2xl font-bold text-ink">Choose the fastest way to reach us.</h3>
               <p className="mt-3 text-[15px] leading-7 text-muted">
-                For firm updates, direct outreach, and office discovery, start with the channel that matches your need.
+                For firm updates, direct outreach, and branch discovery, start with the channel that matches your need.
               </p>
 
               <div className="mt-7 space-y-4">
@@ -341,7 +357,7 @@ export default async function ContactPage() {
                     <p className="mt-1 leading-6">Call or email head office for routing support.</p>
                   </div>
                   <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
-                    <p className="font-semibold text-ink">Office Visits</p>
+                    <p className="font-semibold text-ink">Branch Visits</p>
                     <p className="mt-1 leading-6">Open the branch card below for local details and maps.</p>
                   </div>
                   <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
@@ -395,16 +411,16 @@ export default async function ContactPage() {
             </div>
 
             <div
-              id="office-network"
+              id="branch-network"
               className="rounded-[2rem] bg-[linear-gradient(135deg,#06121d_0%,#064b77_58%,#063c24_100%)] p-6 text-white shadow-[0_32px_80px_rgba(15,23,42,0.24)] md:p-8"
             >
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Office Network</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Branch Network</p>
                   <h3 className="mt-3 text-2xl font-bold">Find the branch closest to the conversation you need.</h3>
                 </div>
                 <p className="max-w-md text-sm leading-7 text-white/78">
-                  Published office records drive this section, so local contact details and map links stay useful instead of decorative.
+                  Published branch records drive this section, so local contact details and map links stay useful instead of decorative.
                 </p>
               </div>
 
@@ -416,7 +432,7 @@ export default async function ContactPage() {
                 </div>
               ) : (
                 <div className="mt-8 rounded-[1.75rem] border border-white/10 bg-white/6 p-6 text-white/88">
-                  No published office records are available yet. Once locations are published in the CMS, they will appear here automatically.
+                  No published branch records are available yet. Once locations are published in the CMS, they will appear here automatically.
                 </div>
               )}
             </div>

@@ -8,7 +8,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   path: "/about/locations",
   title: "Locations",
-  description: "Explore all Sabs Marks JVS office locations and reach the office most relevant to you.",
+  description: "Explore Sabs Marks JVS head office and branch locations.",
 });
 
 export default async function AboutLocationsPage() {
@@ -19,8 +19,8 @@ export default async function AboutLocationsPage() {
       <PageBanner title="Locations" />
 
       <InteriorIntroSection
-        title="Find every Sabs Marks JVS office in one place."
-        description="Browse published offices, switch between branches instantly, and keep the active location map in view while you compare addresses and contact details."
+        title="Find every Sabs Marks JVS branch location in one place."
+        description="Browse the Ettumanoor head office and all published branches, switch between locations instantly, and keep the active map in view while you compare contact details."
         className="border-b-0"
       />
 
@@ -31,9 +31,9 @@ export default async function AboutLocationsPage() {
           ) : (
             <div className="site-card mt-12 rounded-[1.75rem] p-8">
               <p className="text-sm font-bold uppercase tracking-[0.24em] text-muted">Locations</p>
-              <h3 className="mt-4 text-2xl font-bold text-ink">Office details will appear here soon.</h3>
+              <h3 className="mt-4 text-2xl font-bold text-ink">Branch details will appear here soon.</h3>
               <p className="mt-4 max-w-2xl text-[15px] leading-7 text-muted">
-                No published locations are available right now. Once office entries are published in the CMS, they will
+                No published locations are available right now. Once branch entries are published in the CMS, they will
                 automatically appear on this page.
               </p>
             </div>

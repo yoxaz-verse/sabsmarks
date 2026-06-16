@@ -107,12 +107,15 @@ export interface Location {
   id: string;
   slug: string;
   city: string;
-  office_name: string;
-  address: string;
+  office_name: string | null;
+  address: string | null;
   phone: string | null;
   email: string | null;
   map_url: string | null;
   contact_person: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  photo_url: string | null;
   branches: LocationBranch[];
   featured: boolean;
   status: PublishStatus;
@@ -126,6 +129,9 @@ export interface LocationBranch {
   email: string | null;
   contact_person: string | null;
   map_url: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  photo_url: string | null;
 }
 
 export interface MenuItem {

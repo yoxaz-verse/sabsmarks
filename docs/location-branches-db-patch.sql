@@ -1,4 +1,4 @@
--- Non-destructive patch for supporting sub-branches under a location.
+-- Non-destructive patch for supporting branches under a location.
 -- Run this once in the Supabase SQL Editor before saving location branches in the CMS.
 
 alter table public.locations

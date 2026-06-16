@@ -30,8 +30,8 @@ export function InteriorIntroSection({
 
   return (
     <section className={`site-section ${className}`.trim()}>
-      <div className="site-container py-16 md:py-20">
-        <div className="decorated-panel rounded-[2rem] px-1 py-1">
+      <div className="site-container py-10 md:py-14">
+        <div className="decorated-panel rounded-[1.4rem] px-1 py-1">
           <div className={`grid gap-5 ${stats?.length ? "lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start" : ""}`}>
             <div className={`section-header ${isCentered ? "mx-auto text-center" : ""}`}>
               {kicker ? <div className={`section-kicker ${isCentered ? "mx-auto justify-center" : ""}`}>{kicker}</div> : null}
@@ -51,7 +51,7 @@ export function InteriorIntroSection({
                 {stats.map((item, index) => (
                   <div
                     key={item.label}
-                    className={`site-card interactive-card rounded-[1.6rem] p-6 ${index % 2 === 1 ? "sm:translate-y-8" : ""}`}
+                    className={`site-card interactive-card rounded-[1.2rem] p-6 ${index % 2 === 1 ? "sm:translate-y-4" : ""}`}
                   >
                     <div className="text-4xl font-black text-accent">{item.value}</div>
                     <div className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-ink">{item.label}</div>

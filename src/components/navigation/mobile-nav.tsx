@@ -63,7 +63,7 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
       </button>
 
       <div
-        className={`xl:hidden fixed inset-0 z-[120] transition-opacity duration-200 ${
+        className={`xl:hidden fixed inset-0 z-[120] overflow-hidden transition-opacity duration-200 ${
           isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
         aria-hidden={!isOpen}

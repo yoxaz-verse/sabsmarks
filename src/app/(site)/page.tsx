@@ -42,16 +42,16 @@ const credibilityItems = [
 ];
 
 const advisoryEntryPoints = [
-  { icon: FileSearch, title: "Audit readiness", text: "Evidence, controls, and review trails prepared before deadlines." },
-  { icon: Calculator, title: "Tax & regulatory clarity", text: "Direct and indirect tax decisions aligned with compliance risk." },
-  { icon: Briefcase, title: "CFO visibility", text: "MIS, forecasts, and cash-flow views shaped for leadership action." },
-  { icon: ShieldCheck, title: "Governance support", text: "Board-ready documentation for decisions that need to stand up." },
+  { icon: TrendingUp, title: "Growth & Expansion", text: "Advisory support for businesses pursuing sustainable growth and new opportunities." },
+  { icon: ShieldCheck, title: "Regulatory Confidence", text: "Proactive compliance and tax solutions to help manage risks effectively." },
+  { icon: Calculator, title: "Financial Clarity", text: "Meaningful reporting and performance insights for better business decisions." },
+  { icon: ClipboardCheck, title: "Governance Excellence", text: "Robust controls and governance practices that build stakeholder trust." },
 ];
 
 const advisorySnapshot = [
-  { icon: Target, title: "Decision-ready reporting", text: "Clear next steps, owners, and risks before leadership commits." },
-  { icon: ClipboardCheck, title: "Compliance documentation", text: "Audit, tax, and statutory records structured for scrutiny." },
-  { icon: Handshake, title: "Partner-led review", text: "Senior attention on judgement-heavy matters and closing calls." },
+  { icon: Compass, title: "Strategic Advisory", text: "Helping leadership teams navigate financial, regulatory, and business-critical decisions with clarity and confidence." },
+  { icon: ShieldCheck, title: "Integrated Compliance", text: "Seamlessly managing audit, tax, regulatory, and governance requirements through a coordinated service framework." },
+  { icon: Target, title: "Outcome-Focused Execution", text: "Delivering practical solutions, structured reporting, and continuous support aligned with your business objectives." },
 ];
 
 const valueStats = [
@@ -64,27 +64,33 @@ const valueStats = [
 const processSteps = [
   {
     step: "01",
-    title: "Diagnose",
-    text: "Map the financial, tax, compliance, and governance signals that shape the decision.",
+    title: "Business and risk diagnosis",
+    text: "Understand the commercial priorities, obligations, and risk signals shaping the engagement.",
     icon: FileSearch,
   },
   {
     step: "02",
-    title: "Structure",
-    text: "Build a practical advisory path with ownership, timelines, risks, and reporting discipline.",
+    title: "Clear scope definition focused on outcomes",
+    text: "Define the work clearly around practical deliverables, timelines, and decision needs.",
     icon: Layers3,
   },
   {
     step: "03",
-    title: "Execute",
-    text: "Deploy specialist teams across audit, tax, CFO support, systems, and regulatory workstreams.",
+    title: "Execution by domain specialists",
+    text: "Bring the right audit, tax, compliance, accounting, and advisory specialists into the work.",
     icon: Target,
   },
   {
     step: "04",
-    title: "Govern",
-    text: "Keep leaders aligned with review cadences, documentation, and decision-ready insight.",
+    title: "Senior review and quality control",
+    text: "Apply partner-led review discipline so the output is accurate, useful, and professionally controlled.",
     icon: Compass,
+  },
+  {
+    step: "05",
+    title: "Ongoing advisory and monitoring support",
+    text: "Stay connected after execution with monitoring, guidance, and timely advisory support.",
+    icon: RefreshCw,
   },
 ];
 
@@ -189,9 +195,9 @@ export default function Home() {
               <div className="hero-entry-panel mt-10 animate-hero-stats">
                 <div className="flex flex-col gap-3 border-b border-[var(--glass-border)] pb-4 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <div className="text-xs font-black uppercase tracking-[0.2em] text-accent">Client priorities</div>
+                    <div className="text-xs font-black uppercase tracking-[0.2em] text-accent">Client Priorities</div>
                     <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
-                      Start with the workstream creating pressure, then bring the right specialists into one review rhythm.
+                      Supporting leadership teams with integrated financial, compliance, and advisory solutions.
                     </p>
                   </div>
                   <Link href="/practice-areas" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-accent">
@@ -219,13 +225,13 @@ export default function Home() {
               <GlowCard className="hero-advisory-card decorated-panel relative overflow-hidden rounded-[2rem]">
                 <SiteOrnament mode="card" className="opacity-35" />
                 <div className="p-6 md:p-7">
-                  <div className="section-kicker">Advisory Snapshot</div>
+                  <div className="section-kicker">Built for Decision-Makers</div>
                   <h2 className="mt-5 text-2xl font-bold tracking-tight text-ink md:text-3xl dark:text-white">
-                    One coordinated desk for audit, tax, finance, and governance calls.
+                    Integrated Financial, Compliance, and Advisory Solutions for Confident Decision-Making
                   </h2>
                   <div className="section-rule"></div>
                   <p className="section-copy mt-5 max-w-none">
-                    We turn complex compliance and finance questions into clear actions, owners, and review checkpoints.
+                    We work with founders, boards, promoters, financial institutions, and enterprises to simplify complex financial and regulatory matters. Our integrated approach combines audit, taxation, advisory, compliance, and governance services to support sustainable growth and informed business decisions.
                   </p>
                   <div className="mt-6 grid gap-3">
                     {advisorySnapshot.map((item, i) => (
@@ -267,13 +273,13 @@ export default function Home() {
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
             <div className="section-header reveal reveal-left">
               <div className="section-kicker">Our Values</div>
-              <h2 className="section-title">Professional judgement presented with <span className="text-gradient">more clarity.</span></h2>
+              <h2 className="section-title">Rooted in Legacy. Guided by <span className="text-gradient">Excellence.</span></h2>
               <div className="section-rule"></div>
               <p className="section-copy">
-                Sabs Marks JVS & Co. brings audit, tax, finance, and regulatory experience together so clients can move with confidence instead of chasing disconnected opinions.
+                Built on decades of professional experience, Sabs Marks JVS & Co. is committed to integrity, accountability, and client-centric service.
               </p>
               <p className="site-prose mt-5 max-w-3xl">
-                Our teams pair technical depth with clear ownership, practical documentation, and review discipline, helping businesses navigate complex obligations without losing sight of commercial priorities.
+                We combine partner-led expertise with institutional strength to deliver trusted advice, disciplined execution, and lasting value.
               </p>
               <Link href="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent">
                 Learn About Us <ArrowRight className="h-4 w-4" />
@@ -306,9 +312,9 @@ export default function Home() {
               <ImageFeatureCard
                 src={SITE_VISUALS.home.advisory}
                 alt="Finance leaders discussing advisory strategy around a boardroom table."
-                eyebrow="Featured Advisory Story"
-                title="A single advisory desk for decisions with many moving parts."
-                description="For leadership teams balancing growth, compliance, capital, and governance, we bring the right specialists into one coordinated decision framework."
+                eyebrow="Advisory Focus"
+                title="Clarity for complex financial priorities."
+                description="Partner-led teams align audit, tax, accounting, and advisory work around the decisions that matter."
                 href="/about"
                 ctaLabel="Explore our firm"
                 priority
@@ -317,14 +323,14 @@ export default function Home() {
             </div>
 
             <div className="section-header reveal reveal-right">
-              <div className="section-kicker">Executive Confidence</div>
-              <h2 className="section-title">From uncertainty to board-ready action.</h2>
+              <div className="section-kicker">Integrated Guidance</div>
+              <h2 className="section-title">From compliance requirements to confident business decisions.</h2>
               <div className="section-rule"></div>
               <p className="section-copy">
-                The strongest client experience is not just technical accuracy. It is the confidence that the next decision is documented, defensible, and aligned across finance, tax, audit, and operations.
+                We help businesses navigate audit, taxation, accounting, and regulatory obligations with clarity, accuracy, and professional guidance.
               </p>
               <div className="mt-8 grid gap-3">
-                {["Financial visibility before commitments", "Clear ownership across advisory workstreams", "Regulatory discipline embedded into execution"].map((item) => (
+                {["Audit & Assurance Excellence", "Tax & Regulatory Compliance", "Strategic Business Advisory"].map((item) => (
                   <div key={item} className="advisory-proof-row">
                     <CheckCircle2 className="h-4 w-4 text-accent" />
                     <span>{item}</span>
@@ -339,30 +345,30 @@ export default function Home() {
       <section className="site-section certainty-section overflow-hidden py-16 md:py-20">
         <SiteOrnament mode="section" contrast className="opacity-30" />
         <div className="site-container relative z-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between reveal reveal-up">
-            <div className="section-header">
-              <div className="section-kicker">How We Create Certainty</div>
-              <h2 className="section-title text-white">A disciplined path from first signal to final decision.</h2>
+          <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between reveal reveal-up">
+            <div className="section-header max-w-3xl">
+              <div className="section-kicker">Our Engagement Model</div>
+              <h2 className="section-title text-white">Every engagement follows a structured, outcome-driven framework.</h2>
               <div className="section-rule"></div>
             </div>
-            <p className="max-w-xl text-base leading-8 text-slate-300">
-              Every engagement is shaped to reduce ambiguity, align stakeholders, and leave leadership with a clear record of action.
+            <p className="max-w-lg text-base leading-8 text-slate-300 lg:pb-2">
+              Our model keeps scope, execution, review, and advisory support aligned from diagnosis through ongoing monitoring.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="process-grid mt-14">
             {processSteps.map((step, index) => (
               <div key={step.title} className="reveal reveal-up" style={{ transitionDelay: `${index * 110}ms` }}>
-                <GlowCard className="process-card decorated-panel group h-full overflow-hidden rounded-[1.35rem]">
-                  <div className="p-6">
+                <GlowCard className="process-card decorated-panel group h-full overflow-hidden rounded-[1.2rem]">
+                  <div className="flex h-full flex-col p-6 lg:p-7">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-black uppercase tracking-[0.24em] text-slate-400">{step.step}</span>
-                      <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-[color-mix(in_srgb,var(--accent-secondary)_35%,white)]">
-                        <step.icon className="h-5 w-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
+                      <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/8 text-[color-mix(in_srgb,var(--accent-secondary)_35%,white)]">
+                        <step.icon className="h-[1.125rem] w-[1.125rem] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
                       </span>
                     </div>
-                    <h3 className="mt-7 text-2xl font-bold text-white">{step.title}</h3>
-                    <p className="mt-4 text-sm leading-7 text-slate-300">{step.text}</p>
+                    <h3 className="mt-7 max-w-[17rem] text-xl font-bold leading-snug text-white">{step.title}</h3>
+                    <p className="mt-4 max-w-[18rem] text-sm leading-7 text-slate-300">{step.text}</p>
                   </div>
                 </GlowCard>
               </div>
@@ -410,7 +416,7 @@ export default function Home() {
               <div>
                 <div className="section-kicker">Start With Clarity</div>
                 <h2 className="mt-6 max-w-3xl text-3xl font-black tracking-tight text-white md:text-5xl">
-                  Bring us the decision. We will help make it defensible.
+                  professional clarity begins with the right conversation
                 </h2>
                 <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
                   Speak with the Sabs Marks JVS team about audit, tax, CFO advisory, compliance, or governance priorities.

@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   Factory,
   FileText,
+  ChevronDown,
   Landmark,
   MapPin,
   ShieldCheck,
@@ -116,13 +117,14 @@ export function PageBanner({
 }: PageBannerProps) {
   const isContrast = variant === "contrast";
   const showHeroOrnament = isContrast;
+  const displayEyebrow = eyebrow ?? "Sabs Marks JVS & Co.";
 
   return (
     <div
       className={`group decorated-panel relative w-full overflow-hidden border-b border-[var(--section-border)] transition-colors duration-500 ${
         isContrast
-          ? "bg-[linear-gradient(135deg,#06121d_0%,#063b63_48%,#005c9d_100%)] py-14 text-white sm:py-18 md:py-22"
-          : "bg-bg py-16 sm:py-18 md:py-24"
+          ? "bg-[linear-gradient(135deg,#06121d_0%,#063b63_48%,#005c9d_100%)] py-8 text-white sm:py-10 md:py-12"
+          : "bg-bg py-8 sm:py-10 md:py-12"
       }`}
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
@@ -150,11 +152,19 @@ export function PageBanner({
           }}
         ></div>
 
+        <div
+          className={`absolute inset-x-0 bottom-0 h-24 transition-opacity duration-500 ${
+            isContrast
+              ? "bg-[linear-gradient(to_bottom,transparent,rgba(255,255,255,0.09))]"
+              : "bg-[linear-gradient(to_bottom,transparent,color-mix(in_srgb,var(--surface)_82%,transparent))] dark:bg-[linear-gradient(to_bottom,transparent,color-mix(in_srgb,var(--surface)_62%,transparent))]"
+          }`}
+        ></div>
+
         {isContrast ? <div
-          className="absolute -left-10 top-0 h-80 w-80 animate-blob rounded-full bg-accent/35 opacity-70 blur-[110px] transition-colors duration-500"
+          className="absolute -left-10 top-0 h-64 w-64 animate-blob rounded-full bg-accent/28 opacity-60 blur-[96px] transition-colors duration-500"
         ></div> : null}
         {isContrast ? <div
-          className="animation-delay-2000 absolute -right-16 top-2 h-96 w-96 animate-blob rounded-full bg-accent-secondary/26 opacity-70 blur-[125px] transition-colors duration-500"
+          className="animation-delay-2000 absolute -right-16 top-2 h-72 w-72 animate-blob rounded-full bg-accent-secondary/22 opacity-60 blur-[110px] transition-colors duration-500"
         ></div> : null}
 
         <div
@@ -171,30 +181,28 @@ export function PageBanner({
         ></div>
       </div>
 
-      <div className="relative z-20 mx-auto grid max-w-7xl gap-10 px-6 pt-4 md:px-12 md:pt-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(21rem,0.72fr)] lg:items-center">
+      <div className="relative z-20 mx-auto grid max-w-7xl gap-6 px-6 md:px-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(16rem,0.55fr)] lg:items-center">
         <div className="flex flex-col items-start">
-          {eyebrow ? (
-            <div
-              className={`mb-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 shadow-sm backdrop-blur-md transition-colors duration-500 sm:mb-6 ${
-                isContrast
-                  ? "border border-white/12 bg-white/8"
-                  : "border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_78%,transparent)]"
+          <div
+            className={`mb-3 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 shadow-sm backdrop-blur-md transition-colors duration-500 ${
+              isContrast
+                ? "border border-white/12 bg-white/8"
+                : "border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_78%,transparent)]"
+            }`}
+          >
+            <div className="h-2 w-2 rounded-full bg-accent-secondary"></div>
+            <span
+              suppressHydrationWarning
+              className={`text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-500 ${
+                isContrast ? "text-white/90" : "text-ink/80 dark:text-white/95"
               }`}
             >
-              <div className={`h-2 w-2 rounded-full animate-pulse ${isContrast ? "bg-accent-secondary" : "bg-accent-secondary"}`}></div>
-              <span
-                suppressHydrationWarning
-                className={`text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors duration-500 ${
-                  isContrast ? "text-white/90" : "text-ink/80 dark:text-white/95"
-                }`}
-              >
-                {eyebrow}
-              </span>
-            </div>
-          ) : null}
+              {displayEyebrow}
+            </span>
+          </div>
 
           <h1
-            className={`mb-3 max-w-4xl py-1 text-4xl font-bold tracking-[-0.05em] transition-colors duration-500 sm:text-5xl md:mb-4 md:text-6xl lg:text-[4.5rem] ${
+            className={`mb-3 max-w-4xl py-1 text-3xl font-bold tracking-normal transition-colors duration-500 sm:text-4xl md:mb-3 md:text-5xl lg:text-[3.6rem] ${
               isContrast
                 ? "text-white [text-shadow:0_16px_40px_rgba(2,6,23,0.35)]"
                 : "text-ink dark:text-white"
@@ -205,7 +213,7 @@ export function PageBanner({
 
           {description ? (
             <p
-              className={`max-w-3xl text-base leading-8 md:text-lg ${
+              className={`max-w-3xl text-[15px] leading-7 md:text-base ${
                 isContrast ? "text-white/88" : "text-muted dark:text-white/78"
               }`}
             >
@@ -213,17 +221,28 @@ export function PageBanner({
             </p>
           ) : null}
 
-          {actions ? <div className="mt-8 flex w-full flex-wrap items-center gap-3">{actions}</div> : null}
+          {actions ? <div className="mt-5 flex w-full flex-wrap items-center gap-3">{actions}</div> : null}
 
-          <div className="mt-6 flex items-center gap-3 sm:mt-8 sm:gap-4">
-            <div className={`h-[3px] w-14 rounded-full transition-shadow duration-500 ${isContrast ? "bg-accent-secondary shadow-[0_0_20px_var(--accent-secondary-glow)]" : "bg-accent shadow-[0_0_10px_var(--accent-glow)]"}`}></div>
-            <div className={`h-[3px] w-7 rounded-full transition-colors duration-500 ${isContrast ? "bg-white/35" : "bg-accent-secondary/45"}`}></div>
+          <div className="mt-5 flex items-center gap-3 sm:gap-4">
+            <div className={`h-[3px] w-12 rounded-full transition-shadow duration-500 ${isContrast ? "bg-accent-secondary shadow-[0_0_20px_var(--accent-secondary-glow)]" : "bg-accent shadow-[0_0_10px_var(--accent-glow)]"}`}></div>
+            <div className={`h-[3px] w-6 rounded-full transition-colors duration-500 ${isContrast ? "bg-white/35" : "bg-accent-secondary/45"}`}></div>
           </div>
         </div>
 
         <div className="hidden justify-end md:flex">
           <BannerIllustration title={title} isContrast={isContrast} />
         </div>
+      </div>
+
+      <div
+        aria-hidden="true"
+        className={`absolute bottom-3 left-1/2 z-30 grid h-8 w-8 -translate-x-1/2 place-items-center rounded-full border shadow-sm backdrop-blur-md transition-colors duration-500 ${
+          isContrast
+            ? "border-white/14 bg-white/10 text-white/82"
+            : "border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_82%,transparent)] text-accent"
+        }`}
+      >
+        <ChevronDown className="h-4 w-4" strokeWidth={2.2} />
       </div>
     </div>
   );

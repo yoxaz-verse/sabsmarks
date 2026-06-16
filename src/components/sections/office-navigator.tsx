@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MapPin, Phone, Mail, User, Navigation, Building2 } from "lucide-react";
+import { locationRoleLabel } from "@/lib/location-labels";
 import type { Location } from "@/types/cms";
 
 interface OfficeNavigatorProps {
@@ -12,13 +13,16 @@ const FALLBACK_LOCATIONS: Location[] = [
   {
     id: "f1",
     slug: "mumbai-head",
-    city: "Mumbai (Head Office)",
-    office_name: "Sabs Marks JVS Mumbai H.Q.",
+    city: "Ettumanoor",
+    office_name: "Sabs Marks JVS Head Office",
     address: "801-804, Raheja Chambers, Free Press Journal Marg, Nariman Point, Mumbai - 400021, Maharashtra, India",
     phone: "+91 22 6633 4400",
     email: "mumbai@sabsmarks.com",
     map_url: "https://maps.google.com/?q=Raheja+Chambers+Nariman+Point+Mumbai",
     contact_person: "Mr. J.V.S. Sabs, Senior Partner",
+    latitude: null,
+    longitude: null,
+    photo_url: null,
     branches: [],
     featured: true,
     status: "published",
@@ -33,6 +37,9 @@ const FALLBACK_LOCATIONS: Location[] = [
     email: "blr@sabsmarks.com",
     map_url: "https://maps.google.com/?q=Prestige+Meridian+MG+Road+Bengaluru",
     contact_person: "Mrs. Meera Marks, Managing Partner",
+    latitude: null,
+    longitude: null,
+    photo_url: null,
     branches: [],
     featured: true,
     status: "published",
@@ -47,6 +54,9 @@ const FALLBACK_LOCATIONS: Location[] = [
     email: "dubai@sabsmarks.com",
     map_url: "https://maps.google.com/?q=Rolex+Tower+Sheikh+Zayed+Road+Dubai",
     contact_person: "Mr. Al-Maktoum JVS, International Director",
+    latitude: null,
+    longitude: null,
+    photo_url: null,
     branches: [],
     featured: true,
     status: "published",
@@ -61,6 +71,9 @@ const FALLBACK_LOCATIONS: Location[] = [
     email: "chennai@sabsmarks.com",
     map_url: "https://maps.google.com/?q=Khader+Nawaz+Khan+Road+Chennai",
     contact_person: "Mr. R. Sundar, Partner - Direct Tax",
+    latitude: null,
+    longitude: null,
+    photo_url: null,
     branches: [],
     featured: false,
     status: "published",
@@ -75,6 +88,9 @@ const FALLBACK_LOCATIONS: Location[] = [
     email: "delhi@sabsmarks.com",
     map_url: "https://maps.google.com/?q=Connaught+Place+New+Delhi",
     contact_person: "Ms. Shalini Gupta, Lead - Audit & Assurance",
+    latitude: null,
+    longitude: null,
+    photo_url: null,
     branches: [],
     featured: false,
     status: "published",
@@ -86,11 +102,13 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
   const [selectedSlug, setSelectedSlug] = useState<string>(displayLocations[0].slug);
 
   const activeOffice = displayLocations.find((l) => l.slug === selectedSlug) || displayLocations[0];
+  const activeOfficeName = activeOffice.city;
+  const activeOfficeSecondaryName = activeOffice.office_name?.trim() || null;
 
   return (
     <div className="w-full">
       <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-        {/* Left Side: Office List */}
+        {/* Left Side: Branch List */}
         <div className="lg:col-span-5 space-y-3 max-h-[460px] overflow-y-auto pr-2">
           {displayLocations.map((office) => {
             const isSelected = office.slug === selectedSlug;
@@ -117,7 +135,7 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
                   <div>
                     <h4 className="text-sm font-bold tracking-tight">{office.city}</h4>
                     <p className={`text-[11px] mt-0.5 ${isSelected ? "text-white/78" : "text-muted"}`}>
-                      {office.featured ? "Primary Regional H.Q." : "Associate Branch Office"}
+                      {locationRoleLabel(office)}
                     </p>
                   </div>
                 </div>
@@ -127,36 +145,38 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
           })}
         </div>
 
-        {/* Right Side: Office Detail Card */}
+        {/* Right Side: Branch Detail Card */}
         <div className="lg:col-span-7">
           <div className="creative-card decorated-panel rounded-[2rem] p-7 md:p-8 overflow-hidden h-full flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between border-b border-[var(--glass-border)] pb-5 mb-6">
                 <div>
                   <div className="text-[10px] font-extrabold uppercase tracking-widest text-accent px-2.5 py-1 rounded-full bg-accent/8 border border-accent/12 inline-block">
-                    Office Details
+                    {locationRoleLabel(activeOffice)} Details
                   </div>
                   <h3 className="mt-3.5 text-2xl font-extrabold text-ink leading-tight">
-                    {activeOffice.office_name}
+                    {activeOfficeName}
                   </h3>
+                  {activeOfficeSecondaryName ? <p className="mt-1 text-sm font-medium text-muted">{activeOfficeSecondaryName}</p> : null}
                 </div>
               </div>
 
               <div className="space-y-4.5">
-                {/* Address */}
-                <div className="flex items-start gap-4">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-raised border border-[var(--glass-border)] text-accent shrink-0 mt-0.5">
-                    <MapPin className="h-4 w-4" />
+                {activeOffice.address ? (
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-raised border border-[var(--glass-border)] text-accent shrink-0 mt-0.5">
+                      <MapPin className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <span className="text-[11px] font-extrabold uppercase tracking-widest text-muted block">
+                        Address
+                      </span>
+                      <p className="mt-1 text-sm text-ink leading-relaxed font-medium">
+                        {activeOffice.address}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-widest text-muted block">
-                      Address
-                    </span>
-                    <p className="mt-1 text-sm text-ink leading-relaxed font-medium">
-                      {activeOffice.address}
-                    </p>
-                  </div>
-                </div>
+                ) : null}
 
                 {/* Primary Contact Person */}
                 {activeOffice.contact_person && (

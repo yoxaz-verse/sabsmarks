@@ -47,6 +47,9 @@ const locationBranchSchema = z.object({
   email: z.string().optional().nullable(),
   map_url: z.string().optional().nullable(),
   contact_person: z.string().optional().nullable(),
+  latitude: z.number().optional().nullable(),
+  longitude: z.number().optional().nullable(),
+  photo_url: z.string().optional().nullable(),
 });
 const contentEntitySchema = z.object({
   id: z.string().uuid().optional(),
@@ -100,6 +103,12 @@ function nullableString(value: unknown) {
   return trimmed.length > 0 ? trimmed : null;
 }
 
+function nullableNumber(value: unknown) {
+  if (value === null || value === undefined || value === "") return null;
+  const numberValue = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(numberValue) ? numberValue : null;
+}
+
 function normalizeLocationBranches(value: unknown) {
   if (!Array.isArray(value)) return [];
 
@@ -113,15 +122,18 @@ function normalizeLocationBranches(value: unknown) {
       email: nullableString(branch.email),
       map_url: nullableString(branch.map_url),
       contact_person: nullableString(branch.contact_person),
+      latitude: nullableNumber(branch.latitude),
+      longitude: nullableNumber(branch.longitude),
+      photo_url: nullableString(branch.photo_url),
     }))
     .filter((branch) =>
-      [branch.name, branch.address, branch.phone, branch.email, branch.map_url, branch.contact_person].some(
+      [branch.name, branch.address, branch.phone, branch.email, branch.map_url, branch.contact_person, branch.photo_url].some(
         (field) => typeof field === "string" && field.trim().length > 0
-      )
+      ) || branch.latitude !== null || branch.longitude !== null
     )
     .map((branch) => ({
       ...branch,
-      name: branch.name || "Branch Office",
+      name: branch.name || "Branch Location",
     }));
 }
 
@@ -155,12 +167,15 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     id: z.string().uuid().optional(),
     slug: z.string().min(1),
     city: z.string().min(2),
-    office_name: z.string().min(2),
-    address: z.string().min(4),
+    office_name: z.string().optional().nullable(),
+    address: z.string().optional().nullable(),
     phone: z.string().optional().nullable(),
     email: z.string().optional().nullable(),
     map_url: z.string().optional().nullable(),
     contact_person: z.string().optional().nullable(),
+    latitude: z.number().optional().nullable(),
+    longitude: z.number().optional().nullable(),
+    photo_url: z.string().optional().nullable(),
     branches: z.array(locationBranchSchema).default([]),
     featured: z.boolean().optional(),
     status: statusSchema,
@@ -248,10 +263,15 @@ export async function POST(req: Request) {
   if (typeof normalized.summary === "string" && normalized.summary.trim() === "") normalized.summary = null;
   if (typeof normalized.body === "string" && normalized.body.trim() === "") normalized.body = null;
   if (table === "locations") {
+    normalized.office_name = nullableString(normalized.office_name);
+    normalized.address = nullableString(normalized.address);
     normalized.phone = nullableString(normalized.phone);
     normalized.email = nullableString(normalized.email);
     normalized.map_url = nullableString(normalized.map_url);
     normalized.contact_person = nullableString(normalized.contact_person);
+    normalized.latitude = nullableNumber(normalized.latitude);
+    normalized.longitude = nullableNumber(normalized.longitude);
+    normalized.photo_url = nullableString(normalized.photo_url);
     normalized.branches = normalizeLocationBranches(normalized.branches);
   }
   if (table === "team_members") {

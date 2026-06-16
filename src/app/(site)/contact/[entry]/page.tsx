@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Building2, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { getLocationBySlug } from "@/lib/content/service";
+import { locationRoleLabel } from "@/lib/location-labels";
 import { getEmbeddableMapUrl, getPublicMapUrl } from "@/lib/map-utils";
 import { buildPageMetadata } from "@/lib/seo";
 import { buildBreadcrumbSchema } from "@/lib/seo-schema";
@@ -13,15 +15,20 @@ function sanitizePhone(phone: string) {
   return phone.replace(/\s+/g, "");
 }
 
+function branchName(branch: LocationBranch) {
+  return branch.name?.trim() || "Branch Location";
+}
+
 function BranchDetailCard({ branch }: { branch: LocationBranch }) {
   const publicMapUrl = getPublicMapUrl(branch.map_url);
+  const title = branchName(branch);
 
   return (
     <article className="rounded-3xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_74%,transparent)] p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Sub Branch</p>
-          <h3 className="mt-2 text-xl font-semibold tracking-tight text-ink">{branch.name}</h3>
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Branch</p>
+          <h3 className="mt-2 text-xl font-semibold tracking-tight text-ink">{title}</h3>
         </div>
         {publicMapUrl ? (
           <a
@@ -35,6 +42,11 @@ function BranchDetailCard({ branch }: { branch: LocationBranch }) {
           </a>
         ) : null}
       </div>
+      {branch.photo_url ? (
+        <div className="mt-4 overflow-hidden rounded-2xl border border-[var(--glass-border)]">
+          <Image src={branch.photo_url} alt={`${title} branch`} width={1000} height={520} unoptimized className="h-56 w-full object-cover" />
+        </div>
+      ) : null}
       {branch.address ? <p className="mt-4 whitespace-pre-wrap text-sm leading-7 text-muted">{branch.address}</p> : null}
       <div className="mt-5 grid gap-3 text-sm text-muted md:grid-cols-2">
         {branch.phone ? (
@@ -64,11 +76,13 @@ export async function generateMetadata({ params }: { params: Promise<{ entry: st
   const { entry } = await params;
   const location = await getLocationBySlug(entry);
   if (!location) return { robots: { index: false, follow: false } };
+  const title = location.city;
+  const roleLabel = locationRoleLabel(location);
 
   return buildPageMetadata({
     path: `/contact/${location.slug}`,
-    title: `${location.office_name} | Contact`,
-    description: `${location.office_name} office details, address, and contact information.`,
+    title: `${title} | Contact`,
+    description: `${title} ${roleLabel.toLowerCase()} details, address, and contact information.`,
   });
 }
 
@@ -78,6 +92,9 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
   const publicMapUrl = getPublicMapUrl(location.map_url);
   const embeddedMapUrl = getEmbeddableMapUrl(location.map_url);
   const branches = location.branches ?? [];
+  const title = location.city;
+  const secondaryName = location.office_name?.trim() || null;
+  const roleLabel = locationRoleLabel(location);
 
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: "Home", url: "/" },
@@ -87,20 +104,26 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
 
   return (
     <article className="detail-shell">
-      <JsonLdScript id={`office-breadcrumb-${location.id}`} data={breadcrumbSchema} />
+      <JsonLdScript id={`location-breadcrumb-${location.id}`} data={breadcrumbSchema} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact", href: "/contact" }, { label: location.city }]} />
       <div className="detail-layout">
         <div className="detail-card p-8 md:p-10">
-          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Office</p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink">{location.office_name}</h1>
-          <p className="mt-6 whitespace-pre-wrap leading-8 text-muted">{location.address}</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">{roleLabel}</p>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink">{title}</h1>
+          {secondaryName ? <p className="mt-2 text-base font-medium text-muted">{secondaryName}</p> : null}
+          {location.photo_url ? (
+            <div className="mt-6 overflow-hidden rounded-3xl border border-[var(--glass-border)]">
+              <Image src={location.photo_url} alt={`${title} branch location`} width={1200} height={640} unoptimized className="h-72 w-full object-cover" />
+            </div>
+          ) : null}
+          {location.address ? <p className="mt-6 whitespace-pre-wrap leading-8 text-muted">{location.address}</p> : null}
           {location.phone ? <p className="mt-4 text-muted">T: {location.phone}</p> : null}
           {location.email ? <p className="mt-1 text-muted">E: {location.email}</p> : null}
           {location.contact_person ? <p className="mt-3 text-sm text-muted">Contact Person: {location.contact_person}</p> : null}
 
           {branches.length > 0 ? (
             <section className="mt-8">
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Sub Branches</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Branches</p>
               <div className="mt-4 grid gap-4">
                 {branches.map((branch) => (
                   <BranchDetailCard key={branch.id} branch={branch} />
@@ -115,7 +138,7 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
             <div className="flex items-start justify-between gap-4 p-6 md:p-7">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Map</p>
-                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-ink">Locate this office</h2>
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-ink">Locate this {roleLabel.toLowerCase()}</h2>
                 <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
                   Use the map for directions and open it in a new tab if you need the full Google Maps experience.
                 </p>
@@ -134,7 +157,7 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
             {embeddedMapUrl ? (
               <div className="detail-map-frame-wrap">
                 <iframe
-                  title={`${location.office_name} map`}
+                  title={`${title} map`}
                   src={embeddedMapUrl}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -147,9 +170,9 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
                   <MapPin className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-ink">Open this office in your map app</p>
+                  <p className="text-lg font-semibold text-ink">Open this location in your map app</p>
                   <p className="mt-2 max-w-lg text-sm leading-7 text-muted">
-                    This map link cannot be embedded here, but the office location is ready to open in a new tab.
+                    This map link cannot be embedded here, but the location is ready to open in a new tab.
                   </p>
                 </div>
               </div>
