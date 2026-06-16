@@ -64,11 +64,6 @@ export function LocationMapPicker({ address, mapUrl, latitude, longitude, onChan
   const publicMapUrl = mapUrl.trim() || buildMapUrl(latitude, longitude, address);
 
   useEffect(() => {
-    setDraftAddress(address);
-    draftAddressRef.current = address;
-  }, [address]);
-
-  useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
 
@@ -79,7 +74,8 @@ export function LocationMapPicker({ address, mapUrl, latitude, longitude, onChan
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    const map = L.map(containerRef.current, { scrollWheelZoom: false }).setView(hasPoint(latitude, longitude) ? [latitude, longitude] : INDIA_CENTER, hasPoint(latitude, longitude) ? POINT_ZOOM : DEFAULT_ZOOM);
+    const initialCenter: [number, number] = hasPoint(latitude, longitude) ? [latitude as number, longitude as number] : INDIA_CENTER;
+    const map = L.map(containerRef.current, { scrollWheelZoom: false }).setView(initialCenter, hasPoint(latitude, longitude) ? POINT_ZOOM : DEFAULT_ZOOM);
 
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
@@ -114,7 +110,7 @@ export function LocationMapPicker({ address, mapUrl, latitude, longitude, onChan
       return;
     }
 
-    const latLng: [number, number] = [latitude, longitude];
+    const latLng: [number, number] = [latitude as number, longitude as number];
     if (!markerRef.current) {
       markerRef.current = L.marker(latLng, { draggable: true, icon: pointIcon })
         .on("dragend", (event) => {

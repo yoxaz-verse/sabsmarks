@@ -65,7 +65,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function serializeLocationsForm(form: AdminRecord) {
-  const serialized = {
+  const serialized: AdminRecord = {
     ...form,
     office_name: nullableText(form.office_name),
     address: nullableText(form.address),
@@ -439,6 +439,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
         <div key={field.key} className={`admin-field ${wrapperClass}`}>
           <span className="admin-label">{field.label}</span>
           <LocationMapPicker
+            key={typeof form.id === "string" ? form.id : "new-location"}
             address={typeof form.address === "string" ? form.address : ""}
             mapUrl={typeof form.map_url === "string" ? form.map_url : ""}
             latitude={nullableNumber(form.latitude)}
