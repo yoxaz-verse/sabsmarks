@@ -25,7 +25,7 @@ export function Logo({ className }: LogoProps) {
           height={350}
           priority
           sizes="(max-width: 640px) 72px, 88px"
-          className="h-auto w-full object-contain"
+          className="h-auto w-full object-contain logo-image"
         />
       </div>
     </div>
