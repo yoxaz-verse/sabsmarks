@@ -20,7 +20,7 @@ export default async function AboutLocationsPage() {
 
       <InteriorIntroSection
         title="Find every Sabs Marks JVS branch location in one place."
-        description="Browse the Ettumanoor head office and all published branches, switch between locations instantly, and keep the active map in view while you compare contact details."
+        description="Browse the Ettumanoor head office and every published branch, switch between exact map points instantly, and keep the active location in view while you compare contact details."
         className="border-b-0"
       />
 

@@ -1,75 +1,24 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Building2, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
+import { ExternalLink, MapPin } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
+import { LocationPointMap } from "@/components/sections/location-point-map";
 import { getLocationBySlug } from "@/lib/content/service";
 import { locationRoleLabel } from "@/lib/location-labels";
 import { getEmbeddableMapUrl, getPublicMapUrl } from "@/lib/map-utils";
 import { buildPageMetadata } from "@/lib/seo";
 import { buildBreadcrumbSchema } from "@/lib/seo-schema";
-import type { LocationBranch } from "@/types/cms";
 
-function sanitizePhone(phone: string) {
-  return phone.replace(/\s+/g, "");
+function hasPoint(latitude: number | null, longitude: number | null) {
+  return typeof latitude === "number" && Number.isFinite(latitude) && typeof longitude === "number" && Number.isFinite(longitude);
 }
 
-function branchName(branch: LocationBranch) {
-  return branch.name?.trim() || "Branch Location";
-}
-
-function BranchDetailCard({ branch }: { branch: LocationBranch }) {
-  const publicMapUrl = getPublicMapUrl(branch.map_url);
-  const title = branchName(branch);
-
-  return (
-    <article className="rounded-3xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_74%,transparent)] p-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Branch</p>
-          <h3 className="mt-2 text-xl font-semibold tracking-tight text-ink">{title}</h3>
-        </div>
-        {publicMapUrl ? (
-          <a
-            href={publicMapUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--glass-border)] px-4 py-2 text-sm font-semibold text-accent transition hover:border-accent/30 hover:bg-white/70"
-          >
-            <MapPin className="h-4 w-4" />
-            Map
-          </a>
-        ) : null}
-      </div>
-      {branch.photo_url ? (
-        <div className="mt-4 overflow-hidden rounded-2xl border border-[var(--glass-border)]">
-          <Image src={branch.photo_url} alt={`${title} branch`} width={1000} height={520} unoptimized className="h-56 w-full object-cover" />
-        </div>
-      ) : null}
-      {branch.address ? <p className="mt-4 whitespace-pre-wrap text-sm leading-7 text-muted">{branch.address}</p> : null}
-      <div className="mt-5 grid gap-3 text-sm text-muted md:grid-cols-2">
-        {branch.phone ? (
-          <a href={`tel:${sanitizePhone(branch.phone)}`} className="inline-flex items-center gap-2 transition hover:text-accent">
-            <Phone className="h-4 w-4" />
-            {branch.phone}
-          </a>
-        ) : null}
-        {branch.email ? (
-          <a href={`mailto:${branch.email}`} className="inline-flex min-w-0 items-center gap-2 transition hover:text-accent">
-            <Mail className="h-4 w-4 shrink-0" />
-            <span className="truncate">{branch.email}</span>
-          </a>
-        ) : null}
-        {branch.contact_person ? (
-          <p className="inline-flex items-center gap-2 md:col-span-2">
-            <Building2 className="h-4 w-4" />
-            {branch.contact_person}
-          </p>
-        ) : null}
-      </div>
-    </article>
-  );
+function fallbackMapUrl(latitude: number | null, longitude: number | null, address: string | null, title: string) {
+  if (hasPoint(latitude, longitude)) return `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=18/${latitude}/${longitude}`;
+  const query = [address, title].filter(Boolean).join(", ");
+  return query ? `https://www.openstreetmap.org/search?query=${encodeURIComponent(query)}` : null;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ entry: string }> }): Promise<Metadata> {
@@ -89,9 +38,9 @@ export async function generateMetadata({ params }: { params: Promise<{ entry: st
 export default async function OfficeDetail({ params }: { params: Promise<{ entry: string }> }) {
   const location = await getLocationBySlug((await params).entry);
   if (!location) notFound();
-  const publicMapUrl = getPublicMapUrl(location.map_url);
+  const publicMapUrl = getPublicMapUrl(location.map_url) ?? fallbackMapUrl(location.latitude, location.longitude, location.address, location.city);
   const embeddedMapUrl = getEmbeddableMapUrl(location.map_url);
-  const branches = location.branches ?? [];
+  const hasExactPoint = hasPoint(location.latitude, location.longitude);
   const title = location.city;
   const secondaryName = location.office_name?.trim() || null;
   const roleLabel = locationRoleLabel(location);
@@ -121,40 +70,36 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
           {location.email ? <p className="mt-1 text-muted">E: {location.email}</p> : null}
           {location.contact_person ? <p className="mt-3 text-sm text-muted">Contact Person: {location.contact_person}</p> : null}
 
-          {branches.length > 0 ? (
-            <section className="mt-8">
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Branches</p>
-              <div className="mt-4 grid gap-4">
-                {branches.map((branch) => (
-                  <BranchDetailCard key={branch.id} branch={branch} />
-                ))}
-              </div>
-            </section>
-          ) : null}
         </div>
 
-        {publicMapUrl ? (
+        {publicMapUrl || hasExactPoint ? (
           <section className="detail-card detail-map-card">
             <div className="flex items-start justify-between gap-4 p-6 md:p-7">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Map</p>
                 <h2 className="mt-3 text-2xl font-semibold tracking-tight text-ink">Locate this {roleLabel.toLowerCase()}</h2>
                 <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
-                  Use the map for directions and open it in a new tab if you need the full Google Maps experience.
+                  Use the map to confirm the exact branch point, or open it in a new tab for a larger view.
                 </p>
               </div>
-              <a
-                href={publicMapUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--glass-border)] px-4 py-2 text-sm font-semibold text-accent transition hover:border-accent/30 hover:bg-white/70"
-              >
-                <ExternalLink className="h-4 w-4" />
-                Open map
-              </a>
+              {publicMapUrl ? (
+                <a
+                  href={publicMapUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--glass-border)] px-4 py-2 text-sm font-semibold text-accent transition hover:border-accent/30 hover:bg-white/70"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Open map
+                </a>
+              ) : null}
             </div>
 
-            {embeddedMapUrl ? (
+            {hasExactPoint ? (
+              <div className="detail-map-frame-wrap">
+                <LocationPointMap title={`${title} map point`} latitude={location.latitude as number} longitude={location.longitude as number} />
+              </div>
+            ) : embeddedMapUrl ? (
               <div className="detail-map-frame-wrap">
                 <iframe
                   title={`${title} map`}

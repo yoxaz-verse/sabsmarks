@@ -2,6 +2,34 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+.branch-map-marker {
+  align-items: center;
+  background: color-mix(in srgb, var(--accent) 18%, white);
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.28);
+  display: flex;
+  justify-content: center;
+}
+
+.branch-map-marker-dot {
+  background: var(--accent);
+  border-radius: 999px;
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 18%, transparent);
+  display: block;
+  height: 12px;
+  width: 12px;
+}
+
+.branch-map-marker.is-active {
+  background: color-mix(in srgb, var(--accent-secondary) 22%, white);
+}
+
+.branch-map-marker.is-active .branch-map-marker-dot {
+  background: var(--accent-secondary);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent-secondary) 24%, transparent);
+}
+
 :root {
   --brand-blue: #005c9d;
   --brand-blue-deep: #004675;

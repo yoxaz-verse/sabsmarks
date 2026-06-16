@@ -5,7 +5,7 @@ import { PageBanner } from "@/components/layout/page-banner";
 import { getLocations, getSiteSettings } from "@/lib/content/service";
 import { locationRoleLabel } from "@/lib/location-labels";
 import { getSiteContact } from "@/lib/site-contact";
-import type { Location, LocationBranch } from "@/types/cms";
+import type { Location } from "@/types/cms";
 import Image from "next/image";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 
@@ -23,10 +23,6 @@ function locationName(location: Location) {
 
 function officeName(location: Location) {
   return location.office_name?.trim() || null;
-}
-
-function branchName(branch: LocationBranch) {
-  return branch.name?.trim() || "Branch Location";
 }
 
 function getSocialHandle(url: string, fallback: string) {
@@ -114,47 +110,7 @@ function SocialLink({
   );
 }
 
-function BranchSummary({ branch }: { branch: LocationBranch }) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Branch</p>
-          <h4 className="mt-1 text-sm font-bold text-white">{branchName(branch)}</h4>
-        </div>
-        {branch.map_url ? (
-          <a href={branch.map_url} target="_blank" rel="noreferrer" className="shrink-0 rounded-lg border border-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-white/82 transition hover:bg-white/10">
-            Map
-          </a>
-        ) : null}
-      </div>
-      {branch.address ? <p className="mt-3 line-clamp-2 text-xs leading-6 text-white/70">{branch.address}</p> : null}
-      <div className="mt-3 space-y-2 text-xs text-white/82">
-        {branch.phone ? (
-          <a href={`tel:${sanitizePhone(branch.phone)}`} className="flex items-center gap-2 transition hover:text-white">
-            <Phone className="h-3.5 w-3.5" />
-            <span className="font-medium">{branch.phone}</span>
-          </a>
-        ) : null}
-        {branch.email ? (
-          <a href={`mailto:${branch.email}`} className="flex min-w-0 items-center gap-2 transition hover:text-white">
-            <Mail className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate font-medium">{branch.email}</span>
-          </a>
-        ) : null}
-        {branch.contact_person ? (
-          <p className="flex items-center gap-2">
-            <Building2 className="h-3.5 w-3.5" />
-            <span className="font-medium">{branch.contact_person}</span>
-          </p>
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
 function OfficeCard({ location }: { location: Location }) {
-  const branches = location.branches ?? [];
   const secondaryName = officeName(location);
   const roleLabel = locationRoleLabel(location);
 
@@ -193,15 +149,6 @@ function OfficeCard({ location }: { location: Location }) {
           </a>
         ) : null}
       </div>
-
-      {branches.length > 0 ? (
-        <div className="mt-5 space-y-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Additional branches</p>
-          {branches.map((branch) => (
-            <BranchSummary key={branch.id} branch={branch} />
-          ))}
-        </div>
-      ) : null}
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <Link
@@ -263,7 +210,7 @@ export default async function ContactPage() {
               className="inline-flex items-center gap-2 rounded-full border border-white/12 px-5 py-3 text-sm font-medium text-white/88 transition hover:border-white/24 hover:bg-white/8"
             >
               <Building2 className="h-4 w-4" />
-              View branches
+              View branch points
             </a>
           </>
         }
@@ -358,7 +305,7 @@ export default async function ContactPage() {
                   </div>
                   <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
                     <p className="font-semibold text-ink">Branch Visits</p>
-                    <p className="mt-1 leading-6">Open the branch card below for local details and maps.</p>
+                    <p className="mt-1 leading-6">Open a branch card below for local details and exact map points.</p>
                   </div>
                   <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
                     <p className="font-semibold text-ink">Firm Updates</p>

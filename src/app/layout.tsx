@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import NextTopLoader from "nextjs-toploader";
 import { buildOpenGraph, buildTwitter, SITE_NAME, SITE_URL } from "@/lib/seo";
+import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
 const defaultDescription =

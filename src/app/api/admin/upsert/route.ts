@@ -39,18 +39,6 @@ const tablesWithStatus = new Set([
 ]);
 
 const statusSchema = z.enum(["draft", "review", "published"]);
-const locationBranchSchema = z.object({
-  id: z.string().min(1),
-  name: z.string().min(1),
-  address: z.string().optional().nullable(),
-  phone: z.string().optional().nullable(),
-  email: z.string().optional().nullable(),
-  map_url: z.string().optional().nullable(),
-  contact_person: z.string().optional().nullable(),
-  latitude: z.number().optional().nullable(),
-  longitude: z.number().optional().nullable(),
-  photo_url: z.string().optional().nullable(),
-});
 const contentEntitySchema = z.object({
   id: z.string().uuid().optional(),
   slug: z.string().min(1),
@@ -109,34 +97,6 @@ function nullableNumber(value: unknown) {
   return Number.isFinite(numberValue) ? numberValue : null;
 }
 
-function normalizeLocationBranches(value: unknown) {
-  if (!Array.isArray(value)) return [];
-
-  return value
-    .filter(isRecord)
-    .map((branch) => ({
-      id: typeof branch.id === "string" && branch.id.trim().length > 0 ? branch.id.trim() : crypto.randomUUID(),
-      name: typeof branch.name === "string" ? branch.name.trim() : "",
-      address: nullableString(branch.address),
-      phone: nullableString(branch.phone),
-      email: nullableString(branch.email),
-      map_url: nullableString(branch.map_url),
-      contact_person: nullableString(branch.contact_person),
-      latitude: nullableNumber(branch.latitude),
-      longitude: nullableNumber(branch.longitude),
-      photo_url: nullableString(branch.photo_url),
-    }))
-    .filter((branch) =>
-      [branch.name, branch.address, branch.phone, branch.email, branch.map_url, branch.contact_person, branch.photo_url].some(
-        (field) => typeof field === "string" && field.trim().length > 0
-      ) || branch.latitude !== null || branch.longitude !== null
-    )
-    .map((branch) => ({
-      ...branch,
-      name: branch.name || "Branch Location",
-    }));
-}
-
 const tableSchemas: Record<string, z.ZodTypeAny> = {
   pages: z.object({
     id: z.string().uuid().optional(),
@@ -176,7 +136,6 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     latitude: z.number().optional().nullable(),
     longitude: z.number().optional().nullable(),
     photo_url: z.string().optional().nullable(),
-    branches: z.array(locationBranchSchema).default([]),
     featured: z.boolean().optional(),
     status: statusSchema,
   }),
@@ -272,7 +231,8 @@ export async function POST(req: Request) {
     normalized.latitude = nullableNumber(normalized.latitude);
     normalized.longitude = nullableNumber(normalized.longitude);
     normalized.photo_url = nullableString(normalized.photo_url);
-    normalized.branches = normalizeLocationBranches(normalized.branches);
+    delete normalized.branches;
+    delete normalized.location_picker;
   }
   if (table === "team_members") {
     if (typeof normalized.name === "string") normalized.name = normalized.name.trim();

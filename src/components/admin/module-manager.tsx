@@ -2,21 +2,9 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { LocationMapPicker } from "@/components/admin/location-map-picker";
 import type { AdminFieldConfig, AdminModuleConfig, AdminRecord } from "@/types/admin";
 import { SITE_VISUALS } from "@/lib/site-visuals";
-
-type AdminLocationBranch = {
-  id: string;
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-  contact_person: string;
-  map_url: string;
-  latitude: string;
-  longitude: string;
-  photo_url: string;
-};
 
 function inputValue(record: AdminRecord, key: string) {
   const value = record[key];
@@ -76,63 +64,8 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function createBranchId() {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
-  return `branch-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function normalizeBranchText(value: unknown) {
-  if (value === null || value === undefined) return "";
-  return String(value);
-}
-
-function normalizeLocationBranches(value: unknown): AdminLocationBranch[] {
-  if (!Array.isArray(value)) return [];
-
-  return value.filter(isRecord).map((branch) => ({
-    id: normalizeBranchText(branch.id) || createBranchId(),
-    name: normalizeBranchText(branch.name),
-    address: normalizeBranchText(branch.address),
-    phone: normalizeBranchText(branch.phone),
-    email: normalizeBranchText(branch.email),
-    contact_person: normalizeBranchText(branch.contact_person),
-    map_url: normalizeBranchText(branch.map_url),
-    latitude: normalizeBranchText(branch.latitude),
-    longitude: normalizeBranchText(branch.longitude),
-    photo_url: normalizeBranchText(branch.photo_url),
-  }));
-}
-
-function shapeLocationsForm(record: AdminRecord) {
-  return {
-    ...record,
-    branches: normalizeLocationBranches(record.branches),
-  };
-}
-
-function serializeLocationBranches(value: unknown) {
-  return normalizeLocationBranches(value)
-    .map((branch) => ({
-      id: branch.id || createBranchId(),
-      name: branch.name.trim(),
-      address: nullableText(branch.address),
-      phone: nullableText(branch.phone),
-      email: nullableText(branch.email),
-      contact_person: nullableText(branch.contact_person),
-      map_url: nullableText(branch.map_url),
-      latitude: nullableNumber(branch.latitude),
-      longitude: nullableNumber(branch.longitude),
-      photo_url: nullableText(branch.photo_url),
-    }))
-    .filter((branch) =>
-      [branch.name, branch.address, branch.phone, branch.email, branch.contact_person, branch.map_url, branch.photo_url].some(
-        (value) => typeof value === "string" && value.trim().length > 0
-      ) || branch.latitude !== null || branch.longitude !== null
-    );
-}
-
 function serializeLocationsForm(form: AdminRecord) {
-  return {
+  const serialized = {
     ...form,
     office_name: nullableText(form.office_name),
     address: nullableText(form.address),
@@ -143,8 +76,12 @@ function serializeLocationsForm(form: AdminRecord) {
     latitude: nullableNumber(form.latitude),
     longitude: nullableNumber(form.longitude),
     photo_url: nullableText(form.photo_url),
-    branches: serializeLocationBranches(form.branches),
   };
+
+  delete serialized.location_picker;
+  delete serialized.branches;
+
+  return serialized;
 }
 
 function normalizeLocationsText(value: unknown) {
@@ -246,13 +183,13 @@ function serializeCareersForm(form: AdminRecord) {
 
 function resolveFieldWidth(field: AdminFieldConfig) {
   if (field.width) return field.width;
-  if (field.type === "textarea" || field.type === "checkbox" || field.type === "branches") return "full";
+  if (field.type === "textarea" || field.type === "checkbox" || field.type === "locationPicker") return "full";
   return "half";
 }
 
 function fieldDescription(configTitle: string) {
   if (configTitle === "Leadership") return "Add profile details, photo, and publishing settings for the leadership page.";
-  if (configTitle === "Locations") return "Use the branch location as the primary detail; office name and address can stay blank when unavailable.";
+  if (configTitle === "Locations") return "Each entry is one branch. Search an address or drag the marker to set the exact public map point.";
   if (configTitle === "Insights") return "Structure article metadata first, then add the content that will appear on the site.";
   if (configTitle === "Careers / Join Us") return "Use this form for individual opportunities that will feed the careers listing.";
   return "Complete the essential details, then review publishing settings before saving.";
@@ -265,6 +202,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [insightPreviewFailed, setInsightPreviewFailed] = useState(false);
   const [photoPreviewFailed, setPhotoPreviewFailed] = useState(false);
@@ -338,9 +276,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
         ? shapeSiteSettingsForm(record)
         : config.table === "careers"
           ? shapeCareersForm(record)
-          : config.table === "locations"
-            ? shapeLocationsForm(record)
-            : record
+          : record
     );
     setInsightPreviewFailed(false);
     setPhotoPreviewFailed(false);
@@ -380,12 +316,46 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     setSaving(false);
   }
 
-  async function uploadAsset(file: File, fieldKey: string, branchId?: string) {
+  async function deleteRecord(record: AdminRecord) {
+    if (config.table !== "locations" || typeof record.id !== "string") return;
+
+    const label =
+      typeof record.city === "string" && record.city.trim().length > 0
+        ? record.city.trim()
+        : typeof record.slug === "string" && record.slug.trim().length > 0
+          ? record.slug.trim()
+          : "this location";
+
+    const confirmed = window.confirm(`Permanently delete ${label}? This cannot be undone.`);
+    if (!confirmed) return;
+
+    setMessage("");
+    setError("");
+    setDeletingId(record.id);
+
+    const res = await fetch("/api/admin/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ table: config.table, id: record.id }),
+    });
+    const json = (await res.json()) as { ok?: boolean; error?: string };
+
+    if (!res.ok) {
+      setError(json.error ?? "Failed to delete location.");
+      setDeletingId(null);
+      return;
+    }
+
+    setMessage("Location deleted");
+    await load();
+    setDeletingId(null);
+  }
+
+  async function uploadAsset(file: File, fieldKey: string) {
     if (!file) return;
     setError("");
     setMessage("");
-    const uploadKey = branchId ? `branch:${branchId}:${fieldKey}` : fieldKey;
-    setUploadingField(uploadKey);
+    setUploadingField(fieldKey);
     try {
       const timestamp = Math.floor(Date.now() / 1000);
       const signRes = await fetch("/api/cloudinary/sign", {
@@ -425,16 +395,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
       const persistJson = (await persistRes.json()) as { error?: string };
       if (!persistRes.ok) throw new Error(persistJson.error ?? "Failed to persist media asset.");
 
-      if (branchId) {
-        setForm((prev) => ({
-          ...prev,
-          branches: normalizeLocationBranches(prev.branches).map((branch) =>
-            branch.id === branchId ? { ...branch, [fieldKey]: uploadJson.secure_url } : branch
-          ),
-        }));
-      } else {
-        setForm((prev) => ({ ...prev, [fieldKey]: uploadJson.secure_url }));
-      }
+      setForm((prev) => ({ ...prev, [fieldKey]: uploadJson.secure_url }));
 
       if (fieldKey === "photo_url") {
         setPhotoPreviewFailed(false);
@@ -450,125 +411,6 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     } finally {
       setUploadingField(null);
     }
-  }
-
-  function updateLocationBranch(branchId: string, key: keyof AdminLocationBranch, value: string) {
-    setForm((prev) => ({
-      ...prev,
-      branches: normalizeLocationBranches(prev.branches).map((branch) => (branch.id === branchId ? { ...branch, [key]: value } : branch)),
-    }));
-  }
-
-  function addLocationBranch() {
-    setForm((prev) => ({
-      ...prev,
-      branches: [
-        ...normalizeLocationBranches(prev.branches),
-        { id: createBranchId(), name: "", address: "", phone: "", email: "", contact_person: "", map_url: "", latitude: "", longitude: "", photo_url: "" },
-      ],
-    }));
-  }
-
-  function removeLocationBranch(branchId: string) {
-    setForm((prev) => ({
-      ...prev,
-      branches: normalizeLocationBranches(prev.branches).filter((branch) => branch.id !== branchId),
-    }));
-  }
-
-  function renderBranchesField(field: AdminFieldConfig, wrapperClass: string) {
-    const branches = normalizeLocationBranches(form.branches);
-
-    return (
-      <div key={field.key} className={`admin-field ${wrapperClass}`}>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className="admin-label">{field.label}</span>
-          <button type="button" onClick={addLocationBranch} className="rounded-full bg-stone-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">
-            Add Branch
-          </button>
-        </div>
-
-        {branches.length > 0 ? (
-          <div className="space-y-4">
-            {branches.map((branch, index) => (
-              <div key={branch.id} className="rounded-2xl border border-stone-200 bg-stone-50/80 p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-sm font-semibold text-stone-800">Branch {index + 1}</p>
-                  <button
-                    type="button"
-                    onClick={() => removeLocationBranch(branch.id)}
-                    className="rounded-full border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-50"
-                  >
-                    Remove
-                  </button>
-                </div>
-                <div className="mt-4 grid gap-4 md:grid-cols-2">
-                  <label className="admin-field">
-                    <span className="admin-label">Branch Location</span>
-                    <input value={branch.name} onChange={(e) => updateLocationBranch(branch.id, "name", e.target.value)} className="admin-input" />
-                  </label>
-                  <label className="admin-field">
-                    <span className="admin-label">Contact Person</span>
-                    <input value={branch.contact_person} onChange={(e) => updateLocationBranch(branch.id, "contact_person", e.target.value)} className="admin-input" />
-                  </label>
-                  <label className="admin-field">
-                    <span className="admin-label">Phone</span>
-                    <input value={branch.phone} onChange={(e) => updateLocationBranch(branch.id, "phone", e.target.value)} className="admin-input" />
-                  </label>
-                  <label className="admin-field">
-                    <span className="admin-label">Email</span>
-                    <input value={branch.email} onChange={(e) => updateLocationBranch(branch.id, "email", e.target.value)} className="admin-input" />
-                  </label>
-                  <label className="admin-field md:col-span-2">
-                    <span className="admin-label">Map URL</span>
-                    <input value={branch.map_url} onChange={(e) => updateLocationBranch(branch.id, "map_url", e.target.value)} className="admin-input" />
-                  </label>
-                  <label className="admin-field">
-                    <span className="admin-label">Latitude</span>
-                    <input type="number" step="any" value={branch.latitude} onChange={(e) => updateLocationBranch(branch.id, "latitude", e.target.value)} className="admin-input" />
-                  </label>
-                  <label className="admin-field">
-                    <span className="admin-label">Longitude</span>
-                    <input type="number" step="any" value={branch.longitude} onChange={(e) => updateLocationBranch(branch.id, "longitude", e.target.value)} className="admin-input" />
-                  </label>
-                  <label className="admin-field md:col-span-2">
-                    <span className="admin-label">Branch Photo URL</span>
-                    <input value={branch.photo_url} onChange={(e) => updateLocationBranch(branch.id, "photo_url", e.target.value)} className="admin-input" />
-                  </label>
-                  <div className="admin-upload-panel md:col-span-2">
-                    <div>
-                      <p className="text-sm font-medium text-stone-800">Upload branch photo</p>
-                      <p className="mt-1 text-xs leading-5 text-stone-500">Upload an image to populate the Branch Photo URL field automatically.</p>
-                    </div>
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) void uploadAsset(file, "photo_url", branch.id);
-                          e.currentTarget.value = "";
-                        }}
-                        className="block w-full text-xs text-stone-600 file:mr-3 file:rounded-xl file:border-0 file:bg-stone-900 file:px-3 file:py-2.5 file:text-xs file:font-semibold file:text-white"
-                      />
-                      {uploadingField === `branch:${branch.id}:photo_url` ? <span className="text-xs font-medium text-stone-500">Uploading...</span> : null}
-                    </div>
-                  </div>
-                  <label className="admin-field md:col-span-2">
-                    <span className="admin-label">Address</span>
-                    <textarea value={branch.address} onChange={(e) => updateLocationBranch(branch.id, "address", e.target.value)} className="admin-textarea" />
-                  </label>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-5 text-sm leading-6 text-stone-600">
-            No branches added yet. Use Add Branch when a location has additional branch contact points.
-          </div>
-        )}
-      </div>
-    );
   }
 
   function renderField(field: AdminFieldConfig) {
@@ -592,8 +434,19 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     const insightAlt =
       typeof form.title === "string" && form.title.trim().length > 0 ? `${form.title.trim()} feature image preview` : "Insight feature image preview";
 
-    if (field.type === "branches") {
-      return renderBranchesField(field, wrapperClass);
+    if (field.type === "locationPicker") {
+      return (
+        <div key={field.key} className={`admin-field ${wrapperClass}`}>
+          <span className="admin-label">{field.label}</span>
+          <LocationMapPicker
+            address={typeof form.address === "string" ? form.address : ""}
+            mapUrl={typeof form.map_url === "string" ? form.map_url : ""}
+            latitude={nullableNumber(form.latitude)}
+            longitude={nullableNumber(form.longitude)}
+            onChange={(next) => setForm((prev) => ({ ...prev, ...next }))}
+          />
+        </div>
+      );
     }
 
     if (field.type === "textarea") {
@@ -841,6 +694,15 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                     <button onClick={() => openEdit(record)} className="rounded-lg border border-stone-300 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-stone-700">
                       Edit
                     </button>
+                    {config.table === "locations" ? (
+                      <button
+                        onClick={() => void deleteRecord(record)}
+                        disabled={deletingId === record.id}
+                        className="ml-2 rounded-lg border border-red-200 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {deletingId === record.id ? "Deleting" : "Delete"}
+                      </button>
+                    ) : null}
                   </td>
                 ) : null}
               </tr>

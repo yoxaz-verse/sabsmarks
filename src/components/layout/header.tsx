@@ -108,9 +108,9 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-[100] border-b border-[var(--section-border)] bg-[color-mix(in_srgb,var(--bg)_76%,transparent)]/95 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-3.5">
-        <Link href="/">
-          <Logo className="w-[172px] sm:w-[205px]" />
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3.5 sm:gap-4 sm:px-6 lg:gap-6">
+        <Link href="/" className="min-w-0">
+          <Logo className="!w-[248px] sm:!w-[300px] md:!w-[350px]" />
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
           <MegaNav groups={navGroups} />
