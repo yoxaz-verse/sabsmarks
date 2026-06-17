@@ -203,6 +203,7 @@ export default function PracticeAreasPage() {
       <PageBanner title="Our Services" />
 
       <InteriorIntroSection
+        compact
         title="Specialized capabilities, organized for faster decision-making."
         description="Our services are designed to strengthen financial decision-making, governance, controls, and execution discipline across every stage of growth. We combine structured analysis, regulatory awareness, and business context to help leadership teams act with clarity and confidence."
         align="center"

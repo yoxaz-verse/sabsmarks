@@ -19,6 +19,7 @@ export default function AboutPage() {
       <PageBanner title="The Firm" />
 
       <InteriorIntroSection
+        compact
         title="A Legacy of Trust and Excellence."
         description="Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries."
         body={

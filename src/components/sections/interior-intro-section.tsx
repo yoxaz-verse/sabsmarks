@@ -13,6 +13,7 @@ interface InteriorIntroSectionProps {
   actions?: ReactNode;
   stats?: IntroStat[];
   align?: "start" | "center";
+  compact?: boolean;
   className?: string;
 }
 
@@ -24,14 +25,18 @@ export function InteriorIntroSection({
   actions,
   stats,
   align = "start",
+  compact = false,
   className = "",
 }: InteriorIntroSectionProps) {
   const isCentered = align === "center";
+  const panelClassName = compact
+    ? "interior-intro__panel"
+    : "interior-intro__panel decorated-panel rounded-[1.4rem] px-1 py-1";
 
   return (
-    <section className={`site-section ${className}`.trim()}>
-      <div className="site-container py-10 md:py-14">
-        <div className="decorated-panel rounded-[1.4rem] px-1 py-1">
+    <section className={`interior-intro ${compact ? "interior-intro--compact" : ""} site-section ${className}`.trim()}>
+      <div className={`site-container ${compact ? "py-7 md:py-9" : "py-10 md:py-14"}`}>
+        <div className={panelClassName}>
           <div className={`grid gap-5 ${stats?.length ? "lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start" : ""}`}>
             <div className={`section-header ${isCentered ? "mx-auto text-center" : ""}`}>
               {kicker ? <div className={`section-kicker ${isCentered ? "mx-auto justify-center" : ""}`}>{kicker}</div> : null}

@@ -18,6 +18,7 @@ export default function IndustryPage() {
       <PageBanner title="Industry Solutions" />
 
       <InteriorIntroSection
+        compact
         title="Industry context that makes advisory decisions more actionable."
         description="Sabs Marks JVS & Co. has been providing knowledge-based solutions to its clients, helping them better understand the fundamentals and complexity of various issues, thereby enabling them to take strategic, data-driven decisions."
         body={

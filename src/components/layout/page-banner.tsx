@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   Factory,
   FileText,
-  ChevronDown,
   Landmark,
   MapPin,
   ShieldCheck,
@@ -63,9 +62,22 @@ function getBannerArt(title: string): BannerArtConfig {
   return { kind: "advisory", Icon: Landmark, SecondaryIcon: FileText, TertiaryIcon: TrendingUp };
 }
 
-function BannerIllustration({ title, isContrast }: { title: string; isContrast: boolean }) {
-  const { kind, Icon, SecondaryIcon, TertiaryIcon } = getBannerArt(title);
+function getBannerEyebrow(title: string) {
+  const normalizedTitle = title.toLowerCase();
 
+  if (/(location|office|branch)/.test(normalizedTitle)) return "Locations";
+  if (/(contact)/.test(normalizedTitle)) return "Contact";
+  if (/(service|expertise|practice|ifsc|uae)/.test(normalizedTitle)) return "Expertise";
+  if (/(career|alumni|join|philosophy)/.test(normalizedTitle)) return "Career";
+  if (/(blog|insight|knowledge|publication|article|news)/.test(normalizedTitle)) return "Insights";
+  if (/(industry|solution|sector)/.test(normalizedTitle)) return "Industry";
+  if (/(firm|legacy|leadership|team|approach)/.test(normalizedTitle)) return "About";
+
+  return "Sabs Marks JVS & Co.";
+}
+
+function BannerIllustration({ art, isContrast }: { art: BannerArtConfig; isContrast: boolean }) {
+  const { kind, Icon, SecondaryIcon, TertiaryIcon } = art;
   return (
     <div
       aria-hidden="true"
@@ -116,15 +128,17 @@ export function PageBanner({
   actions,
 }: PageBannerProps) {
   const isContrast = variant === "contrast";
+  const art = getBannerArt(title);
   const showHeroOrnament = isContrast;
-  const displayEyebrow = eyebrow ?? "Sabs Marks JVS & Co.";
+  const displayEyebrow = eyebrow ?? getBannerEyebrow(title);
 
   return (
     <div
-      className={`group decorated-panel relative w-full overflow-hidden border-b border-[var(--section-border)] transition-colors duration-500 ${
+      data-kind={art.kind}
+      className={`page-banner page-banner--${art.kind} group decorated-panel relative w-full overflow-hidden border-b border-[var(--section-border)] transition-colors duration-500 ${
         isContrast
-          ? "bg-[linear-gradient(135deg,#06121d_0%,#063b63_48%,#005c9d_100%)] py-8 text-white sm:py-10 md:py-12"
-          : "bg-bg py-8 sm:py-10 md:py-12"
+          ? "bg-[linear-gradient(135deg,#06121d_0%,#063b63_48%,#005c9d_100%)] py-5 text-white sm:py-6 md:py-7"
+          : "py-5 sm:py-6 md:py-7"
       }`}
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
@@ -181,16 +195,16 @@ export function PageBanner({
         ></div>
       </div>
 
-      <div className="relative z-20 mx-auto grid max-w-7xl gap-6 px-6 md:px-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(16rem,0.55fr)] lg:items-center">
+      <div className="relative z-20 mx-auto grid max-w-7xl gap-4 px-6 md:px-12 lg:grid-cols-[minmax(0,1fr)_minmax(10rem,0.36fr)] lg:items-center">
         <div className="flex flex-col items-start">
           <div
-            className={`mb-3 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 shadow-sm backdrop-blur-md transition-colors duration-500 ${
+            className={`page-banner__eyebrow mb-2 inline-flex items-center gap-2 rounded-full px-3 py-1.5 shadow-sm backdrop-blur-md transition-colors duration-500 ${
               isContrast
                 ? "border border-white/12 bg-white/8"
                 : "border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_78%,transparent)]"
             }`}
           >
-            <div className="h-2 w-2 rounded-full bg-accent-secondary"></div>
+            <div className="page-banner__dot h-2 w-2 rounded-full"></div>
             <span
               suppressHydrationWarning
               className={`text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-500 ${
@@ -202,7 +216,7 @@ export function PageBanner({
           </div>
 
           <h1
-            className={`mb-3 max-w-4xl py-1 text-3xl font-bold tracking-normal transition-colors duration-500 sm:text-4xl md:mb-3 md:text-5xl lg:text-[3.6rem] ${
+            className={`page-banner__title max-w-4xl py-1 text-3xl font-bold tracking-normal transition-colors duration-500 sm:text-4xl md:text-[2.8rem] lg:text-[3.1rem] ${
               isContrast
                 ? "text-white [text-shadow:0_16px_40px_rgba(2,6,23,0.35)]"
                 : "text-ink dark:text-white"
@@ -213,7 +227,7 @@ export function PageBanner({
 
           {description ? (
             <p
-              className={`max-w-3xl text-[15px] leading-7 md:text-base ${
+              className={`page-banner__description max-w-3xl text-[15px] leading-7 md:text-base ${
                 isContrast ? "text-white/88" : "text-muted dark:text-white/78"
               }`}
             >
@@ -221,28 +235,17 @@ export function PageBanner({
             </p>
           ) : null}
 
-          {actions ? <div className="mt-5 flex w-full flex-wrap items-center gap-3">{actions}</div> : null}
+          {actions ? <div className="page-banner__actions mt-4 flex w-full flex-wrap items-center gap-2.5 sm:gap-3">{actions}</div> : null}
 
-          <div className="mt-5 flex items-center gap-3 sm:gap-4">
-            <div className={`h-[3px] w-12 rounded-full transition-shadow duration-500 ${isContrast ? "bg-accent-secondary shadow-[0_0_20px_var(--accent-secondary-glow)]" : "bg-accent shadow-[0_0_10px_var(--accent-glow)]"}`}></div>
-            <div className={`h-[3px] w-6 rounded-full transition-colors duration-500 ${isContrast ? "bg-white/35" : "bg-accent-secondary/45"}`}></div>
+          <div className="page-banner__rule mt-3 flex items-center gap-2.5 sm:gap-3">
+            <div className={`page-banner__rule-primary h-[3px] w-12 rounded-full transition-shadow duration-500 ${isContrast ? "shadow-[0_0_20px_var(--accent-secondary-glow)]" : "shadow-[0_0_10px_var(--accent-glow)]"}`}></div>
+            <div className={`page-banner__rule-secondary h-[3px] w-6 rounded-full transition-colors duration-500 ${isContrast ? "bg-white/35" : ""}`}></div>
           </div>
         </div>
 
-        <div className="hidden justify-end md:flex">
-          <BannerIllustration title={title} isContrast={isContrast} />
+        <div className="page-banner__art hidden justify-end md:flex">
+          <BannerIllustration art={art} isContrast={isContrast} />
         </div>
-      </div>
-
-      <div
-        aria-hidden="true"
-        className={`absolute bottom-3 left-1/2 z-30 grid h-8 w-8 -translate-x-1/2 place-items-center rounded-full border shadow-sm backdrop-blur-md transition-colors duration-500 ${
-          isContrast
-            ? "border-white/14 bg-white/10 text-white/82"
-            : "border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_82%,transparent)] text-accent"
-        }`}
-      >
-        <ChevronDown className="h-4 w-4" strokeWidth={2.2} />
       </div>
     </div>
   );

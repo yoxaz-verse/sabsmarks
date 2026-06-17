@@ -2,19 +2,15 @@ import { PageBanner } from "@/components/layout/page-banner";
 import { InteriorIntroSection } from "@/components/sections/interior-intro-section";
 import { getTeamMembers } from "@/lib/content/service";
 import { normalizeSlug } from "@/lib/slug";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 function getOptimizedPhotoUrl(url: string | null) {
   if (!url) return null;
-  if (url.includes("cloudinary.com")) {
-    if (url.includes("/image/upload/")) {
-      // Replace the extension with .png to support transparency
-      const pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
-      // Add AI background removal to accurately cut out the subject and leave the background transparent
-      return pngUrl.replace("/image/upload/", "/image/upload/e_background_removal/");
-    }
+  if (url.includes("cloudinary.com") && url.includes("/image/upload/")) {
+    const pngUrl = url.replace(/\.[a-zA-Z0-9]+$/, ".png");
+    return pngUrl.replace("/image/upload/", "/image/upload/e_background_removal/");
   }
   return url;
 }
@@ -37,6 +33,7 @@ export default async function TeamPage() {
       <PageBanner title="Leadership" />
 
       <InteriorIntroSection
+        compact
         title="Partner-Led Institution-Driven"
         description="With decades of combined experience, our partners provide trusted leadership and strategic guidance, supported by the strength, systems, and excellence of a well-established institution."
         className="border-b-0"
@@ -65,71 +62,60 @@ export default async function TeamPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {team.map((member) => {
-              const photoUrl = getOptimizedPhotoUrl(member.photo_url);
-              const profileSlug = normalizeSlug(member.slug || member.name);
+              {team.map((member) => {
+                const photoUrl = getOptimizedPhotoUrl(member.photo_url);
+                const profileSlug = normalizeSlug(member.slug || member.name);
+                const cardQuote = member.excerpt?.trim();
 
-              return (
-                <article
-                  key={member.id}
-                  className="team-profile-card group relative flex min-h-[23rem] flex-col overflow-hidden rounded-2xl border border-[var(--section-border)] bg-white shadow-[0_16px_42px_rgba(15,23,42,0.08)] dark:bg-surface dark:shadow-[0_20px_58px_rgba(2,6,23,0.34)]"
-                >
-                  <Link
-                    href={`/about/team/${profileSlug}`}
-                    aria-label={`Open ${member.name} profile`}
-                    className="absolute inset-0 z-10 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
-                  />
+                return (
+                  <article
+                    key={member.id}
+                    className="group relative flex min-h-[22rem] flex-col overflow-hidden rounded-[0.9rem] border border-[rgba(15,23,42,0.06)] bg-white shadow-[0_14px_34px_rgba(15,23,42,0.06)] transition duration-200 hover:-translate-y-1 hover:border-[rgba(0,92,157,0.16)] hover:shadow-[0_18px_42px_rgba(15,23,42,0.08)] dark:border-[var(--section-border)] dark:bg-surface dark:shadow-[0_18px_42px_rgba(2,6,23,0.28)]"
+                  >
+                    <Link
+                      href={`/about/team/${profileSlug}`}
+                      aria-label={`Open ${member.name} profile`}
+                      className="absolute inset-0 z-10 rounded-[0.9rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+                    />
 
-                  <div className="relative aspect-[4/3.35] overflow-hidden bg-[linear-gradient(135deg,#d4d4d4,#747474)]">
-                    {photoUrl ? (
-                      <Image
-                        src={photoUrl}
-                        alt={member.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                        className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.035]"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#e2e8f0,#94a3b8)] text-5xl font-semibold text-white">
-                        {getInitials(member.name)}
-                      </div>
-                    )}
+                    <div className="relative aspect-[1.4] overflow-hidden bg-[linear-gradient(145deg,#f8fbff_0%,#edf3fb_42%,#dde7f3_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-24px_42px_rgba(99,116,139,0.08)] before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.88),transparent_38%),linear-gradient(90deg,rgba(15,23,42,0.045),transparent_16%,transparent_84%,rgba(15,23,42,0.055))] dark:bg-[linear-gradient(145deg,#1b2535_0%,#121c2c_48%,#0b1220_100%)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-24px_42px_rgba(2,6,23,0.38)] dark:before:bg-[radial-gradient(circle_at_50%_18%,rgba(148,163,184,0.22),transparent_40%),linear-gradient(90deg,rgba(255,255,255,0.045),transparent_18%,transparent_82%,rgba(0,0,0,0.16))]">
+                      {photoUrl ? (
+                        <Image
+                          src={photoUrl}
+                          alt={member.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                          className="relative z-[1] h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.018]"
+                        />
+                      ) : (
+                        <div className="relative z-[1] flex h-full w-full items-center justify-center text-5xl font-semibold text-white/95 dark:text-white/80">
+                          {getInitials(member.name)}
+                        </div>
+                      )}
+                    </div>
 
-                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950/18 to-transparent" />
+                    <div className="flex flex-1 flex-col px-5 py-4 sm:px-5">
+                      <h3 className="text-[1.05rem] font-bold leading-tight tracking-normal text-ink transition-colors group-hover:text-accent">
+                        {member.name}
+                      </h3>
+                      <p className="mt-1 text-[0.8rem] font-bold leading-5 text-accent">{member.designation}</p>
 
-                    {member.linkedin_url ? (
-                      <div className="absolute right-3 top-3 z-20">
-                        <a
-                          href={member.linkedin_url}
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label={`${member.name} LinkedIn profile`}
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/55 bg-white/90 text-[#0a66c2] shadow-sm backdrop-blur-sm transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 dark:border-white/20 dark:bg-surface/88 dark:text-accent dark:hover:bg-surface-raised"
-                        >
-                          <span className="text-[13px] font-black leading-none">in</span>
-                        </a>
-                      </div>
-                    ) : null}
-                  </div>
+                      {cardQuote ? (
+                        <p className="mt-2 min-h-[2.75rem] text-[0.82rem] font-medium leading-6 text-muted [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] overflow-hidden">
+                          &quot;{cardQuote}&quot;
+                        </p>
+                      ) : null}
 
-                  <div className="flex flex-1 flex-col px-6 py-6">
-                    <h3 className="text-[1.35rem] font-semibold leading-tight tracking-tight text-ink transition-colors group-hover:text-accent">
-                      {member.name}
-                    </h3>
-                    <p className="mt-2 text-sm font-semibold leading-6 text-accent">{member.designation}</p>
-
-                    <div className="mt-auto pt-7">
-                      <div className="relative z-20 inline-flex items-center gap-1.5 text-sm font-semibold text-ink">
-                        <span className="underline decoration-[color-mix(in_srgb,var(--ink)_35%,transparent)] decoration-1 underline-offset-8 transition group-hover:decoration-accent">
-                          Read Bio
+                      <div className="mt-auto pt-3">
+                        <span className="relative z-20 inline-flex items-center gap-2 text-[0.8rem] font-bold leading-5 text-accent">
+                          <span>Read Bio</span>
+                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                         </span>
-                        <ArrowUpRight className="h-4 w-4 text-accent transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                       </div>
                     </div>
-                  </div>
-                </article>
-              );
-            })}
+                  </article>
+                );
+              })}
             </div>
           )}
         </div>

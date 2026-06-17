@@ -4,6 +4,7 @@ import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { buildOrganizationSchema } from "@/lib/seo-schema";
 import { ScrollRevealInit } from "@/components/layout/scroll-reveal-init";
 import { InitialLoader } from "@/components/initial-loader";
+import { RouteTransition } from "@/components/layout/route-transition";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const organizationSchema = buildOrganizationSchema();
@@ -14,7 +15,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <ScrollRevealInit />
       <JsonLdScript id="organization-schema" data={organizationSchema} />
       <Header />
-      <main className="flex-1 flex flex-col w-full">{children}</main>
+      <main className="flex-1 flex flex-col w-full">
+        <RouteTransition>{children}</RouteTransition>
+      </main>
       <Footer />
     </div>
   );

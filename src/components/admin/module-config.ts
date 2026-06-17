@@ -131,6 +131,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
       { key: "linkedin_url", label: "LinkedIn Profile", type: "text", section: "Profile" },
       { key: "credentials", label: "Credentials", type: "text", section: "Profile" },
       { key: "photo_url", label: "Photo URL", type: "text", section: "Media", width: "full" },
+      { key: "excerpt", label: "Card Quote", type: "textarea", section: "Profile", width: "full" },
       { key: "bio", label: "About", type: "textarea", section: "Profile", width: "full" },
       { key: "display_order", label: "Display Order", type: "number", section: "Publishing" },
       { key: "published_at", label: "Published At", type: "datetime", section: "Publishing" },
