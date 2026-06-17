@@ -5,11 +5,10 @@ function serializeJsonLd(data: Record<string, unknown> | unknown[]) {
 export function JsonLdScript({ id, data }: { id: string; data: Record<string, unknown> | unknown[] }) {
   return (
     <script
+      async
       id={id}
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }}
     />
   );
 }
-
-

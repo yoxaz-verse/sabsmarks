@@ -7,8 +7,8 @@ interface LogoProps {
 
 export function Logo({ className }: LogoProps) {
   return (
-    <div className={`flex w-[290px] shrink-0 items-center gap-3 sm:w-[350px] ${className || ""}`}>
-      <div className="w-[72px] shrink-0 sm:w-[88px]">
+    <div className={`flex shrink-0 items-center gap-3 ${className || ""}`}>
+      <div className="w-[25%] shrink-0">
         <Image
           src="/ca-india-logo.png"
           alt="CA India"

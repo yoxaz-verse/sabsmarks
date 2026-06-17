@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import L from "leaflet";
 import { Building2, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { locationRoleLabel } from "@/lib/location-labels";
 import { getPublicMapUrl } from "@/lib/map-utils";
 import type { Location } from "@/types/cms";
+import type { DivIcon, LayerGroup, Map as LeafletMap } from "leaflet";
+
+type LeafletModule = typeof import("leaflet");
 
 const INDIA_CENTER: [number, number] = [22.9734, 78.6569];
 
@@ -70,73 +72,85 @@ function ContactRow({ href, icon, label, value }: { href?: string; icon: React.R
 }
 
 export function LocationsBrowser({ locations }: { locations: Location[] }) {
-  const mapRef = useRef<L.Map | null>(null);
+  const leafletRef = useRef<LeafletModule | null>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const markerLayerRef = useRef<L.LayerGroup | null>(null);
+  const markerLayerRef = useRef<LayerGroup | null>(null);
+  const markerIconRef = useRef<DivIcon | null>(null);
+  const activeMarkerIconRef = useRef<DivIcon | null>(null);
   const [activeId, setActiveId] = useState(locations[0]?.id ?? "");
+  const [mapReady, setMapReady] = useState(false);
   const activeLocation = locations.find((location) => location.id === activeId) ?? locations[0];
   const mappedLocations = useMemo(() => locations.filter(hasPoint), [locations]);
-
-  const markerIcon = useMemo(
-    () =>
-      L.divIcon({
-        className: "branch-map-marker",
-        html: '<span class="branch-map-marker-dot"></span>',
-        iconSize: [34, 34],
-        iconAnchor: [17, 17],
-      }),
-    []
-  );
-  const activeMarkerIcon = useMemo(
-    () =>
-      L.divIcon({
-        className: "branch-map-marker is-active",
-        html: '<span class="branch-map-marker-dot"></span>',
-        iconSize: [38, 38],
-        iconAnchor: [19, 19],
-      }),
-    []
-  );
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    const map = L.map(containerRef.current, { scrollWheelZoom: false }).setView(INDIA_CENTER, 5);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
-    markerLayerRef.current = L.layerGroup().addTo(map);
-    mapRef.current = map;
-    setTimeout(() => map.invalidateSize(), 0);
+    let isMounted = true;
+    let map: LeafletMap | null = null;
+
+    import("leaflet").then((leaflet) => {
+      if (!isMounted || !containerRef.current || mapRef.current) return;
+
+      leafletRef.current = leaflet;
+      markerIconRef.current = leaflet.divIcon({
+        className: "branch-map-marker",
+        html: '<span class="branch-map-marker-dot"></span>',
+        iconSize: [34, 34],
+        iconAnchor: [17, 17],
+      });
+      activeMarkerIconRef.current = leaflet.divIcon({
+        className: "branch-map-marker is-active",
+        html: '<span class="branch-map-marker-dot"></span>',
+        iconSize: [38, 38],
+        iconAnchor: [19, 19],
+      });
+
+      map = leaflet.map(containerRef.current, { scrollWheelZoom: false }).setView(INDIA_CENTER, 5);
+      leaflet.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+      markerLayerRef.current = leaflet.layerGroup().addTo(map);
+      mapRef.current = map;
+      setMapReady(true);
+      setTimeout(() => map?.invalidateSize(), 0);
+    });
 
     return () => {
+      isMounted = false;
       markerLayerRef.current = null;
-      map.remove();
+      markerIconRef.current = null;
+      activeMarkerIconRef.current = null;
+      setMapReady(false);
+      map?.remove();
       mapRef.current = null;
     };
   }, []);
 
   useEffect(() => {
+    const leaflet = leafletRef.current;
     const map = mapRef.current;
     const markerLayer = markerLayerRef.current;
-    if (!map || !markerLayer) return;
+    const markerIcon = markerIconRef.current;
+    const activeMarkerIcon = activeMarkerIconRef.current;
+    if (!mapReady || !leaflet || !map || !markerLayer || !markerIcon || !activeMarkerIcon) return;
 
     markerLayer.clearLayers();
 
     for (const location of mappedLocations) {
       const isActive = location.id === activeLocation.id;
-      L.marker([location.latitude as number, location.longitude as number], { icon: isActive ? activeMarkerIcon : markerIcon })
+      leaflet.marker([location.latitude as number, location.longitude as number], { icon: isActive ? activeMarkerIcon : markerIcon })
         .bindPopup(`<strong>${locationName(location)}</strong>${location.address ? `<br>${location.address}` : ""}`)
         .on("click", () => setActiveId(location.id))
         .addTo(markerLayer);
     }
 
     if (mappedLocations.length > 0) {
-      const bounds = L.latLngBounds(mappedLocations.map((location) => [location.latitude as number, location.longitude as number]));
+      const bounds = leaflet.latLngBounds(mappedLocations.map((location) => [location.latitude as number, location.longitude as number]));
       map.fitBounds(bounds, { padding: [36, 36], maxZoom: 7 });
     }
-  }, [activeLocation.id, activeMarkerIcon, mappedLocations, markerIcon]);
+  }, [activeLocation.id, mappedLocations, mapReady]);
 
   useEffect(() => {
     const map = mapRef.current;

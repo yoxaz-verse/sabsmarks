@@ -3,13 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { Logo } from "@/components/layout/logo";
 import type { MenuItem } from "@/types/cms";
 
 const ORDERED_GROUPS = ["Home", "About", "Expertise", "Blog", "Career", "Contact"] as const;
+const EDGE_SWIPE_ZONE_PX = 32;
+const SWIPE_DISTANCE_PX = 56;
+const VERTICAL_GESTURE_TOLERANCE_PX = 42;
 
 export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
   const pathname = usePathname();
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
@@ -21,6 +28,11 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
       })).filter((entry) => entry.items.length > 0),
     [groups]
   );
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setIsMounted(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -49,6 +61,160 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    const onTouchStart = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (!touch) return;
+
+      const canStartOpeningSwipe = !isOpen && touch.clientX <= EDGE_SWIPE_ZONE_PX;
+      if (!isOpen && !canStartOpeningSwipe) {
+        touchStart.current = null;
+        return;
+      }
+
+      touchStart.current = { x: touch.clientX, y: touch.clientY };
+    };
+
+    const onTouchEnd = (event: TouchEvent) => {
+      const start = touchStart.current;
+      const touch = event.changedTouches[0];
+      touchStart.current = null;
+
+      if (!start || !touch) return;
+
+      const deltaX = touch.clientX - start.x;
+      const deltaY = Math.abs(touch.clientY - start.y);
+      if (deltaY > VERTICAL_GESTURE_TOLERANCE_PX || Math.abs(deltaX) < SWIPE_DISTANCE_PX) return;
+
+      if (!isOpen && deltaX > 0) {
+        setIsOpen(true);
+      }
+
+      if (isOpen && deltaX < 0) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [isOpen]);
+
+  const drawer = (
+    <div
+      className={`xl:hidden fixed inset-0 z-[99980] overflow-hidden transition-opacity duration-200 ${
+        isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+      }`}
+      aria-hidden={!isOpen}
+    >
+      <button
+        type="button"
+        aria-label="Close navigation menu"
+        className="absolute inset-0 bg-black/45"
+        onClick={() => setIsOpen(false)}
+      />
+
+      <aside
+        id="mobile-nav-drawer"
+        className={`absolute left-0 top-0 h-full w-[86%] max-w-sm border-r border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--bg)_96%,transparent)] shadow-[24px_0_70px_rgba(2,6,23,0.28)] backdrop-blur-2xl transition-transform duration-300 ease-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between border-b border-[var(--glass-border)] px-5 py-4">
+          <Link href="/" onClick={() => setIsOpen(false)}>
+            <Logo className="w-[145px] sm:w-[165px]" />
+          </Link>
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_82%,transparent)] text-ink shadow-[0_12px_28px_rgba(15,23,42,0.12)] hover:border-accent/35 hover:text-accent"
+            onClick={() => setIsOpen(false)}
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <nav aria-label="Mobile" className="h-[calc(100%-77px)] overflow-y-auto px-4 py-4">
+          <div className="flex flex-col gap-2">
+            {navGroups.map(({ group, items }) => {
+              const isSingleLink = items.length === 1;
+              const isGroupActive = items.some((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
+
+              if (isSingleLink) {
+                const item = items[0];
+                return (
+                  <Link
+                    key={group}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`rounded-md px-3 py-3 text-sm font-semibold tracking-[0.04em] transition-colors ${
+                      isGroupActive ? "bg-surface-raised text-accent" : "text-ink hover:bg-surface-raised hover:text-accent"
+                    }`}
+                  >
+                    {group}
+                  </Link>
+                );
+              }
+
+              const isExpanded = expandedGroup === group;
+
+              return (
+                <div key={group} className="rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_76%,transparent)]">
+                  <button
+                    type="button"
+                    aria-expanded={isExpanded}
+                    aria-controls={`mobile-group-${group}`}
+                    className={`flex w-full items-center justify-between px-3 py-3 text-left text-sm font-semibold tracking-[0.04em] transition-colors ${
+                      isGroupActive ? "text-accent" : "text-ink hover:text-accent"
+                    }`}
+                    onClick={() => setExpandedGroup((prev) => (prev === group ? null : group))}
+                  >
+                    <span>{group}</span>
+                    {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </button>
+
+                  <div
+                    id={`mobile-group-${group}`}
+                    className={`grid overflow-hidden transition-all duration-200 ${
+                      isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                  >
+                    <div className="min-h-0 border-t border-[var(--glass-border)]">
+                      <div className="flex flex-col p-2">
+                        {items.map((item) => {
+                          const isItemActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+                          return (
+                            <Link
+                              key={item.id}
+                              href={item.href}
+                              onClick={() => setIsOpen(false)}
+                              className={`rounded-md px-3 py-2.5 text-sm transition-colors ${
+                                isItemActive
+                                  ? "bg-surface text-accent"
+                                  : "text-ink/90 hover:bg-surface hover:text-accent"
+                              }`}
+                            >
+                              {item.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </nav>
+      </aside>
+    </div>
+  );
+
   return (
     <>
       <button
@@ -62,112 +228,7 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
         <Menu className="h-5 w-5" />
       </button>
 
-      <div
-        className={`xl:hidden fixed inset-0 z-[120] overflow-hidden transition-opacity duration-200 ${
-          isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
-        }`}
-        aria-hidden={!isOpen}
-      >
-        <button
-          type="button"
-          aria-label="Close navigation menu"
-          className="absolute inset-0 bg-black/40"
-          onClick={() => setIsOpen(false)}
-        />
-
-        <aside
-          id="mobile-nav-drawer"
-          className={`absolute right-0 top-0 h-full w-[86%] max-w-sm border-l border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--bg)_92%,transparent)] shadow-2xl backdrop-blur-2xl transition-transform duration-300 ease-out ${
-            isOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="flex items-center justify-between border-b border-[var(--glass-border)] px-5 py-4">
-            <p className="text-sm font-bold uppercase tracking-[0.14em] text-ink">Menu</p>
-            <button
-              type="button"
-              aria-label="Close menu"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glass-border)] text-ink hover:text-accent"
-              onClick={() => setIsOpen(false)}
-            >
-              <X className="h-4.5 w-4.5" />
-            </button>
-          </div>
-
-          <nav aria-label="Mobile" className="h-[calc(100%-65px)] overflow-y-auto px-4 py-4">
-            <div className="flex flex-col gap-2">
-              {navGroups.map(({ group, items }) => {
-                const isSingleLink = items.length === 1;
-                const isGroupActive = items.some((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
-
-                if (isSingleLink) {
-                  const item = items[0];
-                  return (
-                    <Link
-                      key={group}
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={`rounded-md px-3 py-3 text-sm font-semibold tracking-[0.04em] transition-colors ${
-                        isGroupActive ? "bg-surface-raised text-accent" : "text-ink hover:bg-surface-raised hover:text-accent"
-                      }`}
-                    >
-                      {group}
-                    </Link>
-                  );
-                }
-
-                const isExpanded = expandedGroup === group;
-
-                return (
-                    <div key={group} className="rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_76%,transparent)]">
-                    <button
-                      type="button"
-                      aria-expanded={isExpanded}
-                      aria-controls={`mobile-group-${group}`}
-                      className={`flex w-full items-center justify-between px-3 py-3 text-left text-sm font-semibold tracking-[0.04em] transition-colors ${
-                        isGroupActive ? "text-accent" : "text-ink hover:text-accent"
-                      }`}
-                      onClick={() => setExpandedGroup((prev) => (prev === group ? null : group))}
-                    >
-                      <span>{group}</span>
-                      {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                    </button>
-
-                    <div
-                      id={`mobile-group-${group}`}
-                      className={`grid overflow-hidden transition-all duration-200 ${
-                        isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                      }`}
-                    >
-                      <div className="min-h-0 border-t border-[var(--glass-border)]">
-                        <div className="flex flex-col p-2">
-                          {items.map((item) => {
-                            const isItemActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-                            return (
-                              <Link
-                                key={item.id}
-                                href={item.href}
-                                onClick={() => setIsOpen(false)}
-                                className={`rounded-md px-3 py-2.5 text-sm transition-colors ${
-                                  isItemActive
-                                    ? "bg-surface text-accent"
-                                    : "text-ink/90 hover:bg-surface hover:text-accent"
-                                }`}
-                              >
-                                {item.label}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </nav>
-        </aside>
-      </div>
+      {isMounted ? createPortal(drawer, document.body) : null}
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
+import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import { decodeRouteSegment, normalizeSlug } from "@/lib/slug";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
@@ -77,6 +78,25 @@ async function queryPublishedEntry(client: SupabaseClient, type: EntryRecord["ty
 async function queryPublishedSlugs(client: SupabaseClient, type: EntryRecord["type"]) {
   const { data } = await client.from(type).select("slug, updated_at").eq("status", "published");
   return (data ?? []) as Array<{ slug: string; updated_at?: string | null }>;
+}
+
+async function queryPublishedLocationBySlug(client: SupabaseClient, slug: string) {
+  const entry = decodeRouteSegment(slug);
+  const normalizedEntry = normalizeSlug(entry);
+  const candidates = Array.from(new Set([slug, entry, normalizedEntry].filter(Boolean)));
+
+  for (const candidate of candidates) {
+    const { data } = await client.from("locations").select("*").eq("slug", candidate).eq("status", "published").maybeSingle<Location>();
+    if (data) return data;
+  }
+
+  const locations = await queryPublishedLocations(client);
+  return locations.find((location) => normalizeSlug(location.slug) === normalizedEntry || normalizeSlug(location.city) === normalizedEntry) ?? null;
+}
+
+async function queryPublishedLocations(client: SupabaseClient) {
+  const { data } = await client.from("locations").select("*").eq("status", "published").order("city", { ascending: true }).returns<Location[]>();
+  return data ?? [];
 }
 
 export async function getPageBySlug(slug: string) {
@@ -182,15 +202,25 @@ export async function getInsights({ category, tag, page = 1 }: { category?: stri
 }
 
 export async function getLocationBySlug(slug: string) {
-  const supabase = await createServerSupabaseClient();
-  const { data } = await supabase.from("locations").select("*").eq("slug", slug).eq("status", "published").single<Location>();
-  return data;
+  const location = await queryPublishedLocationBySlug(createPublicSupabaseClient(), slug);
+  if (location) return location;
+
+  try {
+    return await queryPublishedLocationBySlug(createAdminSupabaseClient(), slug);
+  } catch {
+    return location;
+  }
 }
 
 export async function getLocations() {
-  const supabase = await createServerSupabaseClient();
-  const { data } = await supabase.from("locations").select("*").eq("status", "published").order("city", { ascending: true }).returns<Location[]>();
-  return data ?? [];
+  const locations = await queryPublishedLocations(createPublicSupabaseClient());
+  if (locations.length > 0) return locations;
+
+  try {
+    return await queryPublishedLocations(createAdminSupabaseClient());
+  } catch {
+    return locations;
+  }
 }
 
 export async function getInsightCategories() {

@@ -1,10 +1,9 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 
 const EXIT_DELAY_MS = 190;
-const ENTER_DELAY_MS = 520;
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -49,30 +48,16 @@ function shouldHandleNavigation(anchor: HTMLAnchorElement, event: MouseEvent, cu
   return true;
 }
 
-export function RouteTransition({ children }: { children: ReactNode }) {
+export function RouteTransition() {
   const pathname = usePathname();
   const router = useRouter();
   const [isExiting, setIsExiting] = useState(false);
-  const [isEntering, setIsEntering] = useState(true);
   const [transitionLabel, setTransitionLabel] = useState("next page");
   const exitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const routeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const enterTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (routeTimer.current) clearTimeout(routeTimer.current);
-    if (enterTimer.current) clearTimeout(enterTimer.current);
-
-    routeTimer.current = setTimeout(() => {
-      setIsExiting(false);
-      setIsEntering(true);
-      enterTimer.current = setTimeout(() => setIsEntering(false), ENTER_DELAY_MS);
-    }, 0);
-
-    return () => {
-      if (routeTimer.current) clearTimeout(routeTimer.current);
-      if (enterTimer.current) clearTimeout(enterTimer.current);
-    };
+    const resetTimer = setTimeout(() => setIsExiting(false), 0);
+    return () => clearTimeout(resetTimer);
   }, [pathname]);
 
   useEffect(() => {
@@ -112,23 +97,17 @@ export function RouteTransition({ children }: { children: ReactNode }) {
   }, [router]);
 
   return (
-    <>
-      <div
-        aria-live="polite"
-        aria-atomic="true"
-        className={`route-transition-overlay ${isExiting ? "is-active" : ""}`}
-      >
-        <div className="route-transition-card">
-          <div className="route-transition-line">
-            <span></span>
-          </div>
-          <p>Opening {transitionLabel}</p>
+    <div
+      aria-live="polite"
+      aria-atomic="true"
+      className={`route-transition-overlay ${isExiting ? "is-active" : ""}`}
+    >
+      <div className="route-transition-card">
+        <div className="route-transition-line">
+          <span></span>
         </div>
+        <p>Opening {transitionLabel}</p>
       </div>
-
-      <div key={pathname} className={`route-transition-content ${isEntering ? "is-entering" : ""}`}>
-        {children}
-      </div>
-    </>
+    </div>
   );
 }

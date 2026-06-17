@@ -15,8 +15,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <ScrollRevealInit />
       <JsonLdScript id="organization-schema" data={organizationSchema} />
       <Header />
+      <RouteTransition />
       <main className="flex-1 flex flex-col w-full">
-        <RouteTransition>{children}</RouteTransition>
+        {children}
       </main>
       <Footer />
     </div>
