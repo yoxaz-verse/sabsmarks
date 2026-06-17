@@ -77,14 +77,14 @@ export default async function TeamMemberDetail({ params }: { params: Promise<{ e
       <div className="mt-10 grid gap-8 lg:grid-cols-12 lg:items-start">
         {/* Left Column: Photo and Meta Info */}
         <div className="lg:col-span-4 flex flex-col gap-4">
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-[var(--glass-border)] bg-gradient-to-b from-neutral-300 via-neutral-400 to-neutral-500 dark:from-neutral-700 dark:via-neutral-800 dark:to-neutral-900 shadow-lg shadow-accent/5">
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-[var(--glass-border)] bg-[linear-gradient(145deg,#f8fbff_0%,#edf3fb_42%,#dde7f3_100%)] shadow-[0_10px_15px_-3px_rgba(15,23,42,0.08),0_4px_6px_-4px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-24px_42px_rgba(99,116,139,0.08)] before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.88),transparent_38%),linear-gradient(90deg,rgba(15,23,42,0.045),transparent_16%,transparent_84%,rgba(15,23,42,0.055))] dark:bg-[linear-gradient(145deg,#1b2535_0%,#121c2c_48%,#0b1220_100%)] dark:shadow-[0_10px_15px_-3px_rgba(2,6,23,0.3),0_4px_6px_-4px_rgba(2,6,23,0.3),inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-24px_42px_rgba(2,6,23,0.38)] dark:before:bg-[radial-gradient(circle_at_50%_18%,rgba(148,163,184,0.22),transparent_40%),linear-gradient(90deg,rgba(255,255,255,0.045),transparent_18%,transparent_82%,rgba(0,0,0,0.16))]">
             <Image
               src={getOptimizedPhotoUrl(member.photo_url) || FALLBACK_TEAM_PHOTO}
               alt={member.name}
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 22rem"
-              className="object-cover object-center transition-transform duration-700 hover:scale-105"
+              className="relative z-[1] h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
             />
           </div>
 
