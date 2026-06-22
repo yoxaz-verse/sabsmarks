@@ -316,7 +316,7 @@ export default async function ContactPage() {
             </div>
           </div>
 
-          <div className="mt-6 grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
+          <div className="mt-6 flex flex-col gap-8">
             <div className="rounded-[2rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-md md:p-8">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Head Office Base</p>
               <div className="mt-6 flex flex-col items-start gap-4">
@@ -329,7 +329,7 @@ export default async function ContactPage() {
                 </div>
               </div>
 
-              <div className="mt-8 grid gap-3">
+              <div className="mt-8 grid gap-4 md:grid-cols-2">
                 <a
                   href={`tel:${sanitizePhone(contact.primaryPhone)}`}
                   className="flex items-center justify-between gap-4 rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_50%,transparent)] p-4 transition-all duration-300 hover:border-accent/40 hover:bg-[color-mix(in_srgb,var(--surface)_80%,transparent)] hover:-translate-y-0.5"

@@ -24,9 +24,8 @@ import { buildPageMetadata } from "@/lib/seo";
 
 import { CanvasParticles } from "@/components/decorative/canvas-particles";
 import { SiteOrnament } from "@/components/decorative/site-ornament";
-import { ImageFeatureCard } from "@/components/media/image-feature-card";
+import { AdvisoryCarousel } from "@/components/media/advisory-carousel";
 import { GlowCard } from "@/components/ui/glow-card";
-import { SITE_VISUALS } from "@/lib/site-visuals";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/",
@@ -309,17 +308,7 @@ export default function Home() {
         <div className="site-container relative z-10">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center">
             <div className="reveal reveal-left">
-              <ImageFeatureCard
-                src={SITE_VISUALS.home.advisory}
-                alt="Finance leaders discussing advisory strategy around a boardroom table."
-                eyebrow="Advisory Focus"
-                title="Clarity for complex financial priorities."
-                description="Partner-led teams align audit, tax, accounting, and advisory work around the decisions that matter."
-                href="/about"
-                ctaLabel="Explore our firm"
-                priority
-                className="featured-advisory-card"
-              />
+              <AdvisoryCarousel />
             </div>
 
             <div className="section-header reveal reveal-right">
