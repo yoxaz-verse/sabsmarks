@@ -4,6 +4,7 @@ import { LocationsBrowser } from "@/components/sections/locations-browser";
 import { InteriorIntroSection } from "@/components/sections/interior-intro-section";
 import { getLocations } from "@/lib/content/service";
 import { buildPageMetadata } from "@/lib/seo";
+import { FadeIn } from "@/components/ui/fade-in";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/about/locations",
@@ -27,18 +28,20 @@ export default async function AboutLocationsPage() {
 
       <section className="site-section">
         <div className="site-container pb-16 md:pb-20">
-          {locations.length ? (
-            <LocationsBrowser locations={locations} />
-          ) : (
-            <div className="site-card mt-12 rounded-[1.75rem] p-8">
-              <p className="text-sm font-bold uppercase tracking-[0.24em] text-muted">Locations</p>
-              <h3 className="mt-4 text-2xl font-bold text-ink">Branch details will appear here soon.</h3>
-              <p className="mt-4 max-w-2xl text-[15px] leading-7 text-muted">
-                No published locations are available right now. Once branch entries are published in the CMS, they will
-                automatically appear on this page.
-              </p>
-            </div>
-          )}
+          <FadeIn delay={0.2}>
+            {locations.length ? (
+              <LocationsBrowser locations={locations} />
+            ) : (
+              <div className="site-card mt-12 rounded-[1.75rem] p-8">
+                <p className="text-sm font-bold uppercase tracking-[0.24em] text-muted">Locations</p>
+                <h3 className="mt-4 text-2xl font-bold text-ink">Branch details will appear here soon.</h3>
+                <p className="mt-4 max-w-2xl text-[15px] leading-7 text-muted">
+                  No published locations are available right now. Once branch entries are published in the CMS, they will
+                  automatically appear on this page.
+                </p>
+              </div>
+            )}
+          </FadeIn>
         </div>
       </section>
     </div>

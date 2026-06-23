@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import type { MenuItem } from "@/types/cms";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
   const pathname = usePathname();
@@ -57,34 +58,37 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                 )}
               </button>
 
-              <div
-                className={`absolute left-0 top-[100%] z-50 min-w-[240px] pt-2 transition-all duration-200 ease-out origin-top-left ${
-                  isHovered
-                    ? "pointer-events-auto translate-y-0 opacity-100 scale-100"
-                    : "pointer-events-none -translate-y-2 opacity-0 scale-95"
-                }`}
-              >
-                <div className="rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_82%,transparent)] p-3 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-2xl">
-                  <div className="flex flex-col gap-1">
-                    {items.map((item, index) => (
-                      <Link
-                        key={item.id}
-                        href={item.href}
-                        style={{
-                          transitionDelay: isHovered ? `${index * 75 + 100}ms` : "0ms",
-                        }}
-                        className={`block rounded-xl px-4 py-3 text-[14px] font-semibold text-ink hover:bg-surface-raised hover:text-accent transition-all duration-300 ease-out ${
-                          isHovered
-                            ? "translate-x-0 opacity-100"
-                            : "-translate-x-4 opacity-0"
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <AnimatePresence>
+                {isHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="absolute left-0 top-[100%] z-50 min-w-[240px] pt-2 pointer-events-auto origin-top-left"
+                  >
+                    <div className="rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_82%,transparent)] p-3 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-2xl">
+                      <div className="flex flex-col gap-1">
+                        {items.map((item, index) => (
+                          <motion.div
+                            key={item.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.2, delay: index * 0.05 }}
+                          >
+                            <Link
+                              href={item.href}
+                              className="block rounded-xl px-4 py-3 text-[14px] font-semibold text-ink hover:bg-surface-raised hover:text-accent transition-all duration-300 ease-out"
+                            >
+                              {item.label}
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           );
         })}

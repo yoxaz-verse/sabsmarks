@@ -107,7 +107,7 @@ export async function Header() {
   const navGroups = normalizeBlogGroup(ensureLocationsItem(ensureHomeGroup(filterNavItems(hasCmsNav ? cmsNavGroups : fallbackNavGroups))));
 
   return (
-    <header className="sticky top-0 z-[100] border-b border-[var(--section-border)] bg-[color-mix(in_srgb,var(--bg)_76%,transparent)]/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-[1000] border-b border-[var(--section-border)] bg-[color-mix(in_srgb,var(--bg)_76%,transparent)]/95 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3.5 sm:gap-4 sm:px-6 lg:gap-6">
         <Link href="/" className="min-w-0">
           <Logo className="!w-[248px] sm:!w-[300px] md:!w-[350px]" />

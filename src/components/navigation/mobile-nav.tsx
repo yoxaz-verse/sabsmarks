@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Logo } from "@/components/layout/logo";
 import type { MenuItem } from "@/types/cms";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ORDERED_GROUPS = ["Home", "About", "Expertise", "Blog", "Career", "Contact"] as const;
 const EDGE_SWIPE_ZONE_PX = 32;
@@ -105,25 +106,31 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
   }, [isOpen]);
 
   const drawer = (
-    <div
-      className={`xl:hidden fixed inset-0 z-[99980] overflow-hidden transition-opacity duration-200 ${
-        isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
-      }`}
-      aria-hidden={!isOpen}
-    >
-      <button
-        type="button"
-        aria-label="Close navigation menu"
-        className="absolute inset-0 bg-black/45"
-        onClick={() => setIsOpen(false)}
-      />
+    <AnimatePresence>
+      {isOpen && (
+        <div
+          className="xl:hidden fixed inset-0 z-[99980] overflow-hidden"
+          aria-hidden={!isOpen}
+        >
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            type="button"
+            aria-label="Close navigation menu"
+            className="absolute inset-0 bg-black/45"
+            onClick={() => setIsOpen(false)}
+          />
 
-      <aside
-        id="mobile-nav-drawer"
-        className={`absolute left-0 top-0 h-full w-[86%] max-w-sm border-r border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--bg)_96%,transparent)] shadow-[24px_0_70px_rgba(2,6,23,0.28)] backdrop-blur-2xl transition-transform duration-300 ease-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
+          <motion.aside
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            id="mobile-nav-drawer"
+            className="absolute left-0 top-0 h-full w-[86%] max-w-sm border-r border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--bg)_96%,transparent)] shadow-[24px_0_70px_rgba(2,6,23,0.28)] backdrop-blur-2xl"
+          >
         <div className="flex items-center justify-between border-b border-[var(--glass-border)] px-5 py-4">
           <Link href="/" onClick={() => setIsOpen(false)}>
             <Logo className="w-[145px] sm:w-[165px]" />
@@ -177,13 +184,17 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                     {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </button>
 
-                  <div
-                    id={`mobile-group-${group}`}
-                    className={`grid overflow-hidden transition-all duration-200 ${
-                      isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                    }`}
-                  >
-                    <div className="min-h-0 border-t border-[var(--glass-border)]">
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        id={`mobile-group-${group}`}
+                        className="overflow-hidden"
+                      >
+                        <div className="min-h-0 border-t border-[var(--glass-border)]">
                       <div className="flex flex-col p-2">
                         {items.map((item) => {
                           const isItemActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -205,15 +216,19 @@ export function MobileNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                         })}
                       </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </nav>
-      </aside>
-    </div>
-  );
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </nav>
+  </motion.aside>
+</div>
+)}
+</AnimatePresence>
+);
 
   return (
     <>

@@ -7,8 +7,9 @@ interface LogoProps {
 
 export function Logo({ className }: LogoProps) {
   return (
-    <div className={`flex shrink-0 items-center gap-3 ${className || ""}`}>
-      <div className="w-[25%] shrink-0">
+    <div className={`logo-lockup flex shrink-0 items-center gap-3 ${className || ""}`}>
+      <span className="logo-lockup-bg" aria-hidden="true" />
+      <div className="relative z-[1] w-[25%] shrink-0">
         <Image
           src="/ca-india-logo.png"
           alt="CA India"
@@ -26,7 +27,7 @@ export function Logo({ className }: LogoProps) {
         height={232}
         priority
         sizes="(max-width: 640px) 205px, 250px"
-        className="h-auto min-w-0 flex-1 object-contain logo-image"
+        className="relative z-[1] h-auto min-w-0 flex-1 object-contain logo-image"
       />
     </div>
   );

@@ -6,6 +6,8 @@ import { PageBanner } from "@/components/layout/page-banner";
 import { InteriorIntroSection } from "@/components/sections/interior-intro-section";
 import Image from "next/image";
 import { SITE_VISUALS } from "@/lib/site-visuals";
+import { FadeIn } from "@/components/ui/fade-in";
+import { StaggerContainer, StaggerItem } from "@/components/ui/stagger-container";
 
 type ServiceArea = {
   id: string;
@@ -293,7 +295,7 @@ function PracticeAreasTabs() {
       </div>
 
       <div key={activeTab} className="flex min-h-[600px] flex-1 flex-col overflow-hidden p-8 md:px-14 md:pt-10 md:pb-14 lg:px-16 lg:pt-12 lg:pb-16">
-        <div className="max-w-[46rem] animate-fade-in" style={{ animationDuration: "600ms" }}>
+        <FadeIn className="max-w-[46rem]">
           <div className="relative mb-8 aspect-[16/7] overflow-hidden rounded-[1.6rem]">
             <Image
               src={activeContent.image}
@@ -326,21 +328,21 @@ function PracticeAreasTabs() {
             {activeContent.bulletsLabel}
           </h3>
 
-          <ul className="space-y-6">
+          <StaggerContainer className="space-y-6 flex flex-col m-0 p-0">
             {activeContent.bullets.map((bullet, index) => (
-              <li
-                key={index}
-                className="flex items-start group animate-fade-in"
-                style={{ animationDelay: `${150 + index * 100}ms`, animationFillMode: "both" }}
-              >
-                <div className="w-10 h-10 rounded-2xl bg-surface-raised border border-[var(--glass-border)] flex items-center justify-center mr-6 flex-shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-500 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-accent/70 group-hover:bg-accent group-hover:scale-150 group-hover:shadow-[0_0_12px_var(--accent-glow)] transition-all duration-500"></span>
+              <StaggerItem key={index}>
+                <div className="flex items-start group">
+                  <div className="w-10 h-10 rounded-2xl bg-surface-raised border border-[var(--glass-border)] flex items-center justify-center mr-6 flex-shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-500 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-accent/70 group-hover:bg-accent group-hover:scale-150 group-hover:shadow-[0_0_12px_var(--accent-glow)] transition-all duration-500"></span>
+                  </div>
+                  <span className="text-[17px] leading-relaxed text-muted pt-1.5 group-hover:text-ink transition-colors duration-500">
+                    {bullet}
+                  </span>
                 </div>
-                <span className="text-[17px] leading-relaxed text-muted pt-1.5 group-hover:text-ink transition-colors duration-500">{bullet}</span>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
-        </div>
+          </StaggerContainer>
+        </FadeIn>
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import { getSiteContact } from "@/lib/site-contact";
 import type { Location } from "@/types/cms";
 import Image from "next/image";
 import { SITE_VISUALS } from "@/lib/site-visuals";
+import { SlideIn } from "@/components/ui/slide-in";
+import { FadeIn } from "@/components/ui/fade-in";
 
 function sanitizePhone(phone: string) {
   return phone.replace(/\s+/g, "");
@@ -219,101 +221,105 @@ export default async function ContactPage() {
       <section className="site-section">
         <div className="site-container py-10 md:py-14">
           <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-            <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(145deg,#06121d_0%,#005c9d_54%,#063c24_100%)] px-6 py-7 text-white shadow-[0_32px_80px_rgba(18,57,95,0.24)] md:px-8 md:py-8">
-              <div className="absolute inset-0">
-                <Image
-                  src={SITE_VISUALS.contact.meeting}
-                  alt="Professional meeting room ready for client conversations."
-                  fill
-                  sizes="(max-width: 1280px) 100vw, 60vw"
-                  className="object-cover opacity-18"
-                />
-              </div>
-              <div className="flex flex-wrap items-start justify-between gap-5">
-                <div className="max-w-2xl">
-                  <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Head Office Contact</p>
-                  <h2 className="mt-4 text-3xl font-bold leading-tight md:text-[2.4rem]">{contact.brandName}</h2>
-                  <p className="mt-4 max-w-xl text-[15px] leading-7 text-white/88">
-                    Reach our headquarters directly for appointments, engagement enquiries, and help choosing the most relevant branch.
-                  </p>
+            <SlideIn direction="left" delay={0.1} className="h-full">
+              <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(145deg,#06121d_0%,#005c9d_54%,#063c24_100%)] px-6 py-7 text-white shadow-[0_32px_80px_rgba(18,57,95,0.24)] md:px-8 md:py-8 h-full">
+                <div className="absolute inset-0">
+                  <Image
+                    src={SITE_VISUALS.contact.meeting}
+                    alt="Professional meeting room ready for client conversations."
+                    fill
+                    sizes="(max-width: 1280px) 100vw, 60vw"
+                    className="object-cover opacity-18"
+                  />
                 </div>
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.25rem] bg-white/10 text-white shadow-[0_18px_40px_rgba(2,6,23,0.2)]">
-                  <Building2 className="h-6 w-6" />
-                </div>
-              </div>
-
-              <div className="mt-8 grid gap-4 md:grid-cols-2">
-                <QuickAction
-                  href={`tel:${sanitizePhone(contact.primaryPhone)}`}
-                  label="Call Us"
-                  value={contact.primaryPhone}
-                  icon={<Phone className="h-5 w-5" />}
-                />
-                <QuickAction
-                  href={`mailto:${contact.primaryEmail}`}
-                  label="Mail Us"
-                  value={contact.primaryEmail}
-                  icon={<Mail className="h-5 w-5" />}
-                />
-              </div>
-
-              <div className="mt-8 rounded-[1.75rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Registered Address</p>
-                <p className="mt-3 whitespace-pre-line text-sm leading-7 text-white/90">{contact.headOfficeAddress}</p>
-                <a
-                  href={headOfficeMapUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/14 px-4 py-2 text-sm font-medium text-white transition hover:border-white/24 hover:bg-white/8"
-                >
-                  <MapPin className="h-4 w-4" />
-                  Open in Maps
-                </a>
-              </div>
-            </div>
-
-            <div className="rounded-[2rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_92%,transparent)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] md:p-8">
-              <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Social & Routing</p>
-              <h3 className="mt-4 text-2xl font-bold text-ink">Choose the fastest way to reach us.</h3>
-              <p className="mt-3 text-[15px] leading-7 text-muted">
-                For firm updates, direct outreach, and branch discovery, start with the channel that matches your need.
-              </p>
-
-              <div className="mt-7 space-y-4">
-                <SocialLink
-                  href={contact.socialLinks.linkedin}
-                  label="LinkedIn"
-                  handle={linkedInHandle}
-                  icon={<Link2 className="h-5 w-5" />}
-                  iconClassName="bg-[#0A66C2]"
-                />
-                <SocialLink
-                  href={contact.socialLinks.instagram}
-                  label="Instagram"
-                  handle={instagramHandle}
-                  icon={<AtSign className="h-5 w-5" />}
-                  iconClassName="bg-[linear-gradient(135deg,#F58529,#DD2A7B,#8134AF,#515BD4)]"
-                />
-              </div>
-
-              <div className="mt-7 rounded-[1.6rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_74%,transparent)] p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.24em] text-muted">Best For</p>
-                <div className="mt-4 grid gap-3 text-sm text-muted sm:grid-cols-3 xl:grid-cols-1">
-                  <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
-                    <p className="font-semibold text-ink">General Enquiries</p>
-                    <p className="mt-1 leading-6">Call or email head office for routing support.</p>
+                <div className="flex flex-wrap items-start justify-between gap-5">
+                  <div className="max-w-2xl">
+                    <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Head Office Contact</p>
+                    <h2 className="mt-4 text-3xl font-bold leading-tight md:text-[2.4rem]">{contact.brandName}</h2>
+                    <p className="mt-4 max-w-xl text-[15px] leading-7 text-white/88">
+                      Reach our headquarters directly for appointments, engagement enquiries, and help choosing the most relevant branch.
+                    </p>
                   </div>
-                  <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
-                    <p className="font-semibold text-ink">Branch Visits</p>
-                    <p className="mt-1 leading-6">Open a branch card below for local details and exact map points.</p>
-                  </div>
-                  <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
-                    <p className="font-semibold text-ink">Firm Updates</p>
-                    <p className="mt-1 leading-6">Use social channels for announcements and latest news.</p>
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.25rem] bg-white/10 text-white shadow-[0_18px_40px_rgba(2,6,23,0.2)]">
+                    <Building2 className="h-6 w-6" />
                   </div>
                 </div>
+
+                <div className="mt-8 grid gap-4 md:grid-cols-2">
+                  <QuickAction
+                    href={`tel:${sanitizePhone(contact.primaryPhone)}`}
+                    label="Call Us"
+                    value={contact.primaryPhone}
+                    icon={<Phone className="h-5 w-5" />}
+                  />
+                  <QuickAction
+                    href={`mailto:${contact.primaryEmail}`}
+                    label="Mail Us"
+                    value={contact.primaryEmail}
+                    icon={<Mail className="h-5 w-5" />}
+                  />
+                </div>
+
+                <div className="mt-8 rounded-[1.75rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] p-5">
+                  <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Registered Address</p>
+                  <p className="mt-3 whitespace-pre-line text-sm leading-7 text-white/90">{contact.headOfficeAddress}</p>
+                  <a
+                    href={headOfficeMapUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/14 px-4 py-2 text-sm font-medium text-white transition hover:border-white/24 hover:bg-white/8"
+                  >
+                    <MapPin className="h-4 w-4" />
+                    Open in Maps
+                  </a>
+                </div>
               </div>
-            </div>
+            </SlideIn>
+
+            <SlideIn direction="right" delay={0.2} className="h-full">
+              <div className="rounded-[2rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_92%,transparent)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] md:p-8 h-full">
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Social & Routing</p>
+                <h3 className="mt-4 text-2xl font-bold text-ink">Choose the fastest way to reach us.</h3>
+                <p className="mt-3 text-[15px] leading-7 text-muted">
+                  For firm updates, direct outreach, and branch discovery, start with the channel that matches your need.
+                </p>
+
+                <div className="mt-7 space-y-4">
+                  <SocialLink
+                    href={contact.socialLinks.linkedin}
+                    label="LinkedIn"
+                    handle={linkedInHandle}
+                    icon={<Link2 className="h-5 w-5" />}
+                    iconClassName="bg-[#0A66C2]"
+                  />
+                  <SocialLink
+                    href={contact.socialLinks.instagram}
+                    label="Instagram"
+                    handle={instagramHandle}
+                    icon={<AtSign className="h-5 w-5" />}
+                    iconClassName="bg-[linear-gradient(135deg,#F58529,#DD2A7B,#8134AF,#515BD4)]"
+                  />
+                </div>
+
+                <div className="mt-7 rounded-[1.6rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_74%,transparent)] p-5">
+                  <p className="text-xs font-bold uppercase tracking-[0.24em] text-muted">Best For</p>
+                  <div className="mt-4 grid gap-3 text-sm text-muted sm:grid-cols-3 xl:grid-cols-1">
+                    <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
+                      <p className="font-semibold text-ink">General Enquiries</p>
+                      <p className="mt-1 leading-6">Call or email head office for routing support.</p>
+                    </div>
+                    <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
+                      <p className="font-semibold text-ink">Branch Visits</p>
+                      <p className="mt-1 leading-6">Open a branch card below for local details and exact map points.</p>
+                    </div>
+                    <div className="rounded-2xl bg-white/65 px-4 py-3 dark:bg-white/4">
+                      <p className="font-semibold text-ink">Firm Updates</p>
+                      <p className="mt-1 leading-6">Use social channels for announcements and latest news.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SlideIn>
           </div>
 
           <div className="mt-6 flex flex-col gap-8">
