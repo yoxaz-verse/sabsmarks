@@ -6,7 +6,7 @@ type FeaturedCard = {
   label: string;
   href: string;
   description: string;
-  table: "team_members" | "locations" | "publications" | "careers" | "pages";
+  table: "team_members" | "senior_management_team" | "locations" | "publications" | "careers" | "pages";
 };
 
 const featuredCards: FeaturedCard[] = [
@@ -15,6 +15,12 @@ const featuredCards: FeaturedCard[] = [
     href: "/admin/team",
     description: "Partner and leadership profiles for the About page.",
     table: "team_members",
+  },
+  {
+    label: "Senior Management Team",
+    href: "/admin/senior-management-team",
+    description: "Simple team cards for the public team page.",
+    table: "senior_management_team",
   },
   {
     label: "Locations",
@@ -71,12 +77,12 @@ export default async function AdminHome() {
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">Content Dashboard</p>
         <h2 className="mt-3 text-3xl font-semibold tracking-tight text-stone-900">Everything important is now in one admin workspace.</h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-600">
-          Manage the four core public-facing content areas here: leadership, locations, insights, and careers. Each module below
+          Manage the core public-facing content areas here: leadership, senior management team, locations, insights, and careers. Each module below
           writes directly to the CMS tables already used by the site.
         </p>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         {counts.map((card) => (
           <Link key={card.href} href={card.href} className="rounded-2xl border border-stone-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-lg">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">{card.label}</p>

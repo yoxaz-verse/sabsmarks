@@ -65,6 +65,54 @@ const valueStats = [
   { value: "10", label: "Global Locations", text: "Connected presence for domestic, cross-border, and multinational priorities." },
 ];
 
+const valuePrinciples = [
+  {
+    icon: ShieldCheck,
+    title: "Integrity Before Everything",
+    text: "We do what is right, not what is easy. Trust, transparency, and ethical conduct form the foundation of every relationship we build.",
+  },
+  {
+    icon: Briefcase,
+    title: "Business First, Compliance Always",
+    text: "We recognize compliance as essential, but growth as the ultimate objective. Our solutions are designed to strengthen businesses, create value, and support sustainable success.",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Practical Over Theoretical",
+    text: "We believe advice creates value only when it can be implemented. Our recommendations are practical, actionable, and tailored to real-world business challenges.",
+  },
+  {
+    icon: Handshake,
+    title: "Ownership and Accountability",
+    text: "We take responsibility for every engagement as if it were our own. Commitment, responsiveness, and professionalism define the way we serve our clients.",
+  },
+  {
+    icon: RefreshCw,
+    title: "Continuous Excellence",
+    text: "We pursue excellence through continuous learning, innovation, and improvement, ensuring that our clients benefit from the highest standards of expertise and service.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Partnership for Growth",
+    text: "We aspire to be more than advisors. By understanding our clients' ambitions and challenges, we become trusted partners in their journey towards long-term growth and success.",
+  },
+];
+
+const valueImageTiles = {
+  legacy: {
+    src: SITE_VISUALS.about.legacy,
+    alt: "Professional documents and planning materials representing the firm's long-standing legacy.",
+  },
+  team: {
+    src: SITE_VISUALS.about.team,
+    alt: "Professional team collaborating during a leadership meeting.",
+  },
+  advisory: {
+    src: SITE_VISUALS.home.advisory,
+    alt: "Advisory workspace representing practical business guidance and planning.",
+  },
+};
+
 const processSteps = [
   {
     step: "01",
@@ -163,6 +211,38 @@ const services = [
     image: SITE_VISUALS.practiceAreas["risk-controls-forensics"],
   },
 ];
+const PrincipleCard = ({ item, index }: { item: typeof valuePrinciples[0], index: number }) => {
+  const Icon = item.icon;
+  return (
+    <div className="break-inside-avoid reveal reveal-up" style={{ transitionDelay: `${index * 50}ms` }}>
+      <GlowCard className="value-card creative-card decorated-panel group h-full overflow-hidden rounded-[1.35rem]">
+        <div className="p-6 md:p-8">
+          <SiteOrnament mode="card" className="opacity-15 transition-opacity group-hover:opacity-35" />
+          <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent">
+            <Icon className="h-6 w-6" />
+          </span>
+          <div className="relative z-10 mt-6 text-sm font-bold uppercase tracking-[0.14em] text-ink transition-colors group-hover:text-accent dark:text-white">{item.title}</div>
+          <p className="relative z-10 mt-4 text-sm leading-relaxed text-muted">{item.text}</p>
+        </div>
+      </GlowCard>
+    </div>
+  );
+};
+
+const MasonryImageCard = ({ image, aspect, delayMs }: { image: { src: any, alt: string }, aspect: string, delayMs: number }) => (
+  <div className="break-inside-avoid reveal reveal-up" style={{ transitionDelay: `${delayMs}ms` }}>
+    <div className={`group relative ${aspect} w-full overflow-hidden rounded-[1.35rem] border border-[var(--glass-border)] shadow-sm`}>
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.02),rgba(8,15,30,0.15))]" />
+    </div>
+  </div>
+);
 
 export default function Home() {
   return (
@@ -293,58 +373,67 @@ export default function Home() {
 
       <section className="site-section py-14 md:py-18">
         <div className="site-container">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
-            <div className="section-header reveal reveal-left">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+            <div className="section-header max-w-2xl reveal reveal-up">
               <div className="section-kicker">Our Values</div>
               <h2 className="section-title">Rooted in Legacy. Guided by <span className="text-gradient">Excellence.</span></h2>
               <div className="section-rule"></div>
               <p className="section-copy">
                 Built on decades of professional experience, Sabs Marks JVS & Co. is committed to integrity, accountability, and client-centric service.
               </p>
-              <p className="site-prose mt-5 max-w-3xl">
+              <p className="site-prose mt-5 max-w-xl">
                 We combine partner-led expertise with institutional strength to deliver trusted advice, disciplined execution, and lasting value.
               </p>
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                <div className="relative aspect-[16/11] overflow-hidden rounded-[1.5rem] border border-[var(--glass-border)] shadow-[0_24px_60px_rgba(15,23,42,0.08)]">
-                  <Image
-                    src={SITE_VISUALS.about.legacy}
-                    alt="Professional documents and planning materials representing the firm's long-standing legacy."
-                    fill
-                    sizes="(max-width: 768px) 100vw, 24vw"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.03),rgba(8,15,30,0.22))]" />
-                </div>
-                <div className="relative aspect-[16/11] overflow-hidden rounded-[1.5rem] border border-[var(--glass-border)] shadow-[0_24px_60px_rgba(15,23,42,0.08)] sm:translate-y-6">
-                  <Image
-                    src={SITE_VISUALS.about.team}
-                    alt="Professional team collaborating during a leadership meeting."
-                    fill
-                    sizes="(max-width: 768px) 100vw, 24vw"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.03),rgba(8,15,30,0.22))]" />
-                </div>
-              </div>
-              <Link href="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent">
-                Learn About Us <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              {valueStats.map((item, index) => (
-                <div key={item.label} className={`reveal reveal-up ${index % 2 === 1 ? "sm:translate-y-7" : ""}`} style={{ transitionDelay: `${index * 110}ms` }}>
-                  <GlowCard className="value-card creative-card decorated-panel group h-full overflow-hidden rounded-[1.35rem]">
-                    <div className="p-6">
-                      <SiteOrnament mode="card" className="opacity-15 transition-opacity group-hover:opacity-35" />
-                      <div className="text-4xl font-black text-gradient">{item.value}</div>
-                      <div className="relative z-10 mt-3 text-sm font-bold uppercase tracking-[0.16em] text-ink transition-colors group-hover:text-accent dark:text-white">{item.label}</div>
-                      <p className="relative z-10 mt-4 text-sm leading-6 text-muted">{item.text}</p>
-                    </div>
-                  </GlowCard>
-                </div>
-              ))}
+              <div className="flex flex-col gap-4">
+                {[valueStats[0], valueStats[2]].map((item, index) => (
+                  <div key={item.label} className="reveal reveal-up" style={{ transitionDelay: `${index * 90}ms` }}>
+                    <GlowCard className="value-card creative-card decorated-panel group h-full overflow-hidden rounded-[1.35rem]">
+                      <div className="p-6">
+                        <SiteOrnament mode="card" className="opacity-15 transition-opacity group-hover:opacity-35" />
+                        <div className="relative z-10 text-4xl font-black text-gradient">{item.value}</div>
+                        <div className="relative z-10 mt-3 text-sm font-bold uppercase tracking-[0.16em] text-ink transition-colors group-hover:text-accent dark:text-white">{item.label}</div>
+                        <p className="relative z-10 mt-4 text-sm leading-6 text-muted">{item.text}</p>
+                      </div>
+                    </GlowCard>
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col gap-4 sm:mt-12">
+                {[valueStats[1], valueStats[3]].map((item, index) => (
+                  <div key={item.label} className="reveal reveal-up" style={{ transitionDelay: `${(index + 2) * 90}ms` }}>
+                    <GlowCard className="value-card creative-card decorated-panel group h-full overflow-hidden rounded-[1.35rem]">
+                      <div className="p-6">
+                        <SiteOrnament mode="card" className="opacity-15 transition-opacity group-hover:opacity-35" />
+                        <div className="relative z-10 text-4xl font-black text-gradient">{item.value}</div>
+                        <div className="relative z-10 mt-3 text-sm font-bold uppercase tracking-[0.16em] text-ink transition-colors group-hover:text-accent dark:text-white">{item.label}</div>
+                        <p className="relative z-10 mt-4 text-sm leading-6 text-muted">{item.text}</p>
+                      </div>
+                    </GlowCard>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
+
+          <div className="mt-16 columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            <PrincipleCard item={valuePrinciples[0]} index={0} />
+            <MasonryImageCard image={valueImageTiles.legacy} aspect="aspect-[4/3]" delayMs={100} />
+            <PrincipleCard item={valuePrinciples[1]} index={3} />
+            <PrincipleCard item={valuePrinciples[2]} index={4} />
+            <MasonryImageCard image={valueImageTiles.team} aspect="aspect-square" delayMs={250} />
+            <PrincipleCard item={valuePrinciples[3]} index={6} />
+            <PrincipleCard item={valuePrinciples[4]} index={7} />
+            <MasonryImageCard image={valueImageTiles.advisory} aspect="aspect-[4/5]" delayMs={400} />
+            <PrincipleCard item={valuePrinciples[5]} index={9} />
+          </div>
+          
+          <div className="mt-12 flex items-center justify-center reveal reveal-up">
+            <Link href="/about" className="group inline-flex items-center gap-3 rounded-2xl border border-[var(--glass-border)] bg-white/72 px-7 py-4 text-sm font-semibold tracking-wide text-ink backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg active:translate-y-0 dark:border-white/12 dark:bg-white/6 dark:text-white dark:hover:bg-white/10">
+              Learn About Us <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
         </div>
       </section>

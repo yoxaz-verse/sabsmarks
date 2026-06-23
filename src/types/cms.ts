@@ -87,6 +87,19 @@ export interface TeamMember extends SeoFields {
   published_at: string | null;
 }
 
+export interface SeniorManagementTeamMember {
+  id: string;
+  slug: string;
+  name: string;
+  designation: string;
+  photo_url: string | null;
+  display_order: number;
+  status: PublishStatus;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface InsightCategory {
   id: string;
   slug: string;

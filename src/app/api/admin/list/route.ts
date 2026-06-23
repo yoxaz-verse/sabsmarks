@@ -12,6 +12,7 @@ const allowed = new Set([
   "offices",
   "locations",
   "team_members",
+  "senior_management_team",
   "insight_categories",
   "insight_tags",
   "menu_items",

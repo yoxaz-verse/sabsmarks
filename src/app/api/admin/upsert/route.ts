@@ -18,6 +18,7 @@ const writeableTables = new Set([
   "offices",
   "locations",
   "team_members",
+  "senior_management_team",
   "insight_categories",
   "insight_tags",
   "menu_items",
@@ -33,6 +34,7 @@ const tablesWithStatus = new Set([
   "offices",
   "locations",
   "team_members",
+  "senior_management_team",
   "insight_categories",
   "insight_tags",
   "menu_items",
@@ -154,6 +156,16 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     status: statusSchema,
     published_at: z.string().optional().nullable(),
   }),
+  senior_management_team: z.object({
+    id: z.string().uuid().optional(),
+    slug: z.string().min(1),
+    name: z.string().min(2),
+    designation: z.string().min(2),
+    photo_url: z.string().url().optional().nullable(),
+    display_order: z.number().int().optional(),
+    status: statusSchema,
+    published_at: z.string().optional().nullable(),
+  }),
   insight_categories: z.object({
     id: z.string().uuid().optional(),
     slug: z.string().min(1),
@@ -234,7 +246,7 @@ export async function POST(req: Request) {
     delete normalized.branches;
     delete normalized.location_picker;
   }
-  if (table === "team_members") {
+  if (table === "team_members" || table === "senior_management_team") {
     if (typeof normalized.name === "string") normalized.name = normalized.name.trim();
     if (typeof normalized.designation === "string") normalized.designation = normalized.designation.trim();
     normalized.slug = normalizeSlug(
@@ -247,6 +259,14 @@ export async function POST(req: Request) {
     normalized.location = nullableString(normalized.location);
     normalized.credentials = nullableString(normalized.credentials);
     normalized.bio = nullableString(normalized.bio);
+  }
+  if (table === "senior_management_team") {
+    delete normalized.location;
+    delete normalized.linkedin_url;
+    delete normalized.credentials;
+    delete normalized.bio;
+    delete normalized.excerpt;
+    delete normalized.featured;
   }
   if (table === "site_settings") {
     normalized.logo_url = nullableString(normalized.logo_url);

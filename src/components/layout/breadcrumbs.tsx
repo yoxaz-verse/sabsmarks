@@ -61,7 +61,7 @@ export function Breadcrumbs() {
         {segments.map((segment, index) => {
           const href = `/${segments.slice(0, index + 1).join("/")}`;
           const isLast = index === segments.length - 1;
-          const label = getSegmentLabel(segment);
+          const label = pathname === "/team" && segment === "team" ? "Team" : getSegmentLabel(segment);
 
           return (
             <li key={segment} className="inline-flex items-center">

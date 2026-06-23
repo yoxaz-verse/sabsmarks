@@ -189,6 +189,7 @@ function resolveFieldWidth(field: AdminFieldConfig) {
 
 function fieldDescription(configTitle: string) {
   if (configTitle === "Leadership") return "Add profile details, photo, and publishing settings for the leadership page.";
+  if (configTitle === "Senior Management Team") return "Add name, designation, photo, and publishing settings for the public team page.";
   if (configTitle === "Locations") return "Each entry is one branch. Search an address or drag the marker to set the exact public map point.";
   if (configTitle === "Insights") return "Structure article metadata first, then add the content that will appear on the site.";
   if (configTitle === "Careers / Join Us") return "Use this form for individual opportunities that will feed the careers listing.";
@@ -417,7 +418,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     const value = form[field.key];
     const width = resolveFieldWidth(field);
     const wrapperClass = width === "full" ? "md:col-span-2" : "";
-    const isTeamPhotoField = config.table === "team_members" && field.key === "photo_url";
+    const isTeamPhotoField = (config.table === "team_members" || config.table === "senior_management_team") && field.key === "photo_url";
     const isLocationPhotoField = config.table === "locations" && field.key === "photo_url";
     const isInsightImageField = config.table === "publications" && field.key === "image_url";
     const isPhotoField = isTeamPhotoField || isLocationPhotoField;
@@ -563,7 +564,9 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
             </div>
             <div className="admin-upload-panel">
               <div>
-                <p className="text-sm font-medium text-stone-800">{isLocationPhotoField ? "Upload branch photo" : "Upload leadership photo"}</p>
+                <p className="text-sm font-medium text-stone-800">
+                  {isLocationPhotoField ? "Upload branch photo" : config.table === "senior_management_team" ? "Upload team photo" : "Upload leadership photo"}
+                </p>
                 <p className="mt-1 text-xs leading-5 text-stone-500">Upload an image to populate the Photo URL field automatically.</p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

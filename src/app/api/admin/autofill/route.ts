@@ -123,6 +123,7 @@ export async function POST() {
         { label: "The Firm", href: "/about", group_name: "About", display_order: 1, status: "published" },
         { label: "Locations", href: "/about/locations", group_name: "About", display_order: 2, status: "published" },
         { label: "Leadership", href: "/about/team", group_name: "About", display_order: 3, status: "published" },
+        { label: "Team", href: "/team", group_name: "About", display_order: 4, status: "published" },
         { label: "Services", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },
         { label: "Our Approach", href: "/expertise/our-approach", group_name: "Expertise", display_order: 4, status: "published" },
         { label: "Blog", href: "/blog", group_name: "Blog", display_order: 1, status: "published" },

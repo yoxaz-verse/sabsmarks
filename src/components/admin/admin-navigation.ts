@@ -19,6 +19,12 @@ export const adminNavigation: AdminNavItem[] = [
     featured: true,
   },
   {
+    label: "Senior Management Team",
+    href: "/admin/senior-management-team",
+    description: "Manage simple team cards for the public team page.",
+    featured: true,
+  },
+  {
     label: "Locations",
     href: "/admin/locations",
     description: "Manage office locations and contact details.",

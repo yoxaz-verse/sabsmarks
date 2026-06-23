@@ -11,6 +11,7 @@ import type {
   MenuItem,
   PageRecord,
   SectionRecord,
+  SeniorManagementTeamMember,
   SiteSettings,
   TeamMember,
 } from "@/types/cms";
@@ -19,6 +20,17 @@ async function queryPublishedTeamMembers(client: SupabaseClient, featured?: bool
   let query = client.from("team_members").select("*").eq("status", "published").order("display_order", { ascending: true });
   if (featured !== undefined) query = query.eq("featured", featured);
   const { data } = await query.returns<TeamMember[]>();
+  return data ?? [];
+}
+
+async function queryPublishedSeniorManagementTeam(client: SupabaseClient) {
+  const { data } = await client
+    .from("senior_management_team")
+    .select("*")
+    .eq("status", "published")
+    .order("display_order", { ascending: true })
+    .order("updated_at", { ascending: false })
+    .returns<SeniorManagementTeamMember[]>();
   return data ?? [];
 }
 
@@ -183,6 +195,18 @@ export async function getTeamMembers({ featured }: { featured?: boolean } = {}) 
 
   try {
     return await queryPublishedTeamMembers(createAdminSupabaseClient(), featured);
+  } catch {
+    return team;
+  }
+}
+
+export async function getSeniorManagementTeam() {
+  const supabase = await createServerSupabaseClient();
+  const team = await queryPublishedSeniorManagementTeam(supabase);
+  if (team.length > 0) return team;
+
+  try {
+    return await queryPublishedSeniorManagementTeam(createAdminSupabaseClient());
   } catch {
     return team;
   }

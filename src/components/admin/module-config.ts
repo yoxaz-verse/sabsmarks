@@ -139,6 +139,19 @@ export const adminModules: Record<string, AdminModuleConfig> = {
       { key: "featured", label: "Featured", type: "checkbox", section: "Publishing", width: "full" },
     ],
   },
+  senior_management_team: {
+    title: "Senior Management Team",
+    table: "senior_management_team",
+    primaryLabel: "name",
+    fields: [
+      { key: "slug", label: "Slug", type: "text", required: true, section: "Basics" },
+      { key: "name", label: "Name", type: "text", required: true, section: "Basics" },
+      { key: "designation", label: "Designation", type: "text", required: true, section: "Basics" },
+      { key: "photo_url", label: "Photo URL", type: "text", section: "Media", width: "full" },
+      { key: "display_order", label: "Display Order", type: "number", section: "Publishing" },
+      { key: "status", label: "Status", type: "select", options: statusOptions, required: true, section: "Publishing" },
+    ],
+  },
   insight_categories: {
     title: "Insight Categories",
     table: "insight_categories",

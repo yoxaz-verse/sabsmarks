@@ -39,6 +39,16 @@ const ABOUT_LOCATIONS_ITEM: MenuItem = {
   status: "published",
 };
 
+const ABOUT_TEAM_ITEM: MenuItem = {
+  id: "about-4",
+  parent_id: null,
+  label: "Team",
+  href: "/team",
+  group_name: "About",
+  display_order: 4,
+  status: "published",
+};
+
 function normalizeBlogMenuItem(item: MenuItem): MenuItem {
   const href = item.href === "/insights" ? "/blog" : item.href.replace(/^\/insights\//, "/blog/");
   const isInsightsGroup = item.group_name === "Insights";
@@ -73,6 +83,16 @@ function ensureLocationsItem(groups: Record<string, MenuItem[]>) {
   };
 }
 
+function ensureTeamItem(groups: Record<string, MenuItem[]>) {
+  const aboutItems = groups.About ?? [];
+  if (aboutItems.some((item) => item.href === ABOUT_TEAM_ITEM.href)) return groups;
+
+  return {
+    ...groups,
+    About: [...aboutItems, ABOUT_TEAM_ITEM].sort((a, b) => a.display_order - b.display_order),
+  };
+}
+
 function filterNavItems(groups: Record<string, MenuItem[]>) {
   return Object.fromEntries(
     Object.entries(groups).map(([group, items]) => [
@@ -88,6 +108,7 @@ const fallbackNavGroups: Record<string, MenuItem[]> = {
     { id: "about-1", parent_id: null, label: "The Firm", href: "/about", group_name: "About", display_order: 1, status: "published" },
     { id: "about-2", parent_id: null, label: "Locations", href: "/about/locations", group_name: "About", display_order: 2, status: "published" },
     { id: "about-3", parent_id: null, label: "Leadership", href: "/about/team", group_name: "About", display_order: 3, status: "published" },
+    { id: "about-4", parent_id: null, label: "Team", href: "/team", group_name: "About", display_order: 4, status: "published" },
   ],
   Expertise: [
     { id: "expertise-1", parent_id: null, label: "Services", href: "/practice-areas", group_name: "Expertise", display_order: 1, status: "published" },
@@ -104,7 +125,7 @@ const fallbackNavGroups: Record<string, MenuItem[]> = {
 export async function Header() {
   const cmsNavGroups = await getMegaNav();
   const hasCmsNav = Object.values(cmsNavGroups).some((items) => items.length > 0);
-  const navGroups = normalizeBlogGroup(ensureLocationsItem(ensureHomeGroup(filterNavItems(hasCmsNav ? cmsNavGroups : fallbackNavGroups))));
+  const navGroups = normalizeBlogGroup(ensureTeamItem(ensureLocationsItem(ensureHomeGroup(filterNavItems(hasCmsNav ? cmsNavGroups : fallbackNavGroups)))));
 
   return (
     <header className="sticky top-0 z-[1000] border-b border-[var(--section-border)] bg-[color-mix(in_srgb,var(--bg)_76%,transparent)]/95 backdrop-blur-xl">
