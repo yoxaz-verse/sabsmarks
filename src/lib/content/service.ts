@@ -80,6 +80,25 @@ async function queryPublishedSlugs(client: SupabaseClient, type: EntryRecord["ty
   return (data ?? []) as Array<{ slug: string; updated_at?: string | null }>;
 }
 
+async function queryPublishedInsights(
+  client: SupabaseClient,
+  { category, tag, page = 1 }: { category?: string; tag?: string; page?: number },
+) {
+  const pageSize = 9;
+  let query = client
+    .from("publications")
+    .select("*", { count: "exact" })
+    .eq("status", "published")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .range((page - 1) * pageSize, page * pageSize - 1);
+
+  if (category) query = query.contains("metadata", { category });
+  if (tag) query = query.contains("metadata", { tag });
+
+  const { data, count } = await query.returns<EntryRecord[]>();
+  return { data: data ?? [], count: count ?? 0, pageSize };
+}
+
 async function queryPublishedLocationBySlug(client: SupabaseClient, slug: string) {
   const entry = decodeRouteSegment(slug);
   const normalizedEntry = normalizeSlug(entry);
@@ -185,20 +204,14 @@ export async function getTeamMemberBySlug(slug: string) {
 }
 
 export async function getInsights({ category, tag, page = 1 }: { category?: string; tag?: string; page?: number }) {
-  const supabase = await createServerSupabaseClient();
-  const pageSize = 9;
-  let query = supabase
-    .from("publications")
-    .select("*", { count: "exact" })
-    .eq("status", "published")
-    .order("published_at", { ascending: false, nullsFirst: false })
-    .range((page - 1) * pageSize, page * pageSize - 1);
+  const insights = await queryPublishedInsights(await createServerSupabaseClient(), { category, tag, page });
+  if (insights.data.length > 0) return insights;
 
-  if (category) query = query.contains("metadata", { category });
-  if (tag) query = query.contains("metadata", { tag });
-
-  const { data, count } = await query.returns<EntryRecord[]>();
-  return { data: data ?? [], count: count ?? 0, pageSize };
+  try {
+    return await queryPublishedInsights(createAdminSupabaseClient(), { category, tag, page });
+  } catch {
+    return insights;
+  }
 }
 
 export async function getLocationBySlug(slug: string) {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -26,6 +27,7 @@ import { CanvasParticles } from "@/components/decorative/canvas-particles";
 import { SiteOrnament } from "@/components/decorative/site-ornament";
 import { AdvisoryCarousel } from "@/components/media/advisory-carousel";
 import { GlowCard } from "@/components/ui/glow-card";
+import { SITE_VISUALS } from "@/lib/site-visuals";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/",
@@ -40,17 +42,38 @@ const credibilityItems = [
   { icon: Handshake, label: "Long-term client relationships" },
 ];
 
-const advisoryEntryPoints = [
+const clientPriorityHighlights = [
   { icon: TrendingUp, title: "Growth & Expansion", text: "Advisory support for businesses pursuing sustainable growth and new opportunities." },
   { icon: ShieldCheck, title: "Regulatory Confidence", text: "Proactive compliance and tax solutions to help manage risks effectively." },
   { icon: Calculator, title: "Financial Clarity", text: "Meaningful reporting and performance insights for better business decisions." },
   { icon: ClipboardCheck, title: "Governance Excellence", text: "Robust controls and governance practices that build stakeholder trust." },
 ];
 
-const advisorySnapshot = [
-  { icon: Compass, title: "Strategic Advisory", text: "Helping leadership teams navigate financial, regulatory, and business-critical decisions with clarity and confidence." },
-  { icon: ShieldCheck, title: "Integrated Compliance", text: "Seamlessly managing audit, tax, regulatory, and governance requirements through a coordinated service framework." },
-  { icon: Target, title: "Outcome-Focused Execution", text: "Delivering practical solutions, structured reporting, and continuous support aligned with your business objectives." },
+const homeImageStories = [
+  {
+    src: "/featured-advisory.jpg",
+    alt: "Finance leaders discussing advisory strategy around a boardroom table.",
+    eyebrow: "Advisory Desk",
+    title: "Senior attention for decisions that need judgement.",
+    text: "Partner-led teams align tax, audit, accounting, and advisory work around the business decision in front of you.",
+    href: "/about",
+  },
+  {
+    src: SITE_VISUALS.banners.digitalProcess,
+    alt: "Digital process dashboard representing structured finance workflows.",
+    eyebrow: "Process Clarity",
+    title: "Cleaner systems, workflows, and reporting habits.",
+    text: "We help finance teams improve visibility, controls, and day-to-day execution through structured process review.",
+    href: "/practice-areas?tab=digital-transformation-systems-advisory",
+  },
+  {
+    src: SITE_VISUALS.banners.taxDocument,
+    alt: "Tax and regulatory documents arranged for professional compliance review.",
+    eyebrow: "Compliance Support",
+    title: "Regulatory work prepared with discipline.",
+    text: "Audit, tax, and compliance priorities are handled with documentation, timing, and practical review discipline.",
+    href: "/practice-areas?tab=tax-regulatory-services",
+  },
 ];
 
 const valueStats = [
@@ -99,61 +122,74 @@ const services = [
     title: "Corporate Finance Advisory",
     desc: "Strategic guidance on fundraising, bank finance, valuations, pre-listing preparedness, and capital structuring.",
     icon: TrendingUp,
+    image: SITE_VISUALS.practiceAreas["corporate-finance-advisory"],
   },
   {
     id: "audit-assurance",
     title: "Audit & Assurance",
     desc: "Statutory, internal, tax, concurrent, transfer pricing, and management audits built for regulatory readiness.",
     icon: Database,
+    image: SITE_VISUALS.practiceAreas["audit-assurance"],
   },
   {
     id: "tax-regulatory-services",
     title: "Tax & Regulatory Services",
     desc: "Direct and indirect tax advisory, compliance monitoring, assessments, and structured litigation support.",
     icon: Calculator,
+    image: SITE_VISUALS.practiceAreas["tax-regulatory-services"],
   },
   {
     id: "corporate-other-laws",
     title: "Corporate & Other Laws",
     desc: "Corporate law compliance, secretarial filings, and board governance frameworks to protect growth.",
     icon: Scale,
+    image: SITE_VISUALS.practiceAreas["corporate-other-laws"],
   },
   {
     id: "cfo-business-advisory",
     title: "CFO & Business Advisory",
     desc: "MIS design, budgeting, forecasting, cash-flow discipline, and data-led strategic decision support.",
     icon: Briefcase,
+    image: SITE_VISUALS.practiceAreas["cfo-business-advisory"],
   },
   {
     id: "business-process-reengineering",
     title: "Business Process Re-Engineering",
     desc: "Reviewing and redesigning critical business processes to eliminate control gaps and bottlenecks.",
     icon: RefreshCw,
+    image: SITE_VISUALS.practiceAreas["business-process-reengineering"],
   },
   {
     id: "digital-transformation-systems-advisory",
     title: "Digital Transformation & Systems Advisory",
     desc: "System-agnostic advisory on ERP scope, digital workflows, and automation aligned with reporting needs.",
     icon: Cpu,
+    image: SITE_VISUALS.practiceAreas["digital-transformation-systems-advisory"],
   },
   {
     id: "business-revival-organisational-revamping",
     title: "Business Revival & Organisational Revamping",
     desc: "Revenue and profit maximisation, operational diagnosis, cost rationalisation, and restructuring support.",
     icon: ArrowUpRight,
+    image: SITE_VISUALS.practiceAreas["business-revival-organisational-revamping"],
   },
   {
     id: "risk-controls-forensics",
     title: "Risk, Controls & Forensics",
     desc: "Enterprise risk management frameworks, information system audits, and forensic investigation assignments.",
     icon: ShieldCheck,
+    image: SITE_VISUALS.practiceAreas["risk-controls-forensics"],
   },
 ];
 
+const featuredServices = services.filter((service) =>
+  ["corporate-finance-advisory", "audit-assurance", "tax-regulatory-services"].includes(service.id),
+);
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <section className="home-hero site-section relative flex min-h-[86vh] items-center overflow-hidden">
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
+      <section className="home-hero site-section relative flex min-h-[78vh] items-center overflow-hidden">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <div className="absolute -left-[14%] -top-[12%] h-[38rem] w-[38rem] rounded-full bg-accent/14 blur-[118px] mix-blend-multiply dark:bg-accent/10 dark:mix-blend-screen" />
           <div className="absolute -right-[12%] top-[18%] h-[34rem] w-[34rem] rounded-full bg-accent-secondary/14 blur-[120px] mix-blend-multiply dark:bg-accent-secondary/10 dark:mix-blend-screen" />
@@ -166,7 +202,7 @@ export default function Home() {
         <SiteOrnament mode="hero" interactive className="opacity-70 dark:opacity-55" />
 
         <div className="site-container relative z-20 w-full py-16 md:py-20 lg:py-24">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(340px,0.72fr)] lg:items-center">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.82fr)] lg:items-center">
             <div className="relative z-20 max-w-3xl">
               <div className="section-kicker text-accent animate-hero-kicker">Strategic Financial Advisory</div>
 
@@ -190,60 +226,29 @@ export default function Home() {
                   Contact Us
                 </Link>
               </div>
-
-              <div className="hero-entry-panel mt-10 animate-hero-stats">
-                <div className="flex flex-col gap-3 border-b border-[var(--glass-border)] pb-4 sm:flex-row sm:items-end sm:justify-between">
-                  <div>
-                    <div className="text-xs font-black uppercase tracking-[0.2em] text-accent">Client Priorities</div>
-                    <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
-                      Supporting leadership teams with integrated financial, compliance, and advisory solutions.
-                    </p>
-                  </div>
-                  <Link href="/practice-areas" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-accent">
-                    View capabilities <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {advisoryEntryPoints.map((item, i) => (
-                    <div key={item.title} className="hero-entry-item group" style={{ animationDelay: `${760 + i * 90}ms`, transitionDelay: `${i * 80}ms` }}>
-                      <span className="hero-entry-icon">
-                        <item.icon className="h-4 w-4" />
-                      </span>
-                      <span>
-                        <span className="block text-sm font-bold text-ink transition-colors group-hover:text-accent dark:text-white">{item.title}</span>
-                        <span className="mt-1 block text-xs leading-5 text-muted">{item.text}</span>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
 
             <div className="relative animate-hero-aside">
               <div className="absolute -inset-4 rounded-[2.25rem] bg-gradient-to-tr from-accent/22 via-accent-secondary/14 to-transparent opacity-70 blur-3xl dark:from-accent/16 dark:via-accent-secondary/10" />
               <GlowCard className="hero-advisory-card decorated-panel relative overflow-hidden rounded-[2rem]">
-                <SiteOrnament mode="card" className="opacity-35" />
-                <div className="p-6 md:p-7">
-                  <div className="section-kicker">Built for Decision-Makers</div>
-                  <h2 className="mt-5 text-2xl font-bold tracking-tight text-ink md:text-3xl dark:text-white">
-                    Integrated Financial, Compliance, and Advisory Solutions for Confident Decision-Making
-                  </h2>
-                  <div className="section-rule"></div>
-                  <p className="section-copy mt-5 max-w-none">
-                    We work with founders, boards, promoters, financial institutions, and enterprises to simplify complex financial and regulatory matters. Our integrated approach combines audit, taxation, advisory, compliance, and governance services to support sustainable growth and informed business decisions.
-                  </p>
-                  <div className="mt-6 grid gap-3">
-                    {advisorySnapshot.map((item, i) => (
-                      <div key={item.title} className="hero-snapshot-row" style={{ animationDelay: `${780 + i * 120}ms` }}>
-                        <span className="hero-snapshot-icon">
-                          <item.icon className="h-4 w-4" />
-                        </span>
-                        <span>
-                          <span className="block text-sm font-bold text-ink dark:text-white">{item.title}</span>
-                          <span className="mt-1 block text-xs leading-5 text-muted">{item.text}</span>
-                        </span>
-                      </div>
-                    ))}
+                <div className="relative aspect-[4/5] min-h-[26rem] overflow-hidden">
+                  <Image
+                    src={SITE_VISUALS.banners.growthAdvisory}
+                    alt="Growth advisory dashboard with financial charts and decision signals."
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 38vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,18,29,0.04),rgba(6,18,29,0.62))]" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 md:p-7">
+                    <div className="section-kicker border-white/15 bg-white/12 text-white">Built for Decision-Makers</div>
+                    <h2 className="mt-5 max-w-md text-2xl font-bold tracking-tight text-white md:text-3xl">
+                      Integrated advice, clearer next steps.
+                    </h2>
+                    <p className="mt-4 max-w-md text-sm leading-7 text-white/82">
+                      Audit, taxation, compliance, and advisory support organized around the decisions leadership teams need to make.
+                    </p>
                   </div>
                 </div>
               </GlowCard>
@@ -267,46 +272,141 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="site-section py-14 md:py-18">
+      <section className="site-section py-14 md:py-16">
         <div className="site-container">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="section-header reveal reveal-left">
-              <div className="section-kicker">Our Values</div>
-              <h2 className="section-title">Rooted in Legacy. Guided by <span className="text-gradient">Excellence.</span></h2>
+              <div className="section-kicker">Client Priorities</div>
+              <h2 className="section-title">Support organized around the decisions clients need to make.</h2>
               <div className="section-rule"></div>
-              <p className="section-copy">
-                Built on decades of professional experience, Sabs Marks JVS & Co. is committed to integrity, accountability, and client-centric service.
-              </p>
-              <p className="site-prose mt-5 max-w-3xl">
-                We combine partner-led expertise with institutional strength to deliver trusted advice, disciplined execution, and lasting value.
-              </p>
-              <Link href="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent">
-                Learn About Us <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
+            <Link href="/practice-areas" className="reveal reveal-right inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent">
+              View capabilities <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {valueStats.map((item, index) => (
-                <div key={item.label} className={`reveal reveal-up ${index % 2 === 1 ? "sm:translate-y-7" : ""}`} style={{ transitionDelay: `${index * 110}ms` }}>
-                  <GlowCard className="value-card creative-card decorated-panel group h-full overflow-hidden rounded-[1.35rem]">
-                    <div className="p-6">
-                      <SiteOrnament mode="card" className="opacity-15 transition-opacity group-hover:opacity-35" />
-                      <div className="text-4xl font-black text-gradient">{item.value}</div>
-                      <div className="relative z-10 mt-3 text-sm font-bold uppercase tracking-[0.16em] text-ink transition-colors group-hover:text-accent dark:text-white">{item.label}</div>
-                      <p className="relative z-10 mt-4 text-sm leading-6 text-muted">{item.text}</p>
+          <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {clientPriorityHighlights.map((item, i) => (
+              <div key={item.title} className="reveal reveal-up" style={{ transitionDelay: `${i * 90}ms` }}>
+                <GlowCard className="value-card creative-card decorated-panel group h-full overflow-hidden rounded-[1.35rem]">
+                  <div className="p-6">
+                    <SiteOrnament mode="card" className="opacity-15 transition-opacity group-hover:opacity-30" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-white">
+                      <item.icon className="h-5 w-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
                     </div>
-                  </GlowCard>
+                    <h3 className="relative z-10 mt-6 text-xl font-bold text-ink transition-colors group-hover:text-accent dark:text-white">{item.title}</h3>
+                    <p className="relative z-10 mt-3 text-sm leading-7 text-muted">{item.text}</p>
+                  </div>
+                </GlowCard>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section py-16 md:py-20">
+        <div className="site-container">
+          <div className="mx-auto max-w-4xl text-center reveal reveal-up">
+            <div className="section-kicker mx-auto justify-center">Our Values</div>
+            <h2 className="section-title">Rooted in Legacy. Guided by <span className="text-gradient">Excellence.</span></h2>
+            <div className="section-rule mx-auto"></div>
+            <p className="section-copy mx-auto">
+              Built on decades of professional experience, Sabs Marks JVS & Co. is committed to integrity, accountability, and client-centric service.
+            </p>
+            <p className="site-prose mx-auto mt-5 max-w-3xl">
+              We combine partner-led expertise with institutional strength to deliver trusted advice, disciplined execution, and lasting value.
+            </p>
+            <Link href="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent">
+              Learn About Us <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section py-16 md:py-20">
+        <div className="site-container">
+          <div className="section-header reveal reveal-up">
+            <div className="section-kicker">How We Work With Clients</div>
+            <h2 className="section-title">More than reports: visible process, practical advice, and steady execution.</h2>
+            <div className="section-rule"></div>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+            {homeImageStories.map((story, index) => (
+              <Link
+                key={story.title}
+                href={story.href}
+                className={`site-card interactive-card group relative overflow-hidden rounded-[1.75rem] ${
+                  index === 0 ? "min-h-[28rem] lg:row-span-2" : "min-h-[20rem]"
+                }`}
+              >
+                <Image
+                  src={story.src}
+                  alt={story.alt}
+                  fill
+                  sizes={index === 0 ? "(max-width: 1024px) 100vw, 58vw" : "(max-width: 1024px) 100vw, 38vw"}
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,18,29,0.08),rgba(6,18,29,0.78))]" />
+                <div className="absolute inset-x-0 bottom-0 z-10 p-6 md:p-8">
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-[color-mix(in_srgb,var(--accent-secondary)_35%,white)]">{story.eyebrow}</p>
+                  <h3 className={`${index === 0 ? "mt-4 max-w-2xl text-3xl md:text-4xl" : "mt-3 max-w-xl text-2xl"} font-bold tracking-tight text-white`}>
+                    {story.title}
+                  </h3>
+                  <p className="mt-4 max-w-2xl text-sm leading-7 text-white/82">{story.text}</p>
                 </div>
-              ))}
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-[1.5rem] border border-[var(--glass-border)] shadow-[0_24px_60px_rgba(15,23,42,0.08)]">
+              <Image
+                src={SITE_VISUALS.about.legacy}
+                alt="Professional documents and planning materials representing the firm's long-standing legacy."
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.03),rgba(8,15,30,0.24))]" />
+            </div>
+            <div className="relative aspect-[16/9] overflow-hidden rounded-[1.5rem] border border-[var(--glass-border)] shadow-[0_24px_60px_rgba(15,23,42,0.08)]">
+              <Image
+                src={SITE_VISUALS.about.team}
+                alt="Professional team collaborating during a leadership meeting."
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.03),rgba(8,15,30,0.24))]" />
             </div>
           </div>
         </div>
       </section>
 
       <section className="site-section py-14 md:py-18">
+        <div className="site-container">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {valueStats.map((item, index) => (
+              <div key={item.label} className="reveal reveal-up" style={{ transitionDelay: `${index * 90}ms` }}>
+                <GlowCard className="value-card creative-card decorated-panel group h-full overflow-hidden rounded-[1.35rem]">
+                  <div className="p-7">
+                    <SiteOrnament mode="card" className="opacity-15 transition-opacity group-hover:opacity-35" />
+                    <div className="text-5xl font-black text-gradient">{item.value}</div>
+                    <div className="relative z-10 mt-4 text-sm font-bold uppercase tracking-[0.16em] text-ink transition-colors group-hover:text-accent dark:text-white">{item.label}</div>
+                    <p className="relative z-10 mt-4 text-sm leading-6 text-muted">{item.text}</p>
+                  </div>
+                </GlowCard>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section py-16 md:py-20">
         <SiteOrnament mode="section" className="opacity-20" />
         <div className="site-container relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center">
             <div className="reveal reveal-left">
               <AdvisoryCarousel />
             </div>
@@ -316,7 +416,7 @@ export default function Home() {
               <h2 className="section-title">From compliance requirements to confident business decisions.</h2>
               <div className="section-rule"></div>
               <p className="section-copy">
-                We help businesses navigate audit, taxation, accounting, and regulatory obligations with clarity, accuracy, and professional guidance.
+                We help businesses navigate audit, taxation, accounting, and regulatory obligations with clarity and professional guidance.
               </p>
               <div className="mt-8 grid gap-3">
                 {["Audit & Assurance Excellence", "Tax & Regulatory Compliance", "Strategic Business Advisory"].map((item) => (
@@ -369,23 +469,79 @@ export default function Home() {
       <section className="site-section py-16 md:py-20">
         <div className="site-container">
           <div className="section-header mx-auto text-center reveal reveal-up">
-            <div className="section-kicker mx-auto justify-center">Our Services</div>
-            <h2 className="section-title">Specialized capabilities, organized for <span className="text-gradient">faster decision-making.</span></h2>
+            <div className="section-kicker mx-auto justify-center">Featured Services</div>
+            <h2 className="section-title">High-impact support for the decisions clients ask about first.</h2>
             <div className="section-rule mx-auto"></div>
-            <p className="section-copy mx-auto">Deploying specialized advisory, audit, and tax solutions configured for your business needs.</p>
+            <p className="section-copy mx-auto">A quieter starting point before the full service catalogue.</p>
           </div>
 
-          <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {services.map((service, i) => (
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {featuredServices.map((service, i) => (
               <div key={service.id} className="reveal reveal-up" style={{ transitionDelay: `${(i % 3) * 100}ms` }}>
-                <GlowCard className="service-card creative-card decorated-panel group h-full overflow-hidden rounded-[1.45rem]">
-                  <div className="p-6">
+                <Link href={`/practice-areas?tab=${service.id}`} className="group block h-full">
+                  <GlowCard className="service-card creative-card decorated-panel h-full overflow-hidden rounded-[1.6rem]">
+                    <div className="relative aspect-[16/11] overflow-hidden">
+                      <Image
+                        src={service.image}
+                        alt={`${service.title} advisory visual`}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 33vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.02),rgba(8,15,30,0.34))]" />
+                    </div>
+                    <div className="p-7">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-white">
+                        <service.icon className="h-5 w-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
+                      </div>
+                      <h3 className="relative z-10 mt-6 text-2xl font-bold text-ink transition-colors group-hover:text-accent dark:text-white">{service.title}</h3>
+                      <p className="relative z-10 mt-3 text-sm leading-7 text-muted">{service.desc}</p>
+                      <span className="relative z-10 mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">
+                        Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1.5" />
+                      </span>
+                    </div>
+                  </GlowCard>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section py-16 md:py-20">
+        <div className="site-container">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="section-header reveal reveal-left">
+              <div className="section-kicker">All Services</div>
+              <h2 className="section-title">Specialized capabilities, organized for <span className="text-gradient">faster decision-making.</span></h2>
+              <div className="section-rule"></div>
+            </div>
+            <p className="reveal reveal-right max-w-xl text-sm leading-7 text-muted">
+              Deploying specialized advisory, audit, and tax solutions configured for practical business needs.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {services.map((service, i) => (
+              <div key={service.id} className="reveal reveal-up" style={{ transitionDelay: `${(i % 3) * 90}ms` }}>
+                <GlowCard className="service-card creative-card decorated-panel group flex h-full flex-col overflow-hidden rounded-[1.45rem]">
+                  <div className="relative aspect-[16/9] overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={`${service.title} advisory visual`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.02),rgba(8,15,30,0.3))]" />
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
                     <SiteOrnament mode="card" className="opacity-15 transition-opacity group-hover:opacity-35" />
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-white">
                       <service.icon className="h-5 w-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
                     </div>
                     <h3 className="relative z-10 mt-6 text-xl font-bold text-ink transition-colors group-hover:text-accent dark:text-white">{service.title}</h3>
-                    <p className="relative z-10 mt-3 text-sm leading-7 text-muted">{service.desc}</p>
+                    <p className="relative z-10 mt-3 flex-1 text-sm leading-7 text-muted">{service.desc}</p>
                     <Link href={`/practice-areas?tab=${service.id}`} className="relative z-10 mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">
                       Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1.5" />
                     </Link>
@@ -397,15 +553,23 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="site-section pb-16 pt-8 md:pb-24">
+      <section className="site-section pb-16 pt-16 md:pb-24 md:pt-24">
         <div className="site-container">
-          <div className="final-cta decorated-panel overflow-hidden rounded-[2rem] p-7 md:p-10 lg:p-12 reveal reveal-up">
+          <div className="final-cta decorated-panel relative overflow-hidden rounded-[2rem] p-7 md:p-10 lg:p-12 reveal reveal-up">
+            <Image
+              src={SITE_VISUALS.contact.meeting}
+              alt="Professional meeting room prepared for an advisory conversation."
+              fill
+              sizes="(max-width: 1280px) 100vw, 1200px"
+              className="object-cover opacity-18"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,18,29,0.94)_0%,rgba(6,18,29,0.84)_54%,rgba(0,92,157,0.52)_100%)]" />
             <SiteOrnament mode="section" contrast className="opacity-35" />
             <div className="relative z-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
               <div>
                 <div className="section-kicker">Start With Clarity</div>
                 <h2 className="mt-6 max-w-3xl text-3xl font-black tracking-tight text-white md:text-5xl">
-                  professional clarity begins with the right conversation
+                  Professional clarity begins with the right conversation
                 </h2>
                 <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
                   Speak with the Sabs Marks JVS team about audit, tax, CFO advisory, compliance, or governance priorities.

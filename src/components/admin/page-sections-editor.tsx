@@ -20,8 +20,32 @@ const defaultPage: EditablePage = {
 };
 
 function defaultPayload(sectionType: SectionType) {
-  if (sectionType === "hero") return { kicker: "", headline: "", subtext: "" };
-  if (sectionType === "rich_text") return { title: "", content: "" };
+  if (sectionType === "hero") return { kicker: "", headline: "", subtext: "", image: "", imageAlt: "" };
+  if (sectionType === "rich_text") return { title: "", content: "", image: "", imageAlt: "", imageAlign: "right" };
+  if (sectionType === "card_grid") {
+    return {
+      title: "Our Capabilities",
+      cards: [
+        {
+          title: "Capability title",
+          text: "Short card description.",
+          href: "",
+          image: "/featured-advisory.jpg",
+          imageAlt: "Professional advisory discussion.",
+        },
+      ],
+    };
+  }
+  if (sectionType === "cta") {
+    return {
+      title: "Speak with our advisory team",
+      text: "Discuss your strategic and regulatory priorities with our experts.",
+      href: "/contact",
+      buttonLabel: "Book a consultation",
+      image: "/banner-backgrounds/page-contact-us.png",
+      imageAlt: "Professional meeting space for advisory conversations.",
+    };
+  }
   return {};
 }
 
@@ -400,6 +424,26 @@ function SectionCard({
               className="min-h-24 rounded-lg border border-stone-300 px-3 py-2"
             />
           </label>
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="grid gap-2 text-sm text-stone-700">
+              Image URL
+              <input
+                value={String(payload.image ?? "")}
+                onChange={(e) => onChange({ ...section, payload: { ...payload, image: e.target.value } })}
+                placeholder="/featured-advisory.jpg"
+                className="rounded-lg border border-stone-300 px-3 py-2"
+              />
+            </label>
+            <label className="grid gap-2 text-sm text-stone-700">
+              Image Alt Text
+              <input
+                value={String(payload.imageAlt ?? "")}
+                onChange={(e) => onChange({ ...section, payload: { ...payload, imageAlt: e.target.value } })}
+                placeholder="Describe the image for accessibility"
+                className="rounded-lg border border-stone-300 px-3 py-2"
+              />
+            </label>
+          </div>
         </div>
       ) : null}
 
@@ -421,6 +465,37 @@ function SectionCard({
               className="min-h-32 rounded-lg border border-stone-300 px-3 py-2"
             />
           </label>
+          <div className="grid gap-4 md:grid-cols-3">
+            <label className="grid gap-2 text-sm text-stone-700 md:col-span-1">
+              Image Alignment
+              <select
+                value={String(payload.imageAlign ?? "right")}
+                onChange={(e) => onChange({ ...section, payload: { ...payload, imageAlign: e.target.value } })}
+                className="rounded-lg border border-stone-300 px-3 py-2"
+              >
+                <option value="right">Right</option>
+                <option value="left">Left</option>
+              </select>
+            </label>
+            <label className="grid gap-2 text-sm text-stone-700 md:col-span-2">
+              Image URL
+              <input
+                value={String(payload.image ?? "")}
+                onChange={(e) => onChange({ ...section, payload: { ...payload, image: e.target.value } })}
+                placeholder="/banner-backgrounds/page-the-firm.png"
+                className="rounded-lg border border-stone-300 px-3 py-2"
+              />
+            </label>
+            <label className="grid gap-2 text-sm text-stone-700 md:col-span-3">
+              Image Alt Text
+              <input
+                value={String(payload.imageAlt ?? "")}
+                onChange={(e) => onChange({ ...section, payload: { ...payload, imageAlt: e.target.value } })}
+                placeholder="Describe the image for accessibility"
+                className="rounded-lg border border-stone-300 px-3 py-2"
+              />
+            </label>
+          </div>
         </div>
       ) : null}
 

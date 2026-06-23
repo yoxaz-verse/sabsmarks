@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BriefcaseBusiness, CheckCircle2 } from "lucide-react";
 import { PageBanner } from "@/components/layout/page-banner";
 import { buildCmsPageMetadata, buildPageMetadata } from "@/lib/seo";
 import { getCollection, getPageBySlug } from "@/lib/content/service";
+import { SITE_VISUALS } from "@/lib/site-visuals";
 
 const fallbackDescription =
   "Join a firm where values matter, people come first, and excellence is a way of life.";
@@ -67,7 +69,7 @@ export default async function JoinUsPage() {
 
       <section className="site-section">
         <div className="site-container py-16 md:py-20">
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start">
             <div>
               <div className="section-header">
                 <div className="section-kicker">Careers</div>
@@ -83,6 +85,17 @@ export default async function JoinUsPage() {
             </div>
 
             <div className="grid gap-6">
+              <div className="relative aspect-[16/11] overflow-hidden rounded-[1.75rem] border border-[var(--glass-border)] shadow-[0_28px_70px_rgba(15,23,42,0.12)]">
+                <Image
+                  src={SITE_VISUALS.careers.culture}
+                  alt="Professional team collaborating and learning together in a modern workplace."
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 46vw"
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.02),rgba(8,15,30,0.26))]" />
+              </div>
               <div className="site-card rounded-[1.75rem] p-8">
                 <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Opportunities Available</p>
                 <ul className="mt-6 space-y-4">
@@ -109,16 +122,24 @@ export default async function JoinUsPage() {
 
       <section className="site-section pt-0">
         <div className="site-container pb-16">
-          <div className="site-card rounded-[1.75rem] p-8 md:p-10">
-            <div className="section-header">
+          <div className="site-card relative overflow-hidden rounded-[1.75rem] p-8 md:p-10">
+            <Image
+              src={SITE_VISUALS.careers.culture}
+              alt="Team members collaborating in a supportive professional environment."
+              fill
+              sizes="(max-width: 1280px) 100vw, 1200px"
+              className="object-cover opacity-16"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.9)_55%,rgba(255,255,255,0.78)_100%)] dark:bg-[linear-gradient(90deg,rgba(9,17,31,0.96)_0%,rgba(9,17,31,0.9)_55%,rgba(9,17,31,0.76)_100%)]" />
+            <div className="section-header relative z-10">
               <div className="section-kicker">Why Join Us?</div>
               <h2 className="section-title">A place to learn, contribute, and grow with purpose.</h2>
               <div className="section-rule"></div>
             </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="relative z-10 mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {reasonsToJoin.map((reason) => (
-                <div key={reason} className="rounded-2xl border border-[var(--glass-border)] bg-surface-raised p-5">
+                <div key={reason} className="rounded-2xl border border-[var(--glass-border)] bg-surface-raised/92 p-5 backdrop-blur-sm">
                   <CheckCircle2 className="h-5 w-5 text-accent" strokeWidth={1.8} />
                   <p className="mt-4 text-[15px] font-semibold leading-7 text-ink">{reason}</p>
                 </div>

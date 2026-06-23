@@ -240,45 +240,56 @@ function PracticeAreasTabs() {
 
   return (
     <div className="site-card overflow-hidden rounded-[1.75rem] md:flex md:min-h-[650px]">
-      <div className="w-full border-b border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 md:w-[380px] md:border-b-0 md:border-r md:p-8">
-        <h4 className="text-xs font-bold text-muted uppercase tracking-[0.22em] mb-6 px-4">Our Services</h4>
-        {serviceAreas.map((serviceArea) => {
-          const isActive = activeTab === serviceArea.id;
-          return (
-            <div key={serviceArea.id} className="w-full md:w-[320px] md:max-w-[320px] md:min-w-[320px] md:mx-auto">
-              <button
-                onClick={() => setActiveTab(serviceArea.id)}
-                className={`block h-20 w-full min-w-full max-w-full px-6 py-4 text-left font-bold text-[13px] tracking-[0.08em] rounded-2xl transition-all duration-500 relative overflow-hidden group box-border ${
-                  isActive
-                    ? "bg-surface shadow-lg text-ink border border-[var(--glass-border)]"
-                    : "text-muted bg-transparent hover:bg-[color-mix(in_srgb,var(--surface)_65%,transparent)] hover:text-ink border border-[var(--glass-border)]/70"
-                }`}
-              >
-                {isActive && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent rounded-l-2xl shadow-[0_0_15px_var(--accent-glow)]"></div>
-                )}
-                {isActive && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-100"></div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div className="w-full border-b border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] md:w-[380px] md:border-b-0 md:border-r md:p-8">
+        <h4 className="hidden md:block text-xs font-bold text-muted uppercase tracking-[0.22em] mb-6 px-4">Our Services</h4>
+        <div className="md:hidden flex items-center justify-end gap-1.5 mt-5 px-5 text-[10px] font-bold text-accent uppercase tracking-[0.2em] animate-pulse">
+          <span>Swipe</span>
+          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </div>
+        <div className="flex overflow-x-auto gap-3 px-5 pb-5 pt-3 snap-x md:block md:space-y-0 md:overflow-visible md:p-0">
+          {serviceAreas.map((serviceArea) => {
+            const isActive = activeTab === serviceArea.id;
+            return (
+              <div key={serviceArea.id} className="flex-shrink-0 w-[260px] snap-start md:w-[320px] md:max-w-[320px] md:min-w-[320px] md:mx-auto">
+                <button
+                  onClick={() => setActiveTab(serviceArea.id)}
+                  className={`block h-full min-h-[4.5rem] w-full md:h-20 px-5 py-3 md:px-6 md:py-4 text-left font-bold text-[13px] tracking-[0.08em] rounded-2xl transition-all duration-500 relative overflow-hidden group box-border ${
+                    isActive
+                      ? "bg-surface shadow-lg text-ink border border-[var(--glass-border)]"
+                      : "text-muted bg-transparent hover:bg-[color-mix(in_srgb,var(--surface)_65%,transparent)] hover:text-ink border border-[var(--glass-border)]/70"
+                  }`}
+                >
+                  {isActive && (
+                    <div className="hidden md:block absolute left-0 top-0 bottom-0 w-1.5 bg-accent rounded-l-2xl shadow-[0_0_15px_var(--accent-glow)]"></div>
+                  )}
+                  {isActive && (
+                    <div className="md:hidden absolute bottom-0 left-0 right-0 h-1.5 bg-accent rounded-b-2xl shadow-[0_0_15px_var(--accent-glow)]"></div>
+                  )}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-100"></div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                <span className="relative z-10 flex h-full w-full items-center justify-between gap-4">
-                  <span className="line-clamp-2 leading-6">{serviceArea.title}</span>
-                  <span className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center">
-                    <svg
-                      className={`h-4 w-4 transition-opacity duration-300 ${isActive ? "text-accent opacity-100 animate-fade-in" : "text-muted opacity-35 group-hover:opacity-60"}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                  <span className="relative z-10 flex h-full w-full items-center justify-between gap-3">
+                    <span className="line-clamp-2 leading-6">{serviceArea.title}</span>
+                    <span className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center">
+                      <svg
+                        className={`h-4 w-4 transition-opacity duration-300 ${isActive ? "text-accent opacity-100 animate-fade-in" : "text-muted opacity-35 group-hover:opacity-60"}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
                   </span>
-                </span>
-              </button>
-            </div>
-          );
-        })}
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <div key={activeTab} className="flex min-h-[600px] flex-1 flex-col overflow-hidden p-8 md:px-14 md:pt-10 md:pb-14 lg:px-16 lg:pt-12 lg:pb-16">
