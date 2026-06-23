@@ -30,6 +30,7 @@ import { GlowCard } from "@/components/ui/glow-card";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 import { FadeIn } from "@/components/ui/fade-in";
 import { SlideIn } from "@/components/ui/slide-in";
+import { HeroBackgroundCarousel } from "@/components/media/hero-background-carousel";
 
 export const metadata: Metadata = buildPageMetadata({
   path: "/",
@@ -172,7 +173,7 @@ export default function Home() {
           <div className="absolute -right-[12%] top-[18%] h-[34rem] w-[34rem] rounded-full bg-accent-secondary/14 blur-[120px] mix-blend-multiply dark:bg-accent-secondary/10 dark:mix-blend-screen" />
           <div className="absolute bottom-[-24%] left-[28%] h-[42rem] w-[42rem] rounded-full bg-accent/8 blur-[130px] mix-blend-multiply dark:bg-white/5 dark:mix-blend-screen" />
           <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(244,247,251,0.74)_0%,rgba(244,247,251,0.58)_46%,rgba(244,247,251,0.3)_78%,rgba(244,247,251,0.14)_100%)] dark:bg-[linear-gradient(90deg,rgba(9,17,31,0.88)_0%,rgba(9,17,31,0.74)_48%,rgba(9,17,31,0.42)_78%,rgba(9,17,31,0.18)_100%)]" />
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-48 animate-slow-zoom-out dark:opacity-68" />
+          <HeroBackgroundCarousel />
           <CanvasParticles />
         </div>
 
@@ -468,9 +469,6 @@ export default function Home() {
                 <h2 className="mt-6 max-w-3xl text-3xl font-black tracking-tight text-white md:text-5xl">
                   Professional clarity begins with the right conversation
                 </h2>
-                <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
-                  Speak with the Sabs Marks JVS team about audit, tax, CFO advisory, compliance, or governance priorities.
-                </p>
               </div>
               <Link href="/contact" className="group inline-flex items-center justify-center gap-3 rounded-2xl bg-white px-7 py-4 text-sm font-bold uppercase tracking-[0.14em] text-slate-950 shadow-[0_18px_44px_rgba(255,255,255,0.16)] hover:-translate-y-0.5">
                 Contact Us <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
