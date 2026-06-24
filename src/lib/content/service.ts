@@ -126,7 +126,7 @@ async function queryPublishedLocationBySlug(client: SupabaseClient, slug: string
 }
 
 async function queryPublishedLocations(client: SupabaseClient) {
-  const { data } = await client.from("locations").select("*").eq("status", "published").order("city", { ascending: true }).returns<Location[]>();
+  const { data } = await client.from("locations").select("*").eq("status", "published").order("display_order", { ascending: true }).order("city", { ascending: true }).returns<Location[]>();
   return data ?? [];
 }
 

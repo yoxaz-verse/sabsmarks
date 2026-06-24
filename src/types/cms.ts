@@ -129,6 +129,7 @@ export interface Location {
   latitude: number | null;
   longitude: number | null;
   photo_url: string | null;
+  display_order: number;
   featured: boolean;
   status: PublishStatus;
 }

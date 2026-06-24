@@ -103,6 +103,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
     listColumns: [
       { key: "city", label: "Branch" },
       { key: "address", label: "Address" },
+      { key: "display_order", label: "Priority" },
       { key: "status", label: "Status" },
     ],
     fields: [
@@ -116,6 +117,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
       { key: "photo_url", label: "Branch Photo URL", type: "text", section: "Media", width: "full" },
       { key: "address", label: "Address", type: "textarea", section: "Address", width: "full" },
       { key: "featured", label: "Featured", type: "checkbox", section: "Publishing", width: "full" },
+      { key: "display_order", label: "Display Order", type: "number", section: "Publishing" },
       { key: "status", label: "Status", type: "select", options: statusOptions, required: true, section: "Publishing" },
     ],
   },

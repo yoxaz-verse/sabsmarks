@@ -108,12 +108,11 @@ function LocationsMap({
 
       const map = leaflet
         .map(containerRef.current, {
-          attributionControl: true,
+          attributionControl: false,
           scrollWheelZoom: false,
           zoomControl: true,
         })
         .setView([21.1, 78.6], 5);
-      map.attributionControl.setPrefix(false);
 
       leaflet
         .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {

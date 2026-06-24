@@ -27,7 +27,7 @@ export function LocationPointMap({ title, latitude, longitude }: LocationPointMa
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    const map = L.map(containerRef.current, { scrollWheelZoom: false }).setView([latitude, longitude], 16);
+    const map = L.map(containerRef.current, { scrollWheelZoom: false, attributionControl: false }).setView([latitude, longitude], 16);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
