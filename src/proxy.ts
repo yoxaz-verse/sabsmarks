@@ -11,7 +11,7 @@ const redirectMap: Record<string, string> = {
   "/corporate-finance-advisory-services": "/practice-areas/corporate-finance-advisory-services",
 };
 
-export async function proxy(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const res = NextResponse.next({ request: { headers: req.headers } });
   const hasAuthCookie = req.cookies.getAll().some((cookie) => cookie.name.startsWith("sb-") && cookie.name.includes("auth-token"));
