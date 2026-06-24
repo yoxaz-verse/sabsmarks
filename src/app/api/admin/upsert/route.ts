@@ -139,6 +139,7 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     longitude: z.number().optional().nullable(),
     photo_url: z.string().optional().nullable(),
     featured: z.boolean().optional(),
+    display_order: z.number().int().optional(),
     status: statusSchema,
   }),
   team_members: z.object({
