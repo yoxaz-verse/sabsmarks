@@ -8,7 +8,7 @@ const DEFAULT_EMAIL = "info@sabsmarksjvs.com";
 const DEFAULT_HEAD_OFFICE_LABEL = "H.O";
 const DEFAULT_HEAD_OFFICE_ADDRESS = "Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala";
 const DEFAULT_HEAD_OFFICE_MAP_URL =
-  "https://maps.app.goo.gl/Z4efY3HS3KwhTw1F6";
+  "https://maps.app.goo.gl/banPywyzCS4ZsYpWA";
 const DEFAULT_SOCIAL_LINKS = {
   linkedin: "https://www.linkedin.com/company/sabs-marks-jvs-co/",
   instagram: "https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ==",

@@ -204,7 +204,7 @@ export default async function ContactPage() {
           <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
             <SlideIn direction="left" delay={0.1} className="h-full">
               <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(145deg,#06121d_0%,#005c9d_54%,#063c24_100%)] px-6 py-7 text-white shadow-[0_32px_80px_rgba(18,57,95,0.24)] md:px-8 md:py-8 h-full">
-                <div className="absolute inset-0">
+                <div className="pointer-events-none absolute inset-0">
                   <Image
                     src={SITE_VISUALS.contact.meeting}
                     alt="Professional meeting room ready for client conversations."
@@ -213,7 +213,7 @@ export default async function ContactPage() {
                     className="object-cover opacity-18"
                   />
                 </div>
-                <div className="flex flex-wrap items-start justify-between gap-5">
+                <div className="relative z-10 flex flex-wrap items-start justify-between gap-5">
                   <div className="max-w-2xl">
                     <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Head Office Contact</p>
                     <h2 className="mt-4 text-3xl font-bold leading-tight md:text-[2.4rem]">{contact.brandName}</h2>
@@ -226,7 +226,7 @@ export default async function ContactPage() {
                   </div>
                 </div>
 
-                <div className="mt-8 grid gap-4 md:grid-cols-2">
+                <div className="relative z-10 mt-8 grid gap-4 md:grid-cols-2">
                   <QuickAction
                     href={`tel:${sanitizePhone(contact.primaryPhone)}`}
                     label="Call Us"
@@ -241,7 +241,7 @@ export default async function ContactPage() {
                   />
                 </div>
 
-                <div className="mt-8 rounded-[1.75rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] p-5">
+                <div className="relative z-10 mt-8 rounded-[1.75rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] p-5">
                   <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Registered Address</p>
                   <p className="mt-3 whitespace-pre-line text-sm leading-7 text-white/90">{contact.headOfficeAddress}</p>
                   <a

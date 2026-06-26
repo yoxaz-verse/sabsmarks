@@ -19,7 +19,7 @@ async function run() {
 
   const { data, error } = await supabase
     .from('site_settings')
-    .update({ head_office_map_url: 'https://maps.app.goo.gl/Z4efY3HS3KwhTw1F6' })
+    .update({ head_office_map_url: 'https://maps.app.goo.gl/banPywyzCS4ZsYpWA' })
     .eq('id', '00000000-0000-0000-0000-000000000001');
 
   if (error) {
