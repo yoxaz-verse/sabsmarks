@@ -4,6 +4,19 @@ export function getPublicMapUrl(mapUrl: string | null) {
   try {
     const parsed = new URL(mapUrl);
     if (!["http:", "https:"].includes(parsed.protocol)) return null;
+
+    if (parsed.hostname.includes("openstreetmap.org")) {
+      const mlat = parsed.searchParams.get("mlat");
+      const mlon = parsed.searchParams.get("mlon");
+      if (mlat && mlon) {
+        return `https://www.google.com/maps/search/?api=1&query=${mlat},${mlon}`;
+      }
+      const query = parsed.searchParams.get("query");
+      if (query) {
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+      }
+    }
+
     return parsed.toString();
   } catch {
     return null;

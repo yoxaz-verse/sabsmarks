@@ -34,10 +34,10 @@ function formatCoordinate(value: number | null) {
 }
 
 function buildMapUrl(latitude: number | null, longitude: number | null, address: string) {
-  if (hasPoint(latitude, longitude)) return `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=18/${latitude}/${longitude}`;
+  if (hasPoint(latitude, longitude)) return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   const query = address.trim();
   if (!query) return "";
-  return `https://www.openstreetmap.org/search?query=${encodeURIComponent(query)}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
 export function LocationMapPicker({ address, mapUrl, latitude, longitude, onChange }: LocationMapPickerProps) {
@@ -77,9 +77,9 @@ export function LocationMapPicker({ address, mapUrl, latitude, longitude, onChan
     const initialCenter: [number, number] = hasPoint(latitude, longitude) ? [latitude as number, longitude as number] : INDIA_CENTER;
     const map = L.map(containerRef.current, { scrollWheelZoom: false }).setView(initialCenter, hasPoint(latitude, longitude) ? POINT_ZOOM : DEFAULT_ZOOM);
 
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    L.tileLayer("https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
+      maxZoom: 20,
+      attribution: '&copy; <a href="https://www.google.com/maps">Google Maps</a>',
     }).addTo(map);
 
     map.on("click", (event) => {

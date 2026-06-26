@@ -134,6 +134,75 @@ export interface Location {
   status: PublishStatus;
 }
 
+export interface AppointmentSlot {
+  id: string;
+  partner_id: string;
+  location_id: string;
+  appointment_date: string;
+  start_time: string;
+  end_time: string;
+  notes: string | null;
+  status: PublishStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AppointmentAvailabilityRule {
+  id: string;
+  partner_id: string;
+  location_id: string;
+  enabled_weekdays: number[];
+  start_time: string;
+  end_time: string;
+  slot_duration_minutes: number;
+  status: PublishStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AppointmentBlock {
+  id: string;
+  partner_id: string;
+  location_id: string;
+  block_date: string;
+  start_time: string | null;
+  end_time: string | null;
+  note: string | null;
+  status: PublishStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AppointmentRequest {
+  id: string;
+  slot_id: string | null;
+  partner_id: string | null;
+  location_id: string | null;
+  appointment_date: string | null;
+  start_time: string | null;
+  end_time: string | null;
+  source: "manual" | "generated";
+  visitor_name: string;
+  visitor_email: string;
+  visitor_phone: string;
+  message: string | null;
+  status: "pending" | "confirmed" | "cancelled";
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AvailableAppointmentSlot {
+  id: string;
+  source: "manual" | "generated";
+  rule_id: string | null;
+  appointment_date: string;
+  start_time: string;
+  end_time: string;
+  notes: string | null;
+  partner: Pick<TeamMember, "id" | "name" | "designation" | "location">;
+  location: Pick<Location, "id" | "city" | "office_name" | "address" | "map_url" | "phone" | "email">;
+}
+
 export interface MenuItem {
   id: string;
   parent_id: string | null;

@@ -1,4 +1,4 @@
-export type AdminFieldType = "text" | "textarea" | "select" | "number" | "datetime" | "checkbox" | "locationPicker";
+export type AdminFieldType = "text" | "textarea" | "select" | "number" | "datetime" | "checkbox" | "locationPicker" | "relation" | "weekdays";
 export type AdminFieldWidth = "half" | "full";
 
 export type AdminFieldConfig = {
@@ -7,6 +7,12 @@ export type AdminFieldConfig = {
   type: AdminFieldType;
   required?: boolean;
   options?: Array<{ label: string; value: string }>;
+  relation?: {
+    table: string;
+    valueKey: string;
+    labelKey: string;
+    secondaryLabelKey?: string;
+  };
   placeholder?: string;
   width?: AdminFieldWidth;
   section?: string;
@@ -18,6 +24,7 @@ export type AdminModuleConfig = {
   primaryLabel: string;
   fields: AdminFieldConfig[];
   readOnly?: boolean;
+  disableCreate?: boolean;
   listColumns?: Array<{ key: string; label: string }>;
 };
 

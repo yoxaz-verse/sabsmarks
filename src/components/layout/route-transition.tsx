@@ -13,21 +13,31 @@ function isModifiedClick(event: MouseEvent | ReactMouseEvent) {
   return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
 }
 
-function getPageLabel(anchor: HTMLAnchorElement, url: URL) {
+function getTransitionMessage(anchor: HTMLAnchorElement, url: URL) {
+  const customMessage = anchor.getAttribute("data-transition-message")?.trim();
+  if (customMessage) return customMessage;
+
+  let label = "";
   const ariaLabel = anchor.getAttribute("aria-label")?.trim();
-  if (ariaLabel) return ariaLabel;
+  if (ariaLabel && ariaLabel.length < 40) {
+    label = ariaLabel;
+  } else {
+    const textLabel = anchor.textContent?.replace(/\s+/g, " ").trim();
+    if (textLabel && textLabel.length < 40) {
+      label = textLabel;
+    } else {
+      const segment = url.pathname.split("/").filter(Boolean).at(-1);
+      label = segment
+        ? segment
+            .split("-")
+            .filter(Boolean)
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ")
+        : "Home";
+    }
+  }
 
-  const textLabel = anchor.textContent?.replace(/\s+/g, " ").trim();
-  if (textLabel) return textLabel;
-
-  const segment = url.pathname.split("/").filter(Boolean).at(-1);
-  if (!segment) return "Home";
-
-  return segment
-    .split("-")
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  return `Opening ${label}`;
 }
 
 function shouldHandleNavigation(anchor: HTMLAnchorElement, event: MouseEvent, currentUrl: URL) {
@@ -79,7 +89,7 @@ export function RouteTransition() {
         return;
       }
 
-      setTransitionLabel(getPageLabel(anchor, nextUrl));
+      setTransitionLabel(getTransitionMessage(anchor, nextUrl));
       setIsExiting(true);
 
       if (exitTimer.current) clearTimeout(exitTimer.current);
@@ -106,7 +116,7 @@ export function RouteTransition() {
         <div className="route-transition-line">
           <span></span>
         </div>
-        <p>Opening {transitionLabel}</p>
+        <p>{transitionLabel}</p>
       </div>
     </div>
   );

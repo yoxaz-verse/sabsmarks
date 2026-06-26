@@ -133,12 +133,12 @@ export default async function TeamMemberDetail({ params }: { params: Promise<{ e
         {/* Right Column: Bio and Profile Details */}
         <div className="lg:col-span-8 flex flex-col gap-6">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+            <span className="type-eyebrow inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-accent">
               <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
               Leadership
             </span>
             {member.location ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--glass-border)] bg-surface-raised px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">
+              <span className="type-eyebrow inline-flex items-center gap-1.5 rounded-full border border-[var(--glass-border)] bg-surface-raised px-3 py-1 text-muted">
                 <MapPin className="h-3 w-3" />
                 {member.location}
               </span>
@@ -146,7 +146,7 @@ export default async function TeamMemberDetail({ params }: { params: Promise<{ e
           </div>
 
           <div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-ink md:text-5xl lg:text-6xl">
+            <h1 className="type-page-title text-ink">
               {member.name}
             </h1>
             <p className="mt-3 text-lg font-semibold text-accent md:text-xl">

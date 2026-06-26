@@ -5,11 +5,17 @@ import { decodeRouteSegment, normalizeSlug } from "@/lib/slug";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
   EntryRecord,
+  AppointmentAvailabilityRule,
+  AppointmentBlock,
+  AppointmentRequest,
+  AppointmentSlot,
+  AvailableAppointmentSlot,
   InsightCategory,
   InsightTag,
   Location,
   MenuItem,
   PageRecord,
+  PublishStatus,
   SectionRecord,
   SeniorManagementTeamMember,
   SiteSettings,
@@ -128,6 +134,215 @@ async function queryPublishedLocationBySlug(client: SupabaseClient, slug: string
 async function queryPublishedLocations(client: SupabaseClient) {
   const { data } = await client.from("locations").select("*").eq("status", "published").order("display_order", { ascending: true }).order("city", { ascending: true }).returns<Location[]>();
   return data ?? [];
+}
+
+function timeToMinutes(value: string | null | undefined) {
+  if (!value) return null;
+  const [hours, minutes] = value.split(":").map(Number);
+  if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return null;
+  return hours * 60 + minutes;
+}
+
+function minutesToTime(value: number) {
+  const hours = Math.floor(value / 60);
+  const minutes = value % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`;
+}
+
+function addDays(date: Date, days: number) {
+  const next = new Date(date);
+  next.setDate(date.getDate() + days);
+  return next;
+}
+
+function localDateKey(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function overlaps(start: string, end: string, blockStart: string | null, blockEnd: string | null) {
+  if (!blockStart || !blockEnd) return true;
+  const startMinutes = timeToMinutes(start);
+  const endMinutes = timeToMinutes(end);
+  const blockStartMinutes = timeToMinutes(blockStart);
+  const blockEndMinutes = timeToMinutes(blockEnd);
+  if (startMinutes === null || endMinutes === null || blockStartMinutes === null || blockEndMinutes === null) return false;
+  return startMinutes < blockEndMinutes && endMinutes > blockStartMinutes;
+}
+
+function partnerLocationKey(partnerId: string, locationId: string, date: string) {
+  return `${partnerId}:${locationId}:${date}`;
+}
+
+function generatedSlotId(ruleId: string, date: string, start: string, end: string) {
+  return `rule:${ruleId}:${date}:${start.slice(0, 5)}:${end.slice(0, 5)}`;
+}
+
+async function queryAvailableAppointmentSlots(client: SupabaseClient) {
+  const todayDate = new Date();
+  const today = localDateKey(todayDate);
+  const horizonDays = 90;
+
+  const [{ data: slots }, { data: rules }, { data: blocks }] = await Promise.all([
+    client
+    .from("appointment_slots")
+    .select("*")
+    .eq("status", "published")
+    .gte("appointment_date", today)
+    .order("appointment_date", { ascending: true })
+    .order("start_time", { ascending: true })
+      .returns<AppointmentSlot[]>(),
+    client
+      .from("appointment_availability_rules")
+      .select("*")
+      .eq("status", "published")
+      .returns<AppointmentAvailabilityRule[]>(),
+    client
+      .from("appointment_blocks")
+      .select("*")
+      .eq("status", "published")
+      .gte("block_date", today)
+      .returns<AppointmentBlock[]>(),
+  ]);
+
+  const publishedSlots = slots ?? [];
+  const publishedRules = rules ?? [];
+  const publishedBlocks = blocks ?? [];
+  if (publishedSlots.length === 0 && publishedRules.length === 0) return [] as AvailableAppointmentSlot[];
+
+  const partnerIds = Array.from(new Set([...publishedSlots.map((slot) => slot.partner_id), ...publishedRules.map((rule) => rule.partner_id)]));
+  const locationIds = Array.from(new Set([...publishedSlots.map((slot) => slot.location_id), ...publishedRules.map((rule) => rule.location_id)]));
+
+  const [{ data: requests }, { data: partners }, { data: locations }] = await Promise.all([
+    client
+      .from("appointment_requests")
+      .select("slot_id, partner_id, location_id, appointment_date, start_time, end_time, status")
+      .in("status", ["pending", "confirmed"])
+      .returns<Pick<AppointmentRequest, "slot_id" | "partner_id" | "location_id" | "appointment_date" | "start_time" | "end_time" | "status">[]>(),
+    client.from("team_members").select("id, name, designation, location, status").in("id", partnerIds).eq("status", "published").returns<Array<TeamMember & { status: PublishStatus }>>(),
+    client
+      .from("locations")
+      .select("id, city, office_name, address, map_url, phone, email, status")
+      .in("id", locationIds)
+      .eq("status", "published")
+      .returns<Array<Location & { status: PublishStatus }>>(),
+  ]);
+
+  const activeRequests = requests ?? [];
+  const blockedSlotIds = new Set(activeRequests.map((request) => request.slot_id).filter(Boolean));
+  const partnerMap = new Map((partners ?? []).map((partner) => [partner.id, partner]));
+  const locationMap = new Map((locations ?? []).map((location) => [location.id, location]));
+  const now = new Date();
+  const blocksByDate = new Map<string, AppointmentBlock[]>();
+  const generatedRequestKeys = new Set(
+    activeRequests
+      .filter((request) => request.partner_id && request.location_id && request.appointment_date && request.start_time && request.end_time)
+      .map((request) => `${request.partner_id}:${request.location_id}:${request.appointment_date}:${String(request.start_time).slice(0, 5)}:${String(request.end_time).slice(0, 5)}`)
+  );
+
+  for (const block of publishedBlocks) {
+    const key = partnerLocationKey(block.partner_id, block.location_id, block.block_date);
+    const dateBlocks = blocksByDate.get(key) ?? [];
+    dateBlocks.push(block);
+    blocksByDate.set(key, dateBlocks);
+  }
+
+  const manualSlots = publishedSlots
+    .filter((slot) => {
+      if (blockedSlotIds.has(slot.id)) return false;
+      const startsAt = new Date(`${slot.appointment_date}T${slot.start_time}`);
+      if (Number.isNaN(startsAt.getTime()) || startsAt <= now) return false;
+      const dayBlocks = blocksByDate.get(partnerLocationKey(slot.partner_id, slot.location_id, slot.appointment_date)) ?? [];
+      if (dayBlocks.some((block) => overlaps(slot.start_time, slot.end_time, block.start_time, block.end_time))) return false;
+      return partnerMap.has(slot.partner_id) && locationMap.has(slot.location_id);
+    })
+    .map((slot) => {
+      const partner = partnerMap.get(slot.partner_id);
+      const location = locationMap.get(slot.location_id);
+
+      return {
+        id: slot.id,
+        source: "manual",
+        rule_id: null,
+        appointment_date: slot.appointment_date,
+        start_time: slot.start_time,
+        end_time: slot.end_time,
+        notes: slot.notes,
+        partner: {
+          id: partner?.id ?? "",
+          name: partner?.name ?? "",
+          designation: partner?.designation ?? "",
+          location: partner?.location ?? null,
+        },
+        location: {
+          id: location?.id ?? "",
+          city: location?.city ?? "",
+          office_name: location?.office_name ?? null,
+          address: location?.address ?? null,
+          map_url: location?.map_url ?? null,
+          phone: location?.phone ?? null,
+          email: location?.email ?? null,
+        },
+      } satisfies AvailableAppointmentSlot;
+    });
+
+  const generatedSlots: AvailableAppointmentSlot[] = [];
+
+  for (const rule of publishedRules) {
+    const partner = partnerMap.get(rule.partner_id);
+    const location = locationMap.get(rule.location_id);
+    const startMinutes = timeToMinutes(rule.start_time);
+    const endMinutes = timeToMinutes(rule.end_time);
+    const duration = rule.slot_duration_minutes || 30;
+
+    if (!partner || !location || startMinutes === null || endMinutes === null || endMinutes <= startMinutes) continue;
+
+    const enabledWeekdays = new Set(rule.enabled_weekdays ?? []);
+    for (let dayOffset = 0; dayOffset <= horizonDays; dayOffset += 1) {
+      const date = addDays(todayDate, dayOffset);
+      if (!enabledWeekdays.has(date.getDay())) continue;
+
+      const appointmentDate = localDateKey(date);
+      const dayBlocks = blocksByDate.get(partnerLocationKey(rule.partner_id, rule.location_id, appointmentDate)) ?? [];
+      if (dayBlocks.some((block) => !block.start_time && !block.end_time)) continue;
+
+      for (let start = startMinutes; start + duration <= endMinutes; start += duration) {
+        const end = start + duration;
+        const startTime = minutesToTime(start);
+        const endTime = minutesToTime(end);
+        const startsAt = new Date(`${appointmentDate}T${startTime}`);
+        if (startsAt <= now) continue;
+        if (dayBlocks.some((block) => overlaps(startTime, endTime, block.start_time, block.end_time))) continue;
+        if (generatedRequestKeys.has(`${rule.partner_id}:${rule.location_id}:${appointmentDate}:${startTime.slice(0, 5)}:${endTime.slice(0, 5)}`)) continue;
+
+        generatedSlots.push({
+          id: generatedSlotId(rule.id, appointmentDate, startTime, endTime),
+          source: "generated",
+          rule_id: rule.id,
+          appointment_date: appointmentDate,
+          start_time: startTime,
+          end_time: endTime,
+          notes: null,
+          partner: {
+            id: partner.id,
+            name: partner.name,
+            designation: partner.designation,
+            location: partner.location,
+          },
+          location: {
+            id: location.id,
+            city: location.city,
+            office_name: location.office_name,
+            address: location.address,
+            map_url: location.map_url,
+            phone: location.phone,
+            email: location.email,
+          },
+        });
+      }
+    }
+  }
+
+  return [...generatedSlots, ...manualSlots].sort((a, b) => `${a.appointment_date}T${a.start_time}`.localeCompare(`${b.appointment_date}T${b.start_time}`));
 }
 
 export async function getPageBySlug(slug: string) {
@@ -257,6 +472,17 @@ export async function getLocations() {
     return await queryPublishedLocations(createAdminSupabaseClient());
   } catch {
     return locations;
+  }
+}
+
+export async function getAvailableAppointmentSlots() {
+  const slots = await queryAvailableAppointmentSlots(createPublicSupabaseClient());
+  if (slots.length > 0) return slots;
+
+  try {
+    return await queryAvailableAppointmentSlots(createAdminSupabaseClient());
+  } catch {
+    return slots;
   }
 }
 

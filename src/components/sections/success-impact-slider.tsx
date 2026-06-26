@@ -87,29 +87,29 @@ export function SuccessImpactSlider() {
         <div className="lg:col-span-7 space-y-6 flex flex-col justify-between h-full bg-surface/50 border border-[var(--glass-border)] rounded-[2rem] p-7 md:p-10 shadow-soft min-h-[440px]">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-accent px-2.5 py-1 rounded-full bg-accent/8 border border-accent/12">
+              <span className="type-eyebrow rounded-full border border-accent/12 bg-accent/8 px-2.5 py-1 text-accent">
                 {activeStudy.category}
               </span>
             </div>
 
-            <h3 className="mt-6 text-2xl md:text-3xl font-extrabold text-ink leading-tight">
+            <h3 className="type-card-title mt-6 text-2xl text-ink md:text-3xl">
               {activeStudy.title}
             </h3>
 
-            <p className="mt-4 text-sm leading-relaxed text-muted">
+            <p className="type-body-sm mt-4 text-muted">
               {activeStudy.description}
             </p>
 
             <div className="mt-8 border-t border-[var(--glass-border)] pt-6 flex items-start gap-4">
               <Quote className="h-6 w-6 text-accent/30 shrink-0 mt-1" />
               <div>
-                <p className="italic text-sm text-muted leading-relaxed">
+                <p className="type-body-sm italic text-muted">
                   &ldquo;{activeStudy.quote}&rdquo;
                 </p>
-                <p className="mt-3 text-xs font-bold text-ink">
+                <p className="type-small mt-3 font-semibold text-ink">
                   {activeStudy.quoteAuthor}
                 </p>
-                <p className="text-[10px] font-bold text-muted uppercase tracking-wider mt-0.5">
+                <p className="type-eyebrow mt-0.5 text-muted">
                   {activeStudy.quoteAuthorTitle}
                 </p>
               </div>
@@ -158,17 +158,17 @@ export function SuccessImpactSlider() {
             <div className="absolute top-[40%] -left-[20%] w-[18rem] h-[18rem] rounded-full bg-accent-secondary/14 blur-[80px]" />
             
             <div className="relative z-10 flex items-center justify-between border-b border-white/10 pb-5">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[color-mix(in_srgb,var(--accent-secondary)_25%,white)]">
+              <span className="type-eyebrow text-[color-mix(in_srgb,var(--accent-secondary)_25%,white)]">
                 Key Performance Impact
               </span>
               <Icon className="h-6 w-6 text-[color-mix(in_srgb,var(--accent-secondary)_35%,white)]" />
             </div>
 
             <div className="relative z-10 py-8">
-              <div className="text-6xl md:text-7xl font-black tracking-tight text-white leading-none">
+              <div className="data-number text-6xl leading-none text-white md:text-7xl">
                 {activeStudy.metric}
               </div>
-              <div className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--accent-secondary)_25%,white)] leading-relaxed max-w-xs">
+              <div className="type-eyebrow mt-4 max-w-xs text-[color-mix(in_srgb,var(--accent-secondary)_25%,white)]">
                 {activeStudy.metricLabel}
               </div>
             </div>

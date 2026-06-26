@@ -58,8 +58,8 @@ export function InteriorIntroSection({
                     key={item.label}
                     className={`site-card interactive-card rounded-[1.2rem] p-6 ${index % 2 === 1 ? "sm:translate-y-4" : ""}`}
                   >
-                    <div className="text-4xl font-black text-accent">{item.value}</div>
-                    <div className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-ink">{item.label}</div>
+                    <div className="data-number text-4xl text-accent">{item.value}</div>
+                    <div className="type-eyebrow mt-3 text-ink">{item.label}</div>
                   </div>
                 ))}
               </div>

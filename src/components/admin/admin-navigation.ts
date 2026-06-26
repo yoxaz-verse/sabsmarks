@@ -31,6 +31,12 @@ export const adminNavigation: AdminNavItem[] = [
     featured: true,
   },
   {
+    label: "Appointments",
+    href: "/admin/appointments",
+    description: "Manage partner slots and appointment requests.",
+    featured: true,
+  },
+  {
     label: "Insights",
     href: "/admin/publications",
     description: "Manage articles, blogs, and insight entries.",

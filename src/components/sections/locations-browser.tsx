@@ -62,9 +62,9 @@ function buildMapPoints(locations: Location[]) {
 
 function fallbackMapUrl(location: Location) {
   const hasExactPoint = typeof location.latitude === "number" && Number.isFinite(location.latitude) && typeof location.longitude === "number" && Number.isFinite(location.longitude);
-  if (hasExactPoint) return `https://www.openstreetmap.org/?mlat=${location.latitude}&mlon=${location.longitude}#map=18/${location.latitude}/${location.longitude}`;
+  if (hasExactPoint) return `https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}`;
   const query = [location.office_name, location.address, location.city].filter(Boolean).join(", ");
-  return query ? `https://www.openstreetmap.org/search?query=${encodeURIComponent(query)}` : null;
+  return query ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}` : null;
 }
 
 function mapUrl(location: Location) {
@@ -115,16 +115,11 @@ function LocationsMap({
         .setView([21.1, 78.6], 5);
 
       leaflet
-        .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          maxZoom: 19,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        .tileLayer("https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
+          maxZoom: 20,
+          attribution: '&copy; <a href="https://www.google.com/maps">Google Maps</a>',
         })
         .addTo(map);
-
-      const tilePane = map.getPane("tilePane");
-      if (tilePane) {
-        tilePane.style.filter = "grayscale(0.38) saturate(0.92) brightness(0.72) contrast(1.08)";
-      }
 
       leafletRef.current = leaflet;
       markerLayerRef.current = leaflet.layerGroup().addTo(map);

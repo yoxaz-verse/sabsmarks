@@ -209,7 +209,7 @@ export function PageBanner({
               <div className="page-banner__dot h-2 w-2 rounded-full"></div>
               <span
                 suppressHydrationWarning
-                className={`text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-500 ${
+                className={`type-eyebrow transition-colors duration-500 ${
                   isVisualBanner ? "text-white/90" : "text-ink/80 dark:text-white/95"
                 }`}
               >
@@ -219,7 +219,7 @@ export function PageBanner({
           ) : null}
 
           <h1
-            className={`page-banner__title max-w-4xl py-1 text-3xl font-bold tracking-normal transition-colors duration-500 sm:text-4xl md:text-[2.8rem] lg:text-[3.1rem] ${
+            className={`page-banner__title type-page-title max-w-4xl py-1 transition-colors duration-500 ${
               isVisualBanner
                 ? "text-white [text-shadow:0_16px_40px_rgba(2,6,23,0.35)]"
                 : "text-ink dark:text-white"
@@ -230,7 +230,7 @@ export function PageBanner({
 
           {description ? (
             <p
-              className={`page-banner__description max-w-3xl text-[15px] leading-7 md:text-base ${
+              className={`page-banner__description type-body max-w-3xl ${
                 isVisualBanner ? "text-white/88" : "text-muted dark:text-white/78"
               }`}
             >

@@ -114,7 +114,7 @@ export function InteractiveRoadmap() {
               {activePhase.kicker}
             </div>
 
-            <h3 className="mt-6 text-3xl font-extrabold tracking-tight text-ink">
+            <h3 className="type-section-title mt-6 text-ink">
               Advisory built for{" "}
               <span className="text-gradient">{activePhase.name}</span>
             </h3>
@@ -125,7 +125,7 @@ export function InteractiveRoadmap() {
 
             {/* Glowing Metric Box */}
             <div className="mt-8 flex items-center gap-5 bg-gradient-to-r from-accent/5 to-accent-secondary/5 border border-accent/10 rounded-2xl p-5">
-              <div className="text-4xl font-black text-gradient bg-gradient-to-r from-accent to-accent-secondary">
+              <div className="data-number bg-gradient-to-r from-accent to-accent-secondary text-4xl text-gradient">
                 {activePhase.stats.value}
               </div>
               <div className="text-xs font-bold uppercase tracking-wider text-muted">
@@ -137,7 +137,7 @@ export function InteractiveRoadmap() {
           <div className="mt-10">
             <Link
               href={activePhase.ctaLink}
-              className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent hover:text-accent-secondary"
+                className="type-button group inline-flex items-center gap-2 text-accent hover:text-accent-secondary"
             >
               <span>{activePhase.ctaText}</span>
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1.5" />
@@ -180,13 +180,13 @@ export function InteractiveRoadmap() {
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <span className="text-[10px] font-extrabold uppercase tracking-widest text-accent px-2.5 py-1 rounded-full bg-accent/8 border border-accent/12">
+                      <span className="type-eyebrow rounded-full border border-accent/12 bg-accent/8 px-2.5 py-1 text-accent">
                         {step.type}
                       </span>
-                      <span className="text-xs font-bold text-muted">Step 0{idx + 1}</span>
+                      <span className="type-small font-semibold text-muted">Step 0{idx + 1}</span>
                     </div>
-                    <h4 className="mt-3.5 text-base font-bold text-ink">{step.title}</h4>
-                    <p className="mt-2 text-xs leading-relaxed text-muted">{step.desc}</p>
+                    <h4 className="type-card-title mt-3.5 text-base text-ink">{step.title}</h4>
+                    <p className="type-small mt-2 text-muted">{step.desc}</p>
                   </div>
                 </div>
               );

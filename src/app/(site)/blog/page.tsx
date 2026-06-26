@@ -33,6 +33,7 @@ export default async function BlogPage() {
             <Link
               key={post.id}
               href={`/blog/${post.slug}`}
+              data-transition-message="Going to the blog"
               className="site-card interactive-card group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-0"
             >
               <div className="relative aspect-[16/10] overflow-hidden">

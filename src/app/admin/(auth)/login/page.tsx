@@ -15,9 +15,9 @@ export default function AdminLoginPage() {
 function AdminLoginFallback() {
   return (
     <div className="mx-auto w-full max-w-[520px] rounded-[32px] border border-slate-200 bg-white px-6 py-7 text-slate-950 shadow-[0_32px_90px_rgba(15,23,42,0.18)] sm:px-8 sm:py-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Secure Admin Access</p>
-      <h1 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-4xl">Admin Login</h1>
-      <p className="mt-3 text-sm leading-6 text-slate-600">Loading...</p>
+      <p className="type-eyebrow text-sky-700">Secure Admin Access</p>
+      <h1 className="type-card-title mt-3 text-3xl text-slate-950 sm:text-4xl">Admin Login</h1>
+      <p className="type-body-sm mt-3 text-slate-600">Loading...</p>
     </div>
   );
 }
@@ -82,9 +82,9 @@ function AdminLoginForm() {
   return (
     <div className="mx-auto w-full max-w-[520px] rounded-[32px] border border-slate-200 bg-white px-6 py-7 text-slate-950 shadow-[0_32px_90px_rgba(15,23,42,0.18)] sm:px-8 sm:py-8 md:px-10 md:py-10">
       <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 sm:px-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Secure Admin Access</p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-4xl">Admin Login</h1>
-        <p className="mt-3 text-sm leading-6 text-slate-600">Sign in to access the CMS dashboard.</p>
+        <p className="type-eyebrow text-sky-700">Secure Admin Access</p>
+        <h1 className="type-card-title mt-3 text-3xl text-slate-950 sm:text-4xl">Admin Login</h1>
+        <p className="type-body-sm mt-3 text-slate-600">Sign in to access the CMS dashboard.</p>
       </div>
 
       <form action={onSubmit} className="mt-6 grid gap-4">
@@ -92,20 +92,20 @@ function AdminLoginForm() {
           name="email"
           type="email"
           placeholder="Email"
-          className="h-14 rounded-2xl border border-slate-300 bg-white px-4 text-base text-slate-950 placeholder:text-slate-400 shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)] outline-none transition focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+          className="h-14 rounded-2xl border border-slate-300 bg-white px-4 text-base leading-none text-slate-950 placeholder:text-slate-400 shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)] outline-none transition focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
           required
         />
         <input
           name="password"
           type="password"
           placeholder="Password"
-          className="h-14 rounded-2xl border border-slate-300 bg-white px-4 text-base text-slate-950 placeholder:text-slate-400 shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)] outline-none transition focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+          className="h-14 rounded-2xl border border-slate-300 bg-white px-4 text-base leading-none text-slate-950 placeholder:text-slate-400 shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)] outline-none transition focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
           required
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="mt-2 inline-flex h-14 items-center justify-center rounded-full bg-slate-950 px-6 text-base font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300 disabled:cursor-not-allowed disabled:opacity-60"
+          className="type-button mt-2 inline-flex h-14 items-center justify-center rounded-full bg-slate-950 px-6 text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "loading" ? "Signing in..." : "Sign in"}
         </button>
@@ -113,19 +113,19 @@ function AdminLoginForm() {
 
       <div className="mt-5 space-y-3">
         {roleMessage ? (
-          <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900">{roleMessage}</p>
+          <p className="type-body-sm rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-900">{roleMessage}</p>
         ) : null}
         {reason === "signedout" ? (
-          <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-900">You have been signed out.</p>
+          <p className="type-body-sm rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900">You have been signed out.</p>
         ) : null}
-        {message ? <p className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm leading-6 text-rose-900">{message}</p> : null}
+        {message ? <p className="type-body-sm rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-rose-900">{message}</p> : null}
       </div>
 
       {roleMessage ? (
         <button
           type="button"
           onClick={switchAccount}
-          className="mt-5 inline-flex rounded-full border border-slate-300 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200"
+          className="type-button mt-5 inline-flex rounded-full border border-slate-300 px-5 py-2.5 text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200"
         >
           Sign out & switch account
         </button>

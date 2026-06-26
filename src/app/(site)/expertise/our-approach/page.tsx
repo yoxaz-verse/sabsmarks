@@ -50,7 +50,7 @@ export default function ApproachPage() {
           <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-accent/10 -translate-y-1/2 z-0"></div>
 
           {steps.map((step, i) => (
-            <div key={i} className="decorated-panel bg-surface p-8 md:p-10 rounded-2xl shadow-sm border border-[var(--glass-border)] relative z-10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div key={i} className="decorated-panel bg-surface p-8 md:p-10 rounded-2xl shadow-sm border border-[var(--glass-border)] relative z-10">
               <SiteOrnament mode="card" className="opacity-62" />
               <div className="text-6xl font-black text-ink/5 absolute top-6 right-8 select-none pointer-events-none">
                 {step.num}

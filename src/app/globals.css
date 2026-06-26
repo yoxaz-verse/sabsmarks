@@ -25,9 +25,15 @@
   background: color-mix(in srgb, var(--accent-secondary) 22%, white);
 }
 
+@keyframes markerPulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-secondary) 60%, transparent); }
+  70% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--accent-secondary) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-secondary) 0%, transparent); }
+}
+
 .branch-map-marker.is-active .branch-map-marker-dot {
   background: var(--accent-secondary);
-  box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent-secondary) 24%, transparent);
+  animation: markerPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
 }
 
 .locations-real-map {
@@ -59,7 +65,7 @@
 }
 
 .locations-real-map .leaflet-tile {
-  filter: grayscale(0.38) saturate(0.92) brightness(0.72) contrast(1.08);
+  filter: saturate(1.1) brightness(0.9) contrast(1.05);
 }
 
 .locations-real-map .leaflet-pane {
@@ -144,6 +150,13 @@
 }
 
 :root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: var(--font-sans);
+  --type-tracking-display: -0.04em;
+  --type-tracking-tight: -0.02em;
+  --type-tracking-label: 0.2em;
+  --type-line-heading: 1.08;
+  --type-line-body: 1.9;
   --brand-blue: #005c9d;
   --brand-blue-deep: #004675;
   --brand-green: #009028;
@@ -236,8 +249,12 @@
 body {
   background-color: var(--bg);
   color: var(--ink);
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: var(--type-line-body);
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a,
@@ -245,6 +262,7 @@ button,
 input,
 textarea,
 select {
+  font: inherit;
   transition:
     color 180ms ease,
     background-color 180ms ease,
@@ -745,6 +763,86 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
+.type-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.type-page-title {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.type-section-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.type-card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.type-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: var(--type-tracking-label);
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.type-body {
+  font-size: 1rem;
+  line-height: var(--type-line-body);
+}
+
+.type-body-sm {
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.type-small {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.type-button {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.type-label {
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.type-prose-heading {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
 .site-shell {
   position: relative;
   isolation: isolate;
@@ -887,6 +985,44 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--muted);
   font-size: 1rem;
   line-height: 1.9;
+}
+
+.site-prose h1,
+.site-prose h2,
+.site-prose h3,
+.site-prose h4 {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.site-prose h2 {
+  font-size: 1.45rem;
+}
+
+.site-prose h3 {
+  font-size: 1.2rem;
+}
+
+@media (min-width: 768px) {
+  .type-page-title {
+    font-size: 3.1rem;
+  }
+
+  .type-section-title {
+    font-size: 3rem;
+  }
+
+  .type-prose-heading,
+  .site-prose h2 {
+    font-size: 1.9rem;
+  }
+
+  .site-prose h3 {
+    font-size: 1.45rem;
+  }
 }
 
 .site-prose p + p {
@@ -1136,9 +1272,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .admin-form-section-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: var(--type-tracking-label);
   text-transform: uppercase;
   color: #475569;
 }
@@ -1152,8 +1288,9 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.35;
   color: #334155;
 }
 
@@ -1165,6 +1302,9 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid rgba(148, 163, 184, 0.34);
   background: rgba(255, 255, 255, 0.96);
   padding: 0.9rem 1rem;
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.45;
   color: #0f172a;
   outline: none;
   box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
@@ -1202,6 +1342,40 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px dashed rgba(30, 58, 138, 0.24);
   background: linear-gradient(180deg, rgba(239, 246, 255, 0.8), rgba(248, 250, 252, 0.95));
   padding: 1rem;
+}
+
+.admin-console {
+  font-family: var(--font-sans);
+  line-height: 1.65;
+}
+
+.admin-console h1,
+.admin-console h2,
+.admin-console h3,
+.admin-console h4 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
+.admin-console p,
+.admin-console li,
+.admin-console td,
+.admin-console th {
+  line-height: 1.65;
+}
+
+.admin-console label,
+.admin-console th {
+  font-weight: 650;
+}
+
+.admin-console input:not([type="checkbox"]):not([type="file"]),
+.admin-console select,
+.admin-console textarea,
+.admin-console button {
+  font: inherit;
 }
 
 .dark .admin-console {
@@ -2019,6 +2193,28 @@ h1, h2, h3, h4, h5, h6 {
 .dark .bg-white .logo-image,
 .dark [class*="bg-white"] .logo-image {
   filter: none !important;
+}
+
+.appointment-partner-scroll {
+  scrollbar-color: color-mix(in srgb, var(--accent) 48%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+.appointment-partner-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.appointment-partner-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.appointment-partner-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 38%, transparent);
+  border-radius: 999px;
+}
+
+.appointment-partner-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 58%, transparent);
 }
 
 /* ==========================================

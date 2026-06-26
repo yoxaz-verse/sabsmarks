@@ -6,6 +6,16 @@ import { LocationMapPicker } from "@/components/admin/location-map-picker";
 import type { AdminFieldConfig, AdminModuleConfig, AdminRecord } from "@/types/admin";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 
+const weekdayOptions = [
+  { label: "Sun", value: 0 },
+  { label: "Mon", value: 1 },
+  { label: "Tue", value: 2 },
+  { label: "Wed", value: 3 },
+  { label: "Thu", value: 4 },
+  { label: "Fri", value: 5 },
+  { label: "Sat", value: 6 },
+];
+
 function inputValue(record: AdminRecord, key: string) {
   const value = record[key];
   return value === null || value === undefined ? "" : String(value);
@@ -36,6 +46,21 @@ function nullableNumber(value: unknown) {
   if (value === null || value === undefined || value === "") return null;
   const numberValue = typeof value === "number" ? value : Number(value);
   return Number.isFinite(numberValue) ? numberValue : null;
+}
+
+function normalizeWeekdays(value: unknown) {
+  if (Array.isArray(value)) {
+    return value.map((item) => Number(item)).filter((item) => Number.isInteger(item) && item >= 0 && item <= 6);
+  }
+
+  if (typeof value === "string") {
+    return value
+      .split(",")
+      .map((item) => Number(item.trim()))
+      .filter((item) => Number.isInteger(item) && item >= 0 && item <= 6);
+  }
+
+  return [] as number[];
 }
 
 function displayValue(value: unknown) {
@@ -181,9 +206,30 @@ function serializeCareersForm(form: AdminRecord) {
   return serialized;
 }
 
+function serializeAvailabilityRuleForm(form: AdminRecord) {
+  return {
+    ...form,
+    enabled_weekdays: normalizeWeekdays(form.enabled_weekdays),
+    slot_duration_minutes: nullableNumber(form.slot_duration_minutes) ?? 30,
+  };
+}
+
+function serializeAppointmentBlockForm(form: AdminRecord) {
+  const fullDay = Boolean(form.full_day);
+  const serialized: AdminRecord = {
+    ...form,
+    start_time: fullDay ? null : nullableText(form.start_time),
+    end_time: fullDay ? null : nullableText(form.end_time),
+    note: nullableText(form.note),
+  };
+
+  delete serialized.full_day;
+  return serialized;
+}
+
 function resolveFieldWidth(field: AdminFieldConfig) {
   if (field.width) return field.width;
-  if (field.type === "textarea" || field.type === "checkbox" || field.type === "locationPicker") return "full";
+  if (field.type === "textarea" || field.type === "checkbox" || field.type === "locationPicker" || field.type === "weekdays") return "full";
   return "half";
 }
 
@@ -191,6 +237,10 @@ function fieldDescription(configTitle: string) {
   if (configTitle === "Leadership") return "Add profile details, photo, and publishing settings for the leadership page.";
   if (configTitle === "Senior Management Team") return "Add name, designation, photo, and publishing settings for the public team page.";
   if (configTitle === "Locations") return "Each entry is one branch. Search an address or drag the marker to set the exact public map point.";
+  if (configTitle === "Appointment Slots") return "Create partner-specific appointment windows, then publish the slots visitors can request from the contact page.";
+  if (configTitle === "Working Hours") return "Set weekly working days and hours that generate bookable calendar slots.";
+  if (configTitle === "Occupied Blocks") return "Mark full days or specific time ranges as unavailable for a partner and location.";
+  if (configTitle === "Appointment Requests") return "Review visitor appointment requests and update their confirmation status.";
   if (configTitle === "Insights") return "Structure article metadata first, then add the content that will appear on the site.";
   if (configTitle === "Careers / Join Us") return "Use this form for individual opportunities that will feed the careers listing.";
   return "Complete the essential details, then review publishing settings before saving.";
@@ -198,6 +248,7 @@ function fieldDescription(configTitle: string) {
 
 export function ModuleManager({ config }: { config: AdminModuleConfig }) {
   const [records, setRecords] = useState<AdminRecord[]>([]);
+  const [relationOptions, setRelationOptions] = useState<Record<string, Array<{ label: string; value: string }>>>({});
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -237,6 +288,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
   }, [orderedFields]);
 
   const isEditing = typeof form.id === "string" && form.id.length > 0;
+  const canCreate = !config.readOnly && !config.disableCreate;
 
   async function load() {
     setLoading(true);
@@ -251,9 +303,42 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     setLoading(false);
   }
 
+  async function loadRelationOptions() {
+    const relationFields = config.fields.filter((field) => field.type === "relation" && field.relation);
+    if (relationFields.length === 0) {
+      setRelationOptions({});
+      return;
+    }
+
+    const entries = await Promise.all(
+      relationFields.map(async (field) => {
+        const relation = field.relation;
+        if (!relation) return [field.key, []] as const;
+
+        const res = await fetch(`/api/admin/list?table=${encodeURIComponent(relation.table)}`);
+        const json = (await res.json()) as { data?: AdminRecord[] };
+        const options = (json.data ?? [])
+          .filter((record) => typeof record[relation.valueKey] === "string")
+          .map((record) => {
+            const primary = displayValue(record[relation.labelKey]);
+            const secondary = relation.secondaryLabelKey ? displayValue(record[relation.secondaryLabelKey]) : "";
+            return {
+              value: String(record[relation.valueKey]),
+              label: secondary && secondary !== "-" ? `${primary} - ${secondary}` : primary,
+            };
+          });
+
+        return [field.key, options] as const;
+      })
+    );
+
+    setRelationOptions(Object.fromEntries(entries));
+  }
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
+    void loadRelationOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.table]);
 
@@ -262,7 +347,10 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     for (const field of config.fields) {
       if (field.type === "checkbox" && defaults[field.key] === undefined) defaults[field.key] = false;
       if (field.type === "number" && defaults[field.key] === undefined) defaults[field.key] = 0;
+      if (field.type === "weekdays" && defaults[field.key] === undefined) defaults[field.key] = [1, 2, 3, 4, 5];
     }
+    if (config.table === "appointment_blocks") defaults.full_day = true;
+    if (config.table === "appointment_availability_rules") defaults.slot_duration_minutes = 30;
     setForm(defaults);
     setInsightPreviewFailed(false);
     setPhotoPreviewFailed(false);
@@ -295,6 +383,10 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
         ? serializeSiteSettingsForm(form)
         : config.table === "careers"
           ? serializeCareersForm(form)
+          : config.table === "appointment_availability_rules"
+            ? serializeAvailabilityRuleForm(form)
+            : config.table === "appointment_blocks"
+              ? serializeAppointmentBlockForm(form)
           : config.table === "locations"
             ? serializeLocationsForm(form)
             : form;
@@ -490,6 +582,65 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
       );
     }
 
+    if (field.type === "relation") {
+      return (
+        <label key={field.key} className={`admin-field ${wrapperClass}`}>
+          <span className="admin-label">
+            {field.label}
+            {field.required ? <span className="text-red-600">*</span> : null}
+          </span>
+          <select
+            value={inputValue(form, field.key)}
+            required={field.required}
+            onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.value }))}
+            className="admin-select"
+          >
+            <option value="">Select {field.label.toLowerCase()}</option>
+            {(relationOptions[field.key] ?? []).map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      );
+    }
+
+    if (field.type === "weekdays") {
+      const selectedWeekdays = new Set(normalizeWeekdays(value));
+
+      return (
+        <div key={field.key} className={`admin-field ${wrapperClass}`}>
+          <span className="admin-label">
+            {field.label}
+            {field.required ? <span className="text-red-600">*</span> : null}
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {weekdayOptions.map((day) => {
+              const selected = selectedWeekdays.has(day.value);
+              return (
+                <button
+                  key={day.value}
+                  type="button"
+                  onClick={() => {
+                    const next = new Set(selectedWeekdays);
+                    if (next.has(day.value)) next.delete(day.value);
+                    else next.add(day.value);
+                    setForm((prev) => ({ ...prev, [field.key]: Array.from(next).sort((a, b) => a - b) }));
+                  }}
+                  className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition ${
+                    selected ? "border-stone-900 bg-stone-900 text-white" : "border-stone-300 bg-white text-stone-700 hover:bg-stone-50"
+                  }`}
+                >
+                  {day.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
     if (field.type === "checkbox") {
       return (
         <label key={field.key} className={`admin-checkbox ${wrapperClass}`}>
@@ -656,7 +807,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
     <section className="rounded-2xl border border-stone-200 bg-white p-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-stone-900">{config.title}</h2>
-        {!config.readOnly ? (
+        {canCreate ? (
           <button onClick={openNew} className="rounded-full bg-stone-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">
             Add New
           </button>
@@ -685,7 +836,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                 {listColumns.map((column) => {
                   const fieldConfig = orderedFields.find((field) => field.key === column.key);
                   const value = record[column.key];
-                  const content = fieldConfig?.type === "datetime" ? formatDateTime(value) : displayValue(value);
+                  const content = fieldConfig?.type === "datetime" || column.key.endsWith("_at") ? formatDateTime(value) : displayValue(value);
 
                   return (
                     <td key={column.key} className={`px-4 py-3 ${column.key === config.primaryLabel ? "text-stone-800" : "text-stone-600"}`}>
@@ -714,7 +865,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
             {!loading && records.length === 0 ? (
               <tr className="border-t border-stone-200">
                 <td colSpan={listColumns.length + (config.readOnly ? 0 : 1)} className="px-4 py-8 text-center text-stone-500">
-                  {config.readOnly ? "No records found yet." : <>No records yet. Click <span className="font-semibold">Add New</span> to create your first entry.</>}
+                  {config.readOnly || config.disableCreate ? "No records found yet." : <>No records yet. Click <span className="font-semibold">Add New</span> to create your first entry.</>}
                 </td>
               </tr>
             ) : null}

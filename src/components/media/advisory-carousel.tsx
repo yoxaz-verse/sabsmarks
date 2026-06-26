@@ -114,12 +114,12 @@ export function AdvisoryCarousel() {
       </div>
 
       <div className="advisory-carousel__content">
-        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-accent/80">{slides[currentIndex].eyebrow}</p>
-        <h3 className="mt-3 text-2xl font-bold tracking-tight text-ink dark:text-white">{slides[currentIndex].title}</h3>
-        <p className="mt-4 text-[15px] leading-7 text-muted">{slides[currentIndex].description}</p>
+        <p className="type-eyebrow text-accent/80">{slides[currentIndex].eyebrow}</p>
+        <h3 className="type-card-title mt-3 text-2xl text-ink dark:text-white">{slides[currentIndex].title}</h3>
+        <p className="type-body-sm mt-4 text-muted">{slides[currentIndex].description}</p>
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-          <Link href={slides[currentIndex].href} className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-accent">
+          <Link href={slides[currentIndex].href} className="type-button inline-flex items-center gap-2 text-accent">
             {slides[currentIndex].ctaLabel}
             <span aria-hidden="true">→</span>
           </Link>

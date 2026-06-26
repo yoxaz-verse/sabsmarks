@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import type { StaticImageData } from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -43,13 +44,6 @@ const credibilityItems = [
   { icon: ClipboardCheck, label: "Partner-led execution" },
   { icon: GitBranch, label: "Integrated tax, audit, and finance" },
   { icon: Handshake, label: "Long-term client relationships" },
-];
-
-const advisoryEntryPoints = [
-  { icon: TrendingUp, title: "Growth & Expansion", text: "Advisory support for businesses pursuing sustainable growth and new opportunities." },
-  { icon: ShieldCheck, title: "Regulatory Confidence", text: "Proactive compliance and tax solutions to help manage risks effectively." },
-  { icon: Calculator, title: "Financial Clarity", text: "Meaningful reporting and performance insights for better business decisions." },
-  { icon: ClipboardCheck, title: "Governance Excellence", text: "Robust controls and governance practices that build stakeholder trust." },
 ];
 
 const advisorySnapshot = [
@@ -229,7 +223,7 @@ const PrincipleCard = ({ item, index }: { item: typeof valuePrinciples[0], index
   );
 };
 
-const MasonryImageCard = ({ image, aspect, delayMs }: { image: { src: any, alt: string }, aspect: string, delayMs: number }) => (
+const MasonryImageCard = ({ image, aspect, delayMs }: { image: { src: StaticImageData | string, alt: string }, aspect: string, delayMs: number }) => (
   <div className="break-inside-avoid reveal reveal-up" style={{ transitionDelay: `${delayMs}ms` }}>
     <div className={`group relative ${aspect} w-full overflow-hidden rounded-[1.35rem] border border-[var(--glass-border)] shadow-sm`}>
       <Image
@@ -260,7 +254,7 @@ export default function Home() {
         <SiteOrnament mode="hero" interactive className="opacity-70 dark:opacity-55" />
 
         <div className="site-container relative z-20 w-full py-16 md:py-20 lg:py-24">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(340px,0.72fr)] lg:items-center">
+          <div className="grid gap-10">
             <div className="relative z-20 max-w-3xl">
               <SlideIn direction="up" delay={0.1}>
                 <div className="section-kicker text-accent animate-hero-kicker">Strategic Financial Advisory</div>
@@ -292,36 +286,9 @@ export default function Home() {
                   </Link>
                 </div>
               </FadeIn>
-
-              <div className="hero-entry-panel mt-10 animate-hero-stats">
-                <div className="flex flex-col gap-3 border-b border-[var(--glass-border)] pb-4 sm:flex-row sm:items-end sm:justify-between">
-                  <div>
-                    <div className="text-xs font-black uppercase tracking-[0.2em] text-accent">Client Priorities</div>
-                    <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
-                      Supporting leadership teams with integrated financial, compliance, and advisory solutions.
-                    </p>
-                  </div>
-                  <Link href="/practice-areas" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-accent">
-                    View capabilities <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {advisoryEntryPoints.map((item, i) => (
-                    <div key={item.title} className="hero-entry-item group" style={{ animationDelay: `${760 + i * 90}ms`, transitionDelay: `${i * 80}ms` }}>
-                      <span className="hero-entry-icon">
-                        <item.icon className="h-4 w-4" />
-                      </span>
-                      <span>
-                        <span className="block text-sm font-bold text-ink transition-colors group-hover:text-accent dark:text-white">{item.title}</span>
-                        <span className="mt-1 block text-xs leading-5 text-muted">{item.text}</span>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
 
-            <div className="relative animate-hero-aside">
+            <div className="relative max-w-5xl animate-hero-aside">
               <div className="absolute -inset-4 rounded-[2.25rem] bg-gradient-to-tr from-accent/22 via-accent-secondary/14 to-transparent opacity-70 blur-3xl dark:from-accent/16 dark:via-accent-secondary/10" />
               <GlowCard className="hero-advisory-card decorated-panel relative overflow-hidden rounded-[2rem]">
                 <SiteOrnament mode="card" className="opacity-35" />
@@ -334,7 +301,7 @@ export default function Home() {
                   <p className="section-copy mt-5 max-w-none">
                     We work with founders, boards, promoters, financial institutions, and enterprises to simplify complex financial and regulatory matters. Our integrated approach combines audit, taxation, advisory, compliance, and governance services to support sustainable growth and informed business decisions.
                   </p>
-                  <div className="mt-6 grid gap-3">
+                  <div className="mt-6 grid gap-3 lg:grid-cols-3">
                     {advisorySnapshot.map((item, i) => (
                       <div key={item.title} className="hero-snapshot-row" style={{ animationDelay: `${780 + i * 120}ms` }}>
                         <span className="hero-snapshot-icon">

@@ -28,9 +28,9 @@ export function LocationPointMap({ title, latitude, longitude }: LocationPointMa
     if (!containerRef.current || mapRef.current) return;
 
     const map = L.map(containerRef.current, { scrollWheelZoom: false, attributionControl: false }).setView([latitude, longitude], 16);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    L.tileLayer("https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
+      maxZoom: 20,
+      attribution: '&copy; <a href="https://www.google.com/maps">Google Maps</a>',
     }).addTo(map);
     L.marker([latitude, longitude], { icon: markerIcon }).bindPopup(title).addTo(map);
     mapRef.current = map;

@@ -40,12 +40,12 @@ export function ImageFeatureCard({
 
       <div className="p-6 md:p-7">
         {eyebrow ? (
-          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-accent/80">{eyebrow}</p>
+          <p className="type-eyebrow text-accent/80">{eyebrow}</p>
         ) : null}
-        <h3 className="mt-3 text-2xl font-bold tracking-tight text-ink">{title}</h3>
-        <p className="mt-4 text-[15px] leading-7 text-muted">{description}</p>
+        <h3 className="type-card-title mt-3 text-2xl text-ink">{title}</h3>
+        <p className="type-body-sm mt-4 text-muted">{description}</p>
         {href ? (
-          <Link href={href} className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-accent">
+          <Link href={href} className="type-button mt-5 inline-flex items-center gap-2 text-accent">
             {ctaLabel}
             <span aria-hidden="true">→</span>
           </Link>

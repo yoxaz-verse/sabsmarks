@@ -26,8 +26,8 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
         <div className={`grid gap-8 p-8 py-14 ${image ? "lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.85fr)] lg:items-center" : ""}`}>
           <div>
             <div className="section-kicker">{String(payload.kicker ?? "Sabs Marks JVS & Co.")}</div>
-            <h1 className="mt-6 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">{String(payload.headline ?? "Where knowledge meets execution")}</h1>
-            <p className="mt-4 max-w-2xl text-muted">{String(payload.subtext ?? "A multi-disciplinary firm delivering practical and legally sound solutions.")}</p>
+            <h1 className="type-page-title mt-6 max-w-3xl">{String(payload.headline ?? "Where knowledge meets execution")}</h1>
+            <p className="type-body mt-4 max-w-2xl text-muted">{String(payload.subtext ?? "A multi-disciplinary firm delivering practical and legally sound solutions.")}</p>
           </div>
 
           {image ? (
@@ -53,8 +53,8 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
       <section className="grid gap-4 md:grid-cols-3">
         {items.map((item) => (
           <article key={item.label} className="site-card rounded-3xl p-6">
-            <p className="text-3xl font-semibold text-ink">{item.value}</p>
-            <p className="mt-2 text-sm text-muted">{item.label}</p>
+            <p className="data-number text-3xl text-ink">{item.value}</p>
+            <p className="type-body-sm mt-2 text-muted">{item.label}</p>
           </article>
         ))}
       </section>
@@ -65,13 +65,13 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
     const members = (payload.members as Array<{ name: string; role: string; href?: string }>) ?? [];
     return (
       <section>
-        <h2 className="text-2xl font-semibold text-ink">{String(payload.title ?? "Leadership")}</h2>
+        <h2 className="type-card-title text-2xl text-ink">{String(payload.title ?? "Leadership")}</h2>
         <div className="mt-6 grid gap-5 md:grid-cols-4">
           {members.map((member) => (
             <article key={member.name} className="site-card rounded-3xl p-5">
-              <h3 className="font-semibold text-ink">{member.name}</h3>
-              <p className="mt-1 text-sm text-muted">{member.role}</p>
-              {member.href ? <Link href={member.href} className="mt-3 inline-block text-sm font-semibold text-accent">View profile</Link> : null}
+              <h3 className="type-card-title text-ink">{member.name}</h3>
+              <p className="type-body-sm mt-1 text-muted">{member.role}</p>
+              {member.href ? <Link href={member.href} className="type-button mt-3 inline-block text-accent">View profile</Link> : null}
             </article>
           ))}
         </div>
@@ -83,13 +83,13 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
     const offices = (payload.offices as Array<{ city: string; address: string; href?: string }>) ?? [];
     return (
       <section>
-        <h2 className="text-2xl font-semibold text-ink">Our Locations</h2>
+        <h2 className="type-card-title text-2xl text-ink">Our Locations</h2>
         <div className="mt-6 grid gap-5 md:grid-cols-3">
           {offices.map((office) => (
             <article key={office.city} className="site-card rounded-3xl p-5">
-              <h3 className="font-semibold text-ink">{office.city}</h3>
-              <p className="mt-2 text-sm text-muted">{office.address}</p>
-              {office.href ? <Link href={office.href} className="mt-3 inline-block text-sm font-semibold text-accent">Contact office</Link> : null}
+              <h3 className="type-card-title text-ink">{office.city}</h3>
+              <p className="type-body-sm mt-2 text-muted">{office.address}</p>
+              {office.href ? <Link href={office.href} className="type-button mt-3 inline-block text-accent">Contact office</Link> : null}
             </article>
           ))}
         </div>
@@ -101,7 +101,7 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
     const cards = (payload.cards as Array<{ title: string; text: string; href?: string; image?: string; imageAlt?: string }>) ?? [];
     return (
       <section>
-        <h2 className="text-2xl font-semibold text-ink">{String(payload.title ?? "Our Capabilities")}</h2>
+        <h2 className="type-card-title text-2xl text-ink">{String(payload.title ?? "Our Capabilities")}</h2>
         <div className="mt-6 grid gap-5 md:grid-cols-3">
           {cards.map((card) => (
             <article key={card.title} className="site-card interactive-card overflow-hidden rounded-3xl">
@@ -118,10 +118,10 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
                 </div>
               ) : null}
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-ink">{card.title}</h3>
-                <p className="mt-3 text-sm text-muted">{card.text}</p>
+                <h3 className="type-card-title text-lg text-ink">{card.title}</h3>
+                <p className="type-body-sm mt-3 text-muted">{card.text}</p>
                 {card.href ? (
-                  <Link href={card.href} className="mt-4 inline-block text-sm font-semibold text-accent underline underline-offset-4">
+                  <Link href={card.href} className="type-button mt-4 inline-block text-accent underline underline-offset-4">
                     Explore
                   </Link>
                 ) : null}
@@ -150,8 +150,8 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
           ) : null}
 
           <div>
-            <h2 className="text-xl font-semibold text-ink">{String(payload.title ?? "Section")}</h2>
-            <div className="mt-3 space-y-4 text-sm leading-7 text-muted">
+            <h2 className="type-card-title text-xl text-ink">{String(payload.title ?? "Section")}</h2>
+            <div className="type-body-sm mt-3 space-y-4 text-muted">
               {splitParagraphs(content).map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -172,8 +172,8 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
   if (section.section_type === "newsletter_cta") {
     return (
       <section className="site-card rounded-3xl px-8 py-10">
-        <h2 className="text-2xl font-semibold text-ink">Stay Updated</h2>
-        <p className="mt-2 text-sm text-muted">{String(payload.text ?? "Subscribe to blog articles and updates.")}</p>
+        <h2 className="type-card-title text-2xl text-ink">Stay Updated</h2>
+        <p className="type-body-sm mt-2 text-muted">{String(payload.text ?? "Subscribe to blog articles and updates.")}</p>
       </section>
     );
   }
@@ -191,9 +191,9 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
           </>
         ) : null}
         <div className="relative z-10">
-          <h2 className={`text-2xl font-semibold ${image ? "text-white" : "text-ink"}`}>{String(payload.title ?? "Speak with our advisory team")}</h2>
-          <p className={`mt-2 max-w-2xl text-sm ${image ? "text-white/82" : "text-muted"}`}>{String(payload.text ?? "Discuss your strategic and regulatory priorities with our experts.")}</p>
-          <Link href={String(payload.href ?? "/contact")} className="mt-5 inline-block rounded-2xl bg-accent px-5 py-3 text-sm font-semibold text-white">
+          <h2 className={`type-card-title text-2xl ${image ? "text-white" : "text-ink"}`}>{String(payload.title ?? "Speak with our advisory team")}</h2>
+          <p className={`type-body-sm mt-2 max-w-2xl ${image ? "text-white/82" : "text-muted"}`}>{String(payload.text ?? "Discuss your strategic and regulatory priorities with our experts.")}</p>
+          <Link href={String(payload.href ?? "/contact")} className="type-button mt-5 inline-block rounded-2xl bg-accent px-5 py-3 text-white">
             {String(payload.buttonLabel ?? "Book a consultation")}
           </Link>
         </div>
@@ -203,8 +203,8 @@ export function SectionRenderer({ section }: { section: SectionRecord }) {
 
   return (
     <section className="site-card rounded-3xl px-8 py-8">
-      <h2 className="text-xl font-semibold text-ink">{String(payload.title ?? "Section")}</h2>
-      <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-muted">{String(payload.content ?? "Content will be managed via CMS.")}</p>
+      <h2 className="type-card-title text-xl text-ink">{String(payload.title ?? "Section")}</h2>
+      <p className="type-body-sm mt-3 whitespace-pre-wrap text-muted">{String(payload.content ?? "Content will be managed via CMS.")}</p>
     </section>
   );
 }

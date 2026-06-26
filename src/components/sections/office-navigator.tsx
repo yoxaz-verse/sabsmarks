@@ -133,8 +133,8 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
                     <Building2 className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold tracking-tight">{office.city}</h4>
-                    <p className={`text-[11px] mt-0.5 ${isSelected ? "text-white/78" : "text-muted"}`}>
+                    <h4 className="type-card-title text-sm">{office.city}</h4>
+                    <p className={`type-small mt-0.5 ${isSelected ? "text-white/78" : "text-muted"}`}>
                       {locationRoleLabel(office)}
                     </p>
                   </div>
@@ -151,10 +151,10 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
             <div>
               <div className="flex items-center justify-between border-b border-[var(--glass-border)] pb-5 mb-6">
                 <div>
-                  <div className="text-[10px] font-extrabold uppercase tracking-widest text-accent px-2.5 py-1 rounded-full bg-accent/8 border border-accent/12 inline-block">
+                  <div className="type-eyebrow inline-block rounded-full border border-accent/12 bg-accent/8 px-2.5 py-1 text-accent">
                     {locationRoleLabel(activeOffice)} Details
                   </div>
-                  <h3 className="mt-3.5 text-2xl font-extrabold text-ink leading-tight">
+                  <h3 className="type-card-title mt-3.5 text-2xl text-ink">
                     {activeOfficeName}
                   </h3>
                   {activeOfficeSecondaryName ? <p className="mt-1 text-sm font-medium text-muted">{activeOfficeSecondaryName}</p> : null}
@@ -168,10 +168,10 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
                       <MapPin className="h-4 w-4" />
                     </div>
                     <div>
-                      <span className="text-[11px] font-extrabold uppercase tracking-widest text-muted block">
+                      <span className="type-eyebrow block text-muted">
                         Address
                       </span>
-                      <p className="mt-1 text-sm text-ink leading-relaxed font-medium">
+                      <p className="type-body-sm mt-1 text-ink">
                         {activeOffice.address}
                       </p>
                     </div>
@@ -185,10 +185,10 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
                       <User className="h-4 w-4" />
                     </div>
                     <div>
-                      <span className="text-[11px] font-extrabold uppercase tracking-widest text-muted block">
+                      <span className="type-eyebrow block text-muted">
                         Lead Representative
                       </span>
-                      <p className="mt-1 text-sm text-ink leading-relaxed font-semibold">
+                      <p className="type-body-sm mt-1 font-semibold text-ink">
                         {activeOffice.contact_person}
                       </p>
                     </div>
@@ -203,12 +203,12 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
                         <Phone className="h-4 w-4" />
                       </div>
                       <div>
-                        <span className="text-[11px] font-extrabold uppercase tracking-widest text-muted block">
+                        <span className="type-eyebrow block text-muted">
                           Phone
                         </span>
                         <a
                           href={`tel:${activeOffice.phone.replace(/\s+/g, "")}`}
-                          className="mt-1 text-sm text-ink hover:text-accent font-semibold block transition-colors"
+                          className="type-body-sm mt-1 block font-semibold text-ink transition-colors hover:text-accent"
                         >
                           {activeOffice.phone}
                         </a>
@@ -222,12 +222,12 @@ export function OfficeNavigator({ locations }: OfficeNavigatorProps) {
                         <Mail className="h-4 w-4" />
                       </div>
                       <div>
-                        <span className="text-[11px] font-extrabold uppercase tracking-widest text-muted block">
+                        <span className="type-eyebrow block text-muted">
                           Email
                         </span>
                         <a
                           href={`mailto:${activeOffice.email}`}
-                          className="mt-1 text-sm text-ink hover:text-accent font-semibold block transition-colors"
+                          className="type-body-sm mt-1 block font-semibold text-ink transition-colors hover:text-accent"
                         >
                           {activeOffice.email}
                         </a>

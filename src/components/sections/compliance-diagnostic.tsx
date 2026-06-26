@@ -202,10 +202,10 @@ export function ComplianceDiagnostic() {
             <div className="md:col-span-4 flex flex-col items-center justify-center p-4">
               <div className="relative flex items-center justify-center h-32 w-32 rounded-full border-4 border-dashed border-accent/20 score-pulse">
                 <div className="absolute inset-2 rounded-full bg-accent/5 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-black text-gradient bg-gradient-to-r from-accent to-accent-secondary">
+                  <span className="data-number bg-gradient-to-r from-accent to-accent-secondary text-3xl text-gradient">
                     {score}%
                   </span>
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-muted mt-1">
+                  <span className="type-eyebrow mt-1 text-muted">
                     Risk Score
                   </span>
                 </div>

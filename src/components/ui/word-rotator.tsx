@@ -20,7 +20,7 @@ export function WordRotator() {
       style={{ gridTemplateColumns: "max-content" }}
     >
       {/* Hidden placeholder to size the container to the maximum word width */}
-      <span className="invisible select-none pointer-events-none col-start-1 row-start-1 font-extrabold">
+      <span className="invisible col-start-1 row-start-1 select-none font-bold pointer-events-none">
         compliance
       </span>
       {WORDS.map((word, i) => {
@@ -37,7 +37,7 @@ export function WordRotator() {
         return (
           <span
             key={word}
-            className={`col-start-1 row-start-1 text-gradient font-extrabold transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)] transform ${transformClass}`}
+            className={`col-start-1 row-start-1 text-gradient font-bold transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)] transform ${transformClass}`}
           >
             {word}
           </span>

@@ -6,7 +6,7 @@ type FeaturedCard = {
   label: string;
   href: string;
   description: string;
-  table: "team_members" | "senior_management_team" | "locations" | "publications" | "careers" | "pages";
+  table: "team_members" | "senior_management_team" | "locations" | "appointment_slots" | "publications" | "careers" | "pages";
 };
 
 const featuredCards: FeaturedCard[] = [
@@ -27,6 +27,12 @@ const featuredCards: FeaturedCard[] = [
     href: "/admin/locations",
     description: "Published offices and local contact details.",
     table: "locations",
+  },
+  {
+    label: "Appointments",
+    href: "/admin/appointments",
+    description: "Partner slots and incoming booking requests.",
+    table: "appointment_slots",
   },
   {
     label: "Insights",
@@ -82,7 +88,7 @@ export default async function AdminHome() {
         </p>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
         {counts.map((card) => (
           <Link key={card.href} href={card.href} className="rounded-2xl border border-stone-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-lg">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">{card.label}</p>

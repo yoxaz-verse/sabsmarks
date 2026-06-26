@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminApiSession } from "@/lib/admin-auth";
 import { normalizeSlug } from "@/lib/slug";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 
 const payloadSchema = z.object({
   table: z.string().min(1),
@@ -23,6 +23,10 @@ const writeableTables = new Set([
   "insight_tags",
   "menu_items",
   "site_settings",
+  "appointment_slots",
+  "appointment_requests",
+  "appointment_availability_rules",
+  "appointment_blocks",
 ]);
 
 const tablesWithStatus = new Set([
@@ -38,9 +42,16 @@ const tablesWithStatus = new Set([
   "insight_categories",
   "insight_tags",
   "menu_items",
+  "appointment_slots",
+  "appointment_availability_rules",
+  "appointment_blocks",
 ]);
 
 const statusSchema = z.enum(["draft", "review", "published"]);
+const appointmentRequestStatusSchema = z.enum(["pending", "confirmed", "cancelled"]);
+const timeSchema = z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/, "Expected HH:MM time.");
+const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Expected YYYY-MM-DD date.");
+const weekdaysSchema = z.array(z.number().int().min(0).max(6)).min(1);
 const contentEntitySchema = z.object({
   id: z.string().uuid().optional(),
   slug: z.string().min(1),
@@ -202,6 +213,51 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     footer_text: z.string().optional().nullable(),
     disclaimers: z.string().optional().nullable(),
   }),
+  appointment_slots: z.object({
+    id: z.string().uuid().optional(),
+    partner_id: z.string().uuid(),
+    location_id: z.string().uuid(),
+    appointment_date: dateSchema,
+    start_time: timeSchema,
+    end_time: timeSchema,
+    notes: z.string().optional().nullable(),
+    status: statusSchema,
+  }),
+  appointment_availability_rules: z.object({
+    id: z.string().uuid().optional(),
+    partner_id: z.string().uuid(),
+    location_id: z.string().uuid(),
+    enabled_weekdays: weekdaysSchema,
+    start_time: timeSchema,
+    end_time: timeSchema,
+    slot_duration_minutes: z.number().int().min(5).max(480),
+    status: statusSchema,
+  }),
+  appointment_blocks: z.object({
+    id: z.string().uuid().optional(),
+    partner_id: z.string().uuid(),
+    location_id: z.string().uuid(),
+    block_date: dateSchema,
+    start_time: timeSchema.optional().nullable(),
+    end_time: timeSchema.optional().nullable(),
+    note: z.string().optional().nullable(),
+    status: statusSchema,
+  }),
+  appointment_requests: z.object({
+    id: z.string().uuid(),
+    slot_id: z.string().uuid().optional().nullable(),
+    partner_id: z.string().uuid().optional().nullable(),
+    location_id: z.string().uuid().optional().nullable(),
+    appointment_date: dateSchema.optional().nullable(),
+    start_time: timeSchema.optional().nullable(),
+    end_time: timeSchema.optional().nullable(),
+    source: z.enum(["manual", "generated"]).optional(),
+    visitor_name: z.string().min(2),
+    visitor_email: z.string().email(),
+    visitor_phone: z.string().min(6),
+    message: z.string().optional().nullable(),
+    status: appointmentRequestStatusSchema,
+  }),
 };
 
 export async function POST(req: Request) {
@@ -211,7 +267,7 @@ export async function POST(req: Request) {
   const parsed = payloadSchema.safeParse(await req.json());
   if (!parsed.success) return NextResponse.json({ error: parsed.error.message }, { status: 400 });
 
-  const supabase = await createServerSupabaseClient();
+  const supabase = createAdminSupabaseClient();
 
   const { table, payload } = parsed.data;
   if (!writeableTables.has(table)) return NextResponse.json({ error: "Table not allowed for writes." }, { status: 400 });
@@ -286,6 +342,42 @@ export async function POST(req: Request) {
         .filter(([, value]) => value.length > 0)
     );
   }
+  if (table === "appointment_slots") {
+    normalized.notes = nullableString(normalized.notes);
+    if (typeof normalized.start_time === "string" && normalized.start_time.length === 5) normalized.start_time = `${normalized.start_time}:00`;
+    if (typeof normalized.end_time === "string" && normalized.end_time.length === 5) normalized.end_time = `${normalized.end_time}:00`;
+  }
+  if (table === "appointment_availability_rules") {
+    normalized.enabled_weekdays = normalizeStringArray(normalized.enabled_weekdays).length
+      ? normalizeStringArray(normalized.enabled_weekdays).map(Number)
+      : Array.isArray(normalized.enabled_weekdays)
+        ? normalized.enabled_weekdays.map(Number)
+        : [];
+    normalized.slot_duration_minutes = nullableNumber(normalized.slot_duration_minutes) ?? 30;
+    if (typeof normalized.start_time === "string" && normalized.start_time.length === 5) normalized.start_time = `${normalized.start_time}:00`;
+    if (typeof normalized.end_time === "string" && normalized.end_time.length === 5) normalized.end_time = `${normalized.end_time}:00`;
+  }
+  if (table === "appointment_blocks") {
+    normalized.note = nullableString(normalized.note);
+    normalized.start_time = nullableString(normalized.start_time);
+    normalized.end_time = nullableString(normalized.end_time);
+    if (typeof normalized.start_time === "string" && normalized.start_time.length === 5) normalized.start_time = `${normalized.start_time}:00`;
+    if (typeof normalized.end_time === "string" && normalized.end_time.length === 5) normalized.end_time = `${normalized.end_time}:00`;
+  }
+  if (table === "appointment_requests") {
+    normalized.message = nullableString(normalized.message);
+    normalized.visitor_email = typeof normalized.visitor_email === "string" ? normalized.visitor_email.trim().toLowerCase() : normalized.visitor_email;
+    normalized.slot_id = nullableString(normalized.slot_id);
+    normalized.partner_id = nullableString(normalized.partner_id);
+    normalized.location_id = nullableString(normalized.location_id);
+    normalized.appointment_date = nullableString(normalized.appointment_date);
+    normalized.start_time = nullableString(normalized.start_time);
+    normalized.end_time = nullableString(normalized.end_time);
+    if (typeof normalized.start_time === "string" && normalized.start_time.length === 5) normalized.start_time = `${normalized.start_time}:00`;
+    if (typeof normalized.end_time === "string" && normalized.end_time.length === 5) normalized.end_time = `${normalized.end_time}:00`;
+    if (normalized.source !== "generated") normalized.source = "manual";
+    if (typeof normalized.created_at === "string") delete normalized.created_at;
+  }
   if (typeof normalized.created_at === "string") delete normalized.created_at;
   if (typeof normalized.created_by === "string") delete normalized.created_by;
 
@@ -304,6 +396,22 @@ export async function POST(req: Request) {
     const metadata = isRecord(sanitized.metadata) ? sanitized.metadata : {};
     if (metadata.show_apply_cta === true && (typeof metadata.apply_url !== "string" || metadata.apply_url.trim().length === 0)) {
       return NextResponse.json({ error: "Validation failed: apply_url - Apply URL is required when the Apply button is enabled." }, { status: 400 });
+    }
+  }
+
+  if (table === "appointment_slots") {
+    const start = typeof sanitized.start_time === "string" ? sanitized.start_time : "";
+    const end = typeof sanitized.end_time === "string" ? sanitized.end_time : "";
+    if (start && end && end <= start) {
+      return NextResponse.json({ error: "Validation failed: end_time - End time must be after start time." }, { status: 400 });
+    }
+  }
+
+  if (table === "appointment_availability_rules" || table === "appointment_blocks") {
+    const start = typeof sanitized.start_time === "string" ? sanitized.start_time : "";
+    const end = typeof sanitized.end_time === "string" ? sanitized.end_time : "";
+    if ((start || end) && (!start || !end || end <= start)) {
+      return NextResponse.json({ error: "Validation failed: end_time - End time must be after start time." }, { status: 400 });
     }
   }
 

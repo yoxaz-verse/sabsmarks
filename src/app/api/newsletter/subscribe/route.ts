@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 
-const schema = z.object({ email: z.string().email() });
+const schema = z.object({ email: z.string().trim().toLowerCase().email() });
 
 export async function POST(req: Request) {
   const parsed = schema.safeParse(await req.json());
@@ -10,12 +10,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Please enter a valid email." }, { status: 400 });
   }
 
-  const supabase = await createServerSupabaseClient();
-  const email = parsed.data.email.toLowerCase().trim();
+  const supabase = createAdminSupabaseClient();
 
   const { error } = await supabase.from("newsletter_subscribers").upsert(
     {
-      email,
+      email: parsed.data.email,
       source: "footer",
       status: "active",
     },

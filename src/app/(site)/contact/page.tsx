@@ -2,14 +2,14 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowRight, AtSign, Building2, ExternalLink, Link2, Mail, MapPin, Phone } from "lucide-react";
 import { PageBanner } from "@/components/layout/page-banner";
-import { getLocations, getSiteSettings } from "@/lib/content/service";
+import { AppointmentBooking } from "@/components/contact/appointment-booking";
+import { getAvailableAppointmentSlots, getLocations, getSiteSettings, getTeamMembers } from "@/lib/content/service";
 import { locationRoleLabel } from "@/lib/location-labels";
 import { getSiteContact } from "@/lib/site-contact";
 import type { Location } from "@/types/cms";
 import Image from "next/image";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 import { SlideIn } from "@/components/ui/slide-in";
-import { FadeIn } from "@/components/ui/fade-in";
 
 function sanitizePhone(phone: string) {
   return phone.replace(/\s+/g, "");
@@ -18,6 +18,8 @@ function sanitizePhone(phone: string) {
 function buildGoogleMapsUrl(query: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
+
+const HEAD_OFFICE_MAP_URL = "https://maps.app.goo.gl/1mTz9t3Xr2thpTHLA";
 
 function locationName(location: Location) {
   return location.city;
@@ -178,7 +180,7 @@ function OfficeCard({ location }: { location: Location }) {
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();
-  const locations = await getLocations();
+  const [locations, appointmentSlots, partners] = await Promise.all([getLocations(), getAvailableAppointmentSlots(), getTeamMembers()]);
   const contact = getSiteContact(settings);
   const orderedLocations = orderLocations(locations, contact.serviceLocations);
   const linkedInHandle = getSocialHandle(contact.socialLinks.linkedin, "sabs-marks-jvs-co");
@@ -323,9 +325,16 @@ export default async function ContactPage() {
           </div>
 
           <div className="mt-6 flex flex-col gap-8">
+            <AppointmentBooking slots={appointmentSlots} partners={partners} />
+
             <div className="rounded-[2rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-md md:p-8">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Head Office Base</p>
-              <div className="mt-6 flex flex-col items-start gap-4">
+              <a
+                href={HEAD_OFFICE_MAP_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 flex flex-col items-start gap-4 rounded-2xl transition hover:-translate-y-0.5"
+              >
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent shadow-sm">
                   <MapPin className="h-5 w-5 animate-pulse" />
                 </div>
@@ -333,7 +342,7 @@ export default async function ContactPage() {
                   <h3 className="text-2xl font-bold text-ink">{contact.headOfficeLabel}</h3>
                   <p className="mt-3 whitespace-pre-line text-[15px] leading-7 text-muted">{contact.headOfficeAddress}</p>
                 </div>
-              </div>
+              </a>
 
               <div className="mt-8 grid gap-4 md:grid-cols-2">
                 <a

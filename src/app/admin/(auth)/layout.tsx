@@ -17,7 +17,7 @@ export default function AdminAuthLayout({ children }: { children: React.ReactNod
           <Link href="/" className="inline-flex items-center text-white/92 transition hover:text-white">
             <Logo className="w-[188px] rounded-2xl bg-white px-3 py-2 shadow-[0_12px_30px_rgba(15,23,42,0.18)] sm:w-[216px]" />
           </Link>
-          <div className="hidden rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/72 sm:block">
+          <div className="type-eyebrow hidden rounded-full border border-white/12 bg-white/8 px-4 py-2 text-white/72 sm:block">
             CMS Admin Portal
           </div>
         </div>
@@ -26,14 +26,14 @@ export default function AdminAuthLayout({ children }: { children: React.ReactNod
           <div className="grid w-full items-stretch gap-6 lg:grid-cols-[1.1fr_minmax(420px,520px)] xl:gap-8">
             <aside className="order-2 flex flex-col justify-between rounded-[32px] border border-white/12 bg-white/7 p-6 text-white shadow-[0_28px_100px_rgba(15,23,42,0.24)] backdrop-blur md:p-8 lg:order-1 lg:min-h-[640px] lg:p-10">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.28em] text-sky-100">
+                <div className="type-eyebrow inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-1.5 text-sky-100">
                   <ShieldCheck className="h-4 w-4" />
                   Secure Admin Access
                 </div>
-                <h1 className="mt-6 max-w-lg text-4xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
+                <h1 className="type-page-title mt-6 max-w-lg text-white">
                   Focused access to the Sabs Marks JVS & Co. CMS.
                 </h1>
-                <p className="mt-5 max-w-xl text-base leading-7 text-slate-200/88 md:text-lg">
+                <p className="type-body mt-5 max-w-xl text-slate-200/88 md:text-lg">
                   Sign in to manage site content, editorial updates, and team information from a single protected workspace built for the internal operations team.
                 </p>
               </div>
@@ -41,18 +41,18 @@ export default function AdminAuthLayout({ children }: { children: React.ReactNod
               <div className="mt-10 grid gap-4 md:grid-cols-3 lg:mt-14 lg:grid-cols-1 xl:grid-cols-3">
                 <div className="rounded-2xl border border-white/12 bg-slate-950/26 p-4">
                   <LayoutDashboard className="h-5 w-5 text-sky-200" />
-                  <p className="mt-3 text-sm font-semibold text-white">Content control</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-300/86">Keep pages, sections, and publishing workflows organized in one place.</p>
+                  <p className="type-card-title mt-3 text-sm text-white">Content control</p>
+                  <p className="type-body-sm mt-2 text-slate-300/86">Keep pages, sections, and publishing workflows organized in one place.</p>
                 </div>
                 <div className="rounded-2xl border border-white/12 bg-slate-950/26 p-4">
                   <ShieldCheck className="h-5 w-5 text-emerald-300" />
-                  <p className="mt-3 text-sm font-semibold text-white">Role-protected access</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-300/86">Only approved CMS users can reach the protected console after sign-in.</p>
+                  <p className="type-card-title mt-3 text-sm text-white">Role-protected access</p>
+                  <p className="type-body-sm mt-2 text-slate-300/86">Only approved CMS users can reach the protected console after sign-in.</p>
                 </div>
                 <div className="rounded-2xl border border-white/12 bg-slate-950/26 p-4">
                   <LockKeyhole className="h-5 w-5 text-violet-200" />
-                  <p className="mt-3 text-sm font-semibold text-white">Reliable workflow</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-300/86">A clean login screen that stays readable regardless of the public site theme.</p>
+                  <p className="type-card-title mt-3 text-sm text-white">Reliable workflow</p>
+                  <p className="type-body-sm mt-2 text-slate-300/86">A clean login screen that stays readable regardless of the public site theme.</p>
                 </div>
               </div>
             </aside>

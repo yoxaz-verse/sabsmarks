@@ -19,7 +19,7 @@ export async function Footer() {
             <div className="mb-8">
               <Logo className="w-[228px] sm:w-[258px]" />
             </div>
-            <p className="pr-4 text-[14px] leading-7 text-muted">
+            <p className="type-body-sm pr-4 text-muted">
               Sabs Marks JVS & Co. is a multidisciplinary professional services firm offering a comprehensive range of solutions under one roof to leading domestic and multinational organizations across diverse industries.
             </p>
           </div>
@@ -27,25 +27,25 @@ export async function Footer() {
           <div className="lg:col-span-5">
             <div className="site-card decorated-panel rounded-[1.75rem] p-7 md:p-8">
               <SiteOrnament mode="card" className="opacity-65" />
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted">Newsletter</p>
-              <h4 className="mt-3 text-2xl font-bold text-ink">Stay Updated.</h4>
-              <p className="mt-3 text-[14px] leading-7 text-muted">Subscribe to our newsletter to get the latest blog articles and firm updates.</p>
+              <p className="type-eyebrow text-muted">Newsletter</p>
+              <h4 className="type-card-title mt-3 text-2xl text-ink">Stay Updated.</h4>
+              <p className="type-body-sm mt-3 text-muted">Subscribe to our newsletter to get the latest blog articles and firm updates.</p>
               <NewsletterForm />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-6 lg:col-span-3">
             <div>
-              <h4 className="mb-5 text-base font-bold text-ink">About Us</h4>
-              <div className="flex flex-col gap-4 text-[14px] font-medium text-muted">
+              <h4 className="type-card-title mb-5 text-base text-ink">About Us</h4>
+              <div className="type-body-sm flex flex-col gap-4 text-muted">
                 <Link href="/practice-areas" className="footer-link">Services</Link>
                 <Link href="/expertise/our-approach" className="footer-link">Our Approach</Link>
                 <Link href="/blog" className="footer-link">Blog</Link>
               </div>
             </div>
             <div>
-              <h4 className="mb-5 text-base font-bold text-ink">Connect</h4>
-              <div className="flex flex-col gap-4 text-[14px] font-medium text-muted">
+              <h4 className="type-card-title mb-5 text-base text-ink">Connect</h4>
+              <div className="type-body-sm flex flex-col gap-4 text-muted">
                 <Link href="/careers" className="footer-link">Join Us</Link>
                 <Link href="/contact" className="footer-link">Contact Us</Link>
                 <Link href="/terms-and-conditions" className="footer-link">Terms & Conditions</Link>
@@ -65,8 +65,8 @@ export async function Footer() {
                 <Phone className="h-6 w-6" />
               </div>
               <div>
-                <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-muted">Call Us</p>
-                <a href={`tel:${contact.primaryPhone.replace(/\s+/g, "")}`} className="text-lg font-bold text-ink transition-colors hover:text-accent md:text-xl">
+                <p className="type-eyebrow mb-1 text-muted">Call Us</p>
+                <a href={`tel:${contact.primaryPhone.replace(/\s+/g, "")}`} className="type-card-title text-lg text-ink transition-colors hover:text-accent md:text-xl">
                   {contact.primaryPhone}
                 </a>
               </div>
@@ -77,8 +77,8 @@ export async function Footer() {
                 <Mail className="h-6 w-6" />
               </div>
               <div>
-                <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-muted">Email Us</p>
-                <a href={`mailto:${contact.primaryEmail}`} className="text-lg font-bold text-ink transition-colors hover:text-accent md:text-xl">
+                <p className="type-eyebrow mb-1 text-muted">Email Us</p>
+                <a href={`mailto:${contact.primaryEmail}`} className="type-card-title text-lg text-ink transition-colors hover:text-accent md:text-xl">
                   {contact.primaryEmail}
                 </a>
               </div>
