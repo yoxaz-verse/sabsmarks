@@ -22,7 +22,6 @@ export default async function AboutLocationsPage() {
       <InteriorIntroSection
         compact
         title="Find every Sabs Marks JVS branch location in one place."
-        description="Browse the Ettumanoor head office and every published branch, switch between exact map points instantly, and keep the active location in view while you compare contact details."
         className="border-b-0"
       />
 

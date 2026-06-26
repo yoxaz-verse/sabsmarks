@@ -221,6 +221,7 @@ export interface SiteSettings {
   primary_phone: string | null;
   head_office_label: string | null;
   head_office_address: string | null;
+  head_office_map_url?: string | null;
   social_links: Record<string, string>;
   service_locations: string[];
   footer_text: string | null;

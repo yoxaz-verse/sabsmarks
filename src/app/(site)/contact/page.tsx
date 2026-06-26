@@ -6,17 +6,12 @@ import { PageBanner } from "@/components/layout/page-banner";
 import { AppointmentBooking } from "@/components/contact/appointment-booking";
 import { getAvailableAppointmentSlots, getLocations, getSiteSettings, getTeamMembers } from "@/lib/content/service";
 import { locationRoleLabel } from "@/lib/location-labels";
+import { buildGoogleMapsSearchUrl, getPublicMapUrl } from "@/lib/map-utils";
 import { getSiteContact } from "@/lib/site-contact";
 import type { Location } from "@/types/cms";
 import Image from "next/image";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 import { SlideIn } from "@/components/ui/slide-in";
-
-
-
-function buildGoogleMapsUrl(query: string) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-}
 
 function locationName(location: Location) {
   return location.city;
@@ -36,20 +31,6 @@ function getSocialHandle(url: string, fallback: string) {
   } catch {
     return fallback;
   }
-}
-
-function orderLocations(locations: Location[], serviceLocations: string[]) {
-  if (serviceLocations.length === 0) return locations;
-
-  const orderMap = new Map(serviceLocations.map((city, index) => [city.trim().toLowerCase(), index]));
-  return [...locations].sort((a, b) => {
-    const aIndex = orderMap.get(a.city.trim().toLowerCase());
-    const bIndex = orderMap.get(b.city.trim().toLowerCase());
-    if (aIndex !== undefined && bIndex !== undefined) return aIndex - bIndex;
-    if (aIndex !== undefined) return -1;
-    if (bIndex !== undefined) return 1;
-    return a.city.localeCompare(b.city);
-  });
 }
 
 function QuickAction({
@@ -179,11 +160,11 @@ export default async function ContactPage() {
   const settings = await getSiteSettings();
   const [locations, appointmentSlots, partners] = await Promise.all([getLocations(), getAvailableAppointmentSlots(), getTeamMembers()]);
   const contact = getSiteContact(settings);
-  const orderedLocations = orderLocations(locations, contact.serviceLocations);
+  const orderedLocations = locations;
   const linkedInHandle = getSocialHandle(contact.socialLinks.linkedin, "sabs-marks-jvs-co");
   const instagramHandle = getSocialHandle(contact.socialLinks.instagram, "@sabsmarksjvs");
   const facebookHandle = "Sabs Marks";
-  const headOfficeMapUrl = buildGoogleMapsUrl(contact.headOfficeAddress);
+  const headOfficeMapUrl = getPublicMapUrl(contact.headOfficeMapUrl) ?? buildGoogleMapsSearchUrl(contact.headOfficeAddress);
 
   return (
     <div className="flex min-h-screen flex-col bg-surface">

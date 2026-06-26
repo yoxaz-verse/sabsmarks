@@ -39,6 +39,7 @@ export const siteSettingsSchema = z.object({
   primary_phone: z.string().nullable().optional(),
   head_office_label: z.string().nullable().optional(),
   head_office_address: z.string().nullable().optional(),
+  head_office_map_url: z.string().url().nullable().optional(),
   social_links: z.record(z.string(), z.string()).default({}),
   service_locations: z.array(z.string()).default([]),
   footer_text: z.string().nullable().optional(),

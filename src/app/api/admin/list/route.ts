@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireAdminApiSession } from "@/lib/admin-auth";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 
 const allowed = new Set([
   "pages",
@@ -42,7 +43,7 @@ function locationLabel(location: { city: string; office_name?: string | null }) 
 }
 
 async function labelMaps(
-  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
+  supabase: SupabaseClient,
   records: Array<{ partner_id?: string | null; location_id?: string | null }>
 ) {
   const partnerIds = Array.from(new Set(records.map((record) => record.partner_id).filter(Boolean)));
@@ -69,7 +70,7 @@ export async function GET(req: Request) {
   const table = parsed.data.table;
   if (!allowed.has(table)) return NextResponse.json({ error: "Table not allowed." }, { status: 400 });
 
-  const supabase = await createServerSupabaseClient();
+  const supabase = createAdminSupabaseClient();
 
   if (table === "appointment_slots") {
     const { data, error } = await supabase.from(table).select("*").order("appointment_date", { ascending: true }).order("start_time", { ascending: true });
@@ -156,6 +157,17 @@ export async function GET(req: Request) {
         };
       }),
     });
+  }
+
+  if (table === "locations") {
+    const { data, error } = await supabase
+      .from(table)
+      .select("*")
+      .order("display_order", { ascending: true })
+      .order("city", { ascending: true });
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+
+    return NextResponse.json({ data: data ?? [] });
   }
 
   const orderColumn = tableOrderColumn[table] ?? "updated_at";

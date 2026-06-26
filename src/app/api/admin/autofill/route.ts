@@ -38,6 +38,8 @@ export async function POST() {
         primary_phone: "8943115500",
         head_office_label: "H.O",
         head_office_address: "Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala",
+        head_office_map_url:
+          "https://www.google.com/maps/search/?api=1&query=Sabs%20Marks%20JVS%20%26%20Co%2C%20Oonukallel%20Arcade%2C%20M%20C%20Road%2C%20Ettumanoor%2C%20Kottayam%2C%20Kerala",
         social_links: {
           linkedin: "https://www.linkedin.com/company/sabs-marks-jvs-co/",
           instagram: "https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ==",

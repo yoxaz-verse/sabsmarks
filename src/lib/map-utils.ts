@@ -1,3 +1,7 @@
+export function buildGoogleMapsSearchUrl(query: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
 export function getPublicMapUrl(mapUrl: string | null) {
   if (!mapUrl) return null;
 
@@ -9,11 +13,11 @@ export function getPublicMapUrl(mapUrl: string | null) {
       const mlat = parsed.searchParams.get("mlat");
       const mlon = parsed.searchParams.get("mlon");
       if (mlat && mlon) {
-        return `https://www.google.com/maps/search/?api=1&query=${mlat},${mlon}`;
+        return buildGoogleMapsSearchUrl(`${mlat},${mlon}`);
       }
       const query = parsed.searchParams.get("query");
       if (query) {
-        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+        return buildGoogleMapsSearchUrl(query);
       }
     }
 

@@ -5,6 +5,7 @@ import { buildOrganizationSchema } from "@/lib/seo-schema";
 import { ScrollRevealInit } from "@/components/layout/scroll-reveal-init";
 import { InitialLoader } from "@/components/initial-loader";
 import { RouteTransition } from "@/components/layout/route-transition";
+import { FloatingWhatsAppButton } from "@/components/contact/floating-whatsapp-button";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const organizationSchema = buildOrganizationSchema();
@@ -19,6 +20,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <main className="flex-1 flex flex-col w-full">
         {children}
       </main>
+      <FloatingWhatsAppButton />
       <Footer />
     </div>
   );

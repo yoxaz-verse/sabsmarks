@@ -208,6 +208,7 @@ const tableSchemas: Record<string, z.ZodTypeAny> = {
     primary_phone: z.string().optional().nullable(),
     head_office_label: z.string().optional().nullable(),
     head_office_address: z.string().optional().nullable(),
+    head_office_map_url: z.string().optional().nullable(),
     social_links: z.record(z.string(), z.string()).default({}),
     service_locations: z.array(z.string()).default([]),
     footer_text: z.string().optional().nullable(),
@@ -331,6 +332,7 @@ export async function POST(req: Request) {
     normalized.primary_phone = nullableString(normalized.primary_phone);
     normalized.head_office_label = nullableString(normalized.head_office_label);
     normalized.head_office_address = nullableString(normalized.head_office_address);
+    normalized.head_office_map_url = nullableString(normalized.head_office_map_url);
     normalized.footer_text = nullableString(normalized.footer_text);
     normalized.disclaimers = nullableString(normalized.disclaimers);
     normalized.service_locations = normalizeStringArray(normalized.service_locations);

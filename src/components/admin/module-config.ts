@@ -199,6 +199,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
       { key: "primary_phone", label: "Primary Phone", type: "text", section: "Contact" },
       { key: "head_office_label", label: "Head Office Label", type: "text", section: "Head Office" },
       { key: "head_office_address", label: "Head Office Address", type: "textarea", section: "Head Office", width: "full" },
+      { key: "head_office_map_url", label: "Head Office Map URL", type: "text", section: "Head Office", width: "full" },
       { key: "service_locations_text", label: "Service Locations", type: "textarea", placeholder: "One city per line", section: "Head Office", width: "full" },
       { key: "linkedin_url", label: "LinkedIn URL", type: "text", section: "Social" },
       { key: "instagram_url", label: "Instagram URL", type: "text", section: "Social" },
