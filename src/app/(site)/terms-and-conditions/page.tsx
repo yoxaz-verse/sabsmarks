@@ -44,7 +44,8 @@ export default function TermsAndConditionsPage() {
             <p>You are not authorised to copy or use any software, proprietary processes or technology embodied or described in this Website.</p>
             <p>You agree to comply with all applicable laws in accessing and using this Website.</p>
 
-            <h2 className="type-prose-heading mt-10">Intellectual Property Rights; No use of Sabs Marks JVS & Co., names or logos</h2>
+            <h2 className="type-prose-heading mt-10">Intellectual Property Rights</h2>
+            <p>No use of Sabs Marks JVS & Co., names or logos is permitted.</p>
             <p>Unless otherwise indicated, the content on this Website is provided by us or another entity within the Sabs Marks JVS & Co.</p>
             <p>
               This Website and its contents are protected by copyright, trademark, and other applicable intellectual property laws. We and our licensors reserve all rights not expressly granted under these Terms of Use.
