@@ -98,9 +98,9 @@ export async function Footer() {
               </div>
               <div className="min-w-0">
                 <p className="type-eyebrow mb-1 text-muted">Working Hours</p>
-                <p className="type-card-title text-lg text-ink md:text-xl">Monday to Saturday</p>
+                <p className="type-card-title text-lg text-ink md:text-xl">Mon - Sat</p>
                 <p className="type-body-sm mt-1 text-muted">9:30 AM - 5:30 PM IST</p>
-                <p className="type-body-sm text-muted">Sunday Holiday</p>
+                <p className="type-body-sm text-muted">Sun: Closed</p>
               </div>
             </div>
 

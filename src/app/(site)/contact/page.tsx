@@ -185,7 +185,7 @@ export default async function ContactPage() {
   const orderedLocations = orderLocations(locations, contact.serviceLocations);
   const linkedInHandle = getSocialHandle(contact.socialLinks.linkedin, "sabs-marks-jvs-co");
   const instagramHandle = getSocialHandle(contact.socialLinks.instagram, "@sabsmarksjvs");
-  const facebookHandle = getSocialHandle(contact.socialLinks.facebook, "Facebook");
+  const facebookHandle = "Sabs Marks";
   const headOfficeMapUrl = buildGoogleMapsUrl(contact.headOfficeAddress);
 
   return (
