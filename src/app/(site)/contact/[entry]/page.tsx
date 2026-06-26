@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ExternalLink, MapPin } from "lucide-react";
 import { notFound } from "next/navigation";
+import { formatPhoneWithCountryCode } from "@/lib/phone-utils";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { LocationPointMap } from "@/components/sections/location-point-map";
@@ -66,7 +67,7 @@ export default async function OfficeDetail({ params }: { params: Promise<{ entry
             </div>
           ) : null}
           {location.address ? <p className="mt-6 whitespace-pre-wrap leading-8 text-muted">{location.address}</p> : null}
-          {location.phone ? <p className="mt-4 text-muted">T: {location.phone}</p> : null}
+          {location.phone ? <p className="mt-4 text-muted">T: {formatPhoneWithCountryCode(location.phone)}</p> : null}
           {location.email ? <p className="mt-1 text-muted">E: {location.email}</p> : null}
           {location.contact_person ? <p className="mt-3 text-sm text-muted">Contact Person: {location.contact_person}</p> : null}
 

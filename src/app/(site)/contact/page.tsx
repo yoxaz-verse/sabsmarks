@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { formatPhoneWithCountryCode, sanitizePhone } from "@/lib/phone-utils";
 import { ArrowRight, AtSign, Building2, ExternalLink, Link2, Mail, MapPin, Phone } from "lucide-react";
 import { PageBanner } from "@/components/layout/page-banner";
 import { AppointmentBooking } from "@/components/contact/appointment-booking";
@@ -11,15 +12,11 @@ import Image from "next/image";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 import { SlideIn } from "@/components/ui/slide-in";
 
-function sanitizePhone(phone: string) {
-  return phone.replace(/\s+/g, "");
-}
+
 
 function buildGoogleMapsUrl(query: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
-
-const HEAD_OFFICE_MAP_URL = "https://maps.app.goo.gl/1mTz9t3Xr2thpTHLA";
 
 function locationName(location: Location) {
   return location.city;
@@ -141,7 +138,7 @@ function OfficeCard({ location }: { location: Location }) {
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-white/80 group-hover/link:border-accent-secondary/30 group-hover/link:bg-accent-secondary/10 group-hover/link:text-accent-secondary transition-all duration-300">
               <Phone className="h-3.5 w-3.5" />
             </div>
-            <span className="font-medium">{location.phone}</span>
+            <span className="font-medium">{formatPhoneWithCountryCode(location.phone)}</span>
           </a>
         ) : null}
         {location.email ? (
@@ -338,7 +335,7 @@ export default async function ContactPage() {
             <div className="rounded-[2rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-md md:p-8">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Head Office Base</p>
               <a
-                href={HEAD_OFFICE_MAP_URL}
+                href={headOfficeMapUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-6 flex flex-col items-start gap-4 rounded-2xl transition hover:-translate-y-0.5"

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Building2, ExternalLink, Mail, MapPin, Navigation, Phone } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { formatPhoneWithCountryCode, sanitizePhone } from "@/lib/phone-utils";
 import { locationRoleLabel } from "@/lib/location-labels";
 import { getPublicMapUrl } from "@/lib/map-utils";
 import type { Location } from "@/types/cms";
@@ -18,9 +19,7 @@ type MapPoint = {
 
 type LeafletModule = typeof import("leaflet");
 
-function sanitizePhone(phone: string) {
-  return phone.replace(/\s+/g, "");
-}
+
 
 function officeName(location: Location) {
   return location.office_name?.trim() || null;
@@ -265,7 +264,7 @@ function LocationsMapExperience({
               {activeLocation.phone ? (
                 <a href={`tel:${sanitizePhone(activeLocation.phone)}`} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-3 text-sm text-white/82 transition hover:border-white/20 hover:bg-white/10">
                   <Phone className="h-4 w-4 shrink-0 text-[color-mix(in_srgb,var(--accent-secondary)_45%,white)]" />
-                  <span className="break-all">{activeLocation.phone}</span>
+                  <span className="break-all">{formatPhoneWithCountryCode(activeLocation.phone)}</span>
                 </a>
               ) : null}
               {activeLocation.email ? (

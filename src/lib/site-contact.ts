@@ -1,7 +1,8 @@
 import type { SiteSettings } from "@/types/cms";
+import { formatPhoneWithCountryCode } from "./phone-utils";
 
 const DEFAULT_BRAND_NAME = "Sabs Marks JVS & Co";
-const DEFAULT_PHONE = "894-311-5500";
+const DEFAULT_PHONE = "+91 894-311-5500";
 const ADDITIONAL_PHONE = "+91 94470 35886";
 const DEFAULT_EMAIL = "info@sabsmarksjvs.com";
 const DEFAULT_HEAD_OFFICE_LABEL = "H.O";
@@ -51,7 +52,7 @@ export function normalizeServiceLocations(value: unknown) {
 export function getSiteContact(settings?: SiteSettings | null) {
   const socialLinks = isStringRecord(settings?.social_links) ? settings.social_links : {};
   const serviceLocations = normalizeServiceLocations(settings?.service_locations);
-  const primaryPhone = settings?.primary_phone ?? DEFAULT_PHONE;
+  const primaryPhone = formatPhoneWithCountryCode(settings?.primary_phone ?? DEFAULT_PHONE);
   const phoneNumbers = Array.from(new Set([primaryPhone, ADDITIONAL_PHONE].filter(Boolean)));
 
   return {

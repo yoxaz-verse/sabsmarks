@@ -159,9 +159,7 @@ function EngagementModelSection() {
             <h2 className="section-title text-white">Every engagement follows a structured, outcome-driven framework.</h2>
             <div className="section-rule"></div>
           </div>
-          <p className="max-w-lg text-base leading-8 text-slate-300 lg:pb-2">
-            Our model keeps scope, execution, review, and advisory support aligned from diagnosis through ongoing monitoring.
-          </p>
+
         </div>
 
         <div className="process-grid mt-14">

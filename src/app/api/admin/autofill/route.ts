@@ -90,7 +90,7 @@ export async function POST() {
       ["about/locations", "hero", { kicker: "About", headline: "Locations", subtext: "Browse our offices and connect with the location most relevant to you." }, 0],
       ["about/team", "hero", { kicker: "About", headline: "Leadership", subtext: "Partner-led teams with deep domain expertise." }, 0],
       ["careers/philosophy", "hero", { kicker: "Career", headline: "Philosophy", subtext: "In pursuit of bold and better decisions." }, 0],
-      ["careers/philosophy", "rich_text", { title: "Philosophy", content: "We believe that the future lies in individuals capable of making bold decisions. We nurture the talents of tomorrow's decision makers. Every individual at Sabs Marks JVS & Co. is in pursuit of bold and better decisions.\n\n\"Independent decision makers led the world so far; they were not just born with it, they developed it.\"" }, 1],
+      ["careers/philosophy", "rich_text", { title: "Philosophy", content: "We believe that the future lies in individuals capable of making bold decisions. We nurture the talents of tomorrow's decision makers. Every individual at Sabs Marks JVS & Co. is in pursuit of bold and better decisions.\n\n\"Independent thinking shapes extraordinary outcomes.\"" }, 1],
       ["careers/alumni", "hero", { kicker: "Career", headline: "Alumni", subtext: "We would love to stay connected with our alumni network." }, 0],
       ["careers/alumni", "contact_form", { title: "Alumni Connect", content: "Name, Contact Number, and Email form can be configured via admin workflows." }, 1],
       ["expertise/ifsc", "hero", { kicker: "Expertise", headline: "Services in IFSC (GIFT City)", subtext: "Specialized support for IFSC entities and regulatory frameworks." }, 0],

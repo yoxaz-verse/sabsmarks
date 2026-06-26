@@ -21,10 +21,10 @@ export default function PrivacyPolicyPage() {
           <article className="site-prose mx-auto max-w-4xl rounded-[1.5rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_82%,transparent)] px-6 py-8 shadow-sm md:px-10 md:py-12">
             <h2 className="type-prose-heading">Privacy Policy</h2>
             <p>
-              Sabs Marks JVS & Co. is dedicated to protecting the confidentiality and privacy of information entrusted to it. As part of this obligation, we are committed to the appropriate protection and use of personal information collected through our website, professional services, communications, events, recruitment, and related activities.
+              Sabs Marks JVS & Co., is dedicated to protecting the confidentiality and privacy of information entrusted to it. As part of this obligation, we are committed to the appropriate protection and use of personal information collected through our website, professional services, communications, events, recruitment, and related activities.
             </p>
             <p>
-              This Privacy Policy explains what personal information we collect, why we need it, how we process and protect it, and the rights available to individuals whose personal information we process.
+              This privacy policy explains what personal information we collect, why we need it, how we process and protect it, and the rights available to individuals whose personal information we process.
             </p>
 
             <h2 className="type-prose-heading mt-10">Why We Need Personal Data</h2>
@@ -40,7 +40,7 @@ export default function PrivacyPolicyPage() {
               We may collect personal data directly from individuals when they provide business cards, complete online forms, register for events or webinars, subscribe to newsletters, use our website, apply for roles, or communicate with us.
             </p>
             <p>
-              We may also obtain personal data indirectly from clients, recruitment agencies, former employers, credit reference agencies, third-party vendors, public sources, sanctions lists, crime prevention agencies, internet searches, and social or professional networking platforms where individuals interact with us through those services.
+              We may also obtain personal data indirectly from clients, recruitment agencies, former employers, credit reference agencies, third-party vendors, public sources, sanctions list, crime prevention agencies, internet searches, and social or professional networking platforms where individuals interact with us through those services.
             </p>
 
             <h2 className="type-prose-heading mt-10">Categories of Personal Data We Collect</h2>
@@ -56,14 +56,6 @@ export default function PrivacyPolicyPage() {
               Where AI tools are used, we apply reasonable safeguards to protect confidentiality, limit access to personal data, and review outputs where they may materially affect service delivery or an individual.
             </p>
 
-            <h2 className="type-prose-heading mt-10">Children&apos;s Data</h2>
-            <p>
-              Our website is not intentionally designed for or directed at children under the age of 18. We do not knowingly collect or maintain information about children except where processing is required as part of a professional engagement or otherwise permitted by applicable law.
-            </p>
-            <p>
-              We do not undertake processing of children&apos;s personal data that is likely to cause detrimental effects to their well-being, and we do not undertake tracking, behavioral monitoring, or targeted advertising directed at children.
-            </p>
-
             <h2 className="type-prose-heading mt-10">Legal Grounds for Processing</h2>
             <p>
               We process personal data where necessary for contractual and legal obligations, to protect vital interests, to perform a task carried out in the public interest, for legitimate business requirements that do not override individual interests, or where consent has been provided for specified purposes.
@@ -71,7 +63,7 @@ export default function PrivacyPolicyPage() {
 
             <h2 className="type-prose-heading mt-10">Sharing Personal Data with Third Parties</h2>
             <p>
-              We may share personal data with trusted third parties who help us deliver efficient and quality services. These may include Sabs Marks JVS & Co. member firms, professional advisers, IT and cloud service providers, archiving and document support providers, payment, marketing, recruitment, anti-money laundering, client-conflict and independence-check providers, law enforcement authorities, government or regulatory agencies, health authorities, and other parties where required by applicable law or regulation.
+              We may share personal data with trusted third parties who help us deliver efficient and quality services. These may include Sabs Marks JVS & Co., and its associated entities professional advisers, IT and cloud service providers, archiving and document support providers, payment, marketing, recruitment, anti-money laundering, client-conflict and independence-check providers, law enforcement authorities, government or regulatory agencies, health authorities, and other parties where required by applicable law or regulation.
             </p>
             <p>
               We do not transfer the personal information provided to us to third parties for their own direct marketing use.

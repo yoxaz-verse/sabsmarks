@@ -15,7 +15,7 @@ export default async function PhilosophyPage() {
                 We believe that the future lies in individuals capable of making bold decisions. We nurture the talents of tomorrow&apos;s decision makers. Every individual at Sabs Marks JVS &amp; Co. is in pursuit of bold and better decisions.
               </p>
               <blockquote className="mt-8 border-l-4 border-accent bg-surface-raised px-6 py-5 text-lg font-medium leading-8 text-ink shadow-sm">
-                &ldquo;Independent decision makers led the world so far; they were not just born with it, they developed it.&rdquo;
+                &ldquo;Independent thinking shapes extraordinary outcomes.&rdquo;
               </blockquote>
             </div>
           </section>
