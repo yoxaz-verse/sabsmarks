@@ -54,7 +54,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
 
   return (
     <nav ref={navRef} className="hidden xl:block">
-      <div className="flex items-center gap-2 rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_58%,transparent)] px-3 py-2 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+      <div className="flex items-center gap-1.5 rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_58%,transparent)] px-2.5 py-1.5 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl">
         {ordered.map((group) => {
           const items = groups[group] ?? [];
           if (!items.length) return null;
@@ -74,7 +74,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                   setHoverGroup(null);
                   setPinnedGroup(null);
                 }}
-                className={`rounded-full px-3 py-2 text-[12px] font-bold tracking-[0.14em] uppercase transition-colors duration-200 ${
+                className={`rounded-full px-2.5 py-1.5 text-[12px] font-bold tracking-[0.11em] uppercase transition-colors duration-200 ${
                   isActive ? "bg-accent/10 text-accent" : "text-ink hover:text-accent"
                 }`}
               >
@@ -86,7 +86,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
           return (
             <div
               key={group}
-              className="group relative py-4"
+              className="group relative py-2"
               onPointerEnter={(event) => {
                 if (event.pointerType === "mouse") setHoverGroup({ group, pathname });
               }}
@@ -99,7 +99,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                 aria-haspopup="menu"
                 aria-expanded={isOpen}
                 aria-controls={menuId}
-                className={`flex items-center gap-1 rounded-full px-3 py-2 text-[12px] font-bold tracking-[0.14em] uppercase transition-colors duration-200 ${
+                className={`flex items-center gap-1 rounded-full px-2.5 py-1.5 text-[12px] font-bold tracking-[0.11em] uppercase transition-colors duration-200 ${
                   isActive || isOpen ? "bg-accent/10 text-accent" : "text-ink hover:text-accent"
                 }`}
                 onPointerDown={(event) => {

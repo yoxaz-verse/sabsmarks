@@ -129,11 +129,11 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-[1000] border-b border-[var(--section-border)] bg-[color-mix(in_srgb,var(--bg)_76%,transparent)]/95 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3.5 sm:gap-4 sm:px-6 lg:gap-6">
-        <Link href="/" className="min-w-0">
-          <Logo className="!w-[248px] sm:!w-[300px] md:!w-[350px]" />
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6 lg:gap-5 xl:px-8">
+        <Link href="/" className="flex min-w-0 shrink-0 items-center">
+          <Logo className="!w-[220px] sm:!w-[270px] md:!w-[300px] xl:!w-[320px]" />
         </Link>
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3 lg:gap-4">
           <MegaNav groups={navGroups} />
           <MobileNav groups={navGroups} />
           <ThemeToggle />
