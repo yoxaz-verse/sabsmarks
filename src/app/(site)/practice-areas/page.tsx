@@ -1,10 +1,11 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PageBanner } from "@/components/layout/page-banner";
 import { InteriorIntroSection } from "@/components/sections/interior-intro-section";
 import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 import { SITE_VISUALS } from "@/lib/site-visuals";
 import { FadeIn } from "@/components/ui/fade-in";
 import { StaggerContainer, StaggerItem } from "@/components/ui/stagger-container";
@@ -233,24 +234,29 @@ function PracticeAreasTabs() {
   
   const activeTab = searchParams.get("tab") || serviceAreas[0].id;
   const activeContent = serviceAreas.find((serviceArea) => serviceArea.id === activeTab) || serviceAreas[0];
+  const [openMobilePanel, setOpenMobilePanel] = useState<string | null>(activeContent.id);
 
   const setActiveTab = (id: string) => {
+    setOpenMobilePanel(id);
     const params = new URLSearchParams(searchParams.toString());
     params.set("tab", id);
     router.push(`/practice-areas?${params.toString()}`, { scroll: false });
+  };
+
+  const toggleMobilePanel = (id: string) => {
+    if (openMobilePanel === id) {
+      setOpenMobilePanel(null);
+      return;
+    }
+
+    setActiveTab(id);
   };
 
   return (
     <div className="site-card overflow-hidden rounded-[1.75rem] md:flex md:min-h-[650px]">
       <div className="w-full border-b border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_45%,transparent)] md:w-[380px] md:border-b-0 md:border-r md:p-8">
         <h4 className="hidden md:block text-xs font-bold text-muted uppercase tracking-[0.22em] mb-6 px-4">Our Services</h4>
-        <div className="md:hidden flex items-center justify-end gap-1.5 mt-5 px-5 text-[10px] font-bold text-accent uppercase tracking-[0.2em] animate-pulse">
-          <span>Swipe</span>
-          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </div>
-        <div className="flex overflow-x-auto gap-3 px-5 pb-5 pt-3 snap-x md:block md:space-y-0 md:overflow-visible md:p-0">
+        <div className="hidden overflow-x-auto gap-3 px-5 pb-5 pt-3 snap-x md:block md:space-y-0 md:overflow-visible md:p-0">
           {serviceAreas.map((serviceArea) => {
             const isActive = activeTab === serviceArea.id;
             return (
@@ -277,14 +283,7 @@ function PracticeAreasTabs() {
                   <span className="relative z-10 flex h-full w-full items-center justify-between gap-3">
                     <span className="line-clamp-2 leading-6">{serviceArea.title}</span>
                     <span className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center">
-                      <svg
-                        className={`h-4 w-4 transition-opacity duration-300 ${isActive ? "text-accent opacity-100 animate-fade-in" : "text-muted opacity-35 group-hover:opacity-60"}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      <ChevronRight className={`h-4 w-4 transition-opacity duration-300 ${isActive ? "text-accent opacity-100 animate-fade-in" : "text-muted opacity-35 group-hover:opacity-60"}`} />
                     </span>
                   </span>
                 </button>
@@ -292,58 +291,100 @@ function PracticeAreasTabs() {
             );
           })}
         </div>
+
+        <div className="grid gap-3 p-5 md:hidden">
+          {serviceAreas.map((serviceArea) => {
+            const isOpen = openMobilePanel === serviceArea.id;
+            const panelId = `practice-area-panel-${serviceArea.id}`;
+            return (
+              <div
+                key={serviceArea.id}
+                className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
+                  isOpen
+                    ? "border-accent/40 bg-surface shadow-lg"
+                    : "border-[var(--glass-border)]/70 bg-transparent"
+                }`}
+              >
+                <button
+                  onClick={() => toggleMobilePanel(serviceArea.id)}
+                  className="relative flex min-h-[4.5rem] w-full items-center justify-between gap-4 px-5 py-4 text-left text-[13px] font-bold tracking-[0.08em] text-ink dark:text-white"
+                  aria-controls={panelId}
+                  aria-expanded={isOpen}
+                >
+                  {isOpen ? (
+                    <span className="absolute bottom-0 left-0 right-0 h-1.5 rounded-b-2xl bg-accent shadow-[0_0_15px_var(--accent-glow)]" />
+                  ) : null}
+                  <span className="line-clamp-2 leading-6">{serviceArea.title}</span>
+                  <ChevronRight className={`h-4 w-4 flex-shrink-0 text-accent transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`} />
+                </button>
+
+                {isOpen ? (
+                  <div id={panelId} className="border-t border-[var(--glass-border)] px-5 py-6">
+                    <ServiceAreaContent serviceArea={serviceArea} compact />
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <div key={activeTab} className="flex min-h-[600px] flex-1 flex-col overflow-hidden p-8 md:px-14 md:pt-10 md:pb-14 lg:px-16 lg:pt-12 lg:pb-16">
-        <FadeIn className="max-w-[46rem]">
-          <div className="relative mb-8 aspect-[16/7] overflow-hidden rounded-[1.6rem]">
-            <Image
-              src={activeContent.image}
-              alt={activeContent.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 60vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.06),rgba(8,15,30,0.24))]" />
-          </div>
-          <div className="section-kicker">{activeContent.subtitle}</div>
-
-          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-accent/85 md:text-base">
-            {activeContent.strapline}
-          </p>
-
-          <h2 className="section-title">{activeContent.title}</h2>
-
-          <div className="section-rule"></div>
-
-          <div className="space-y-5 mb-10">
-            {activeContent.paragraphs.map((paragraph) => (
-              <p key={paragraph} className="section-copy mt-0 max-w-none text-[17px]">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-
-          <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-ink/80 mb-6">
-            {activeContent.bulletsLabel}
-          </h3>
-
-          <StaggerContainer className="space-y-6 flex flex-col m-0 p-0">
-            {activeContent.bullets.map((bullet, index) => (
-              <StaggerItem key={index}>
-                <div className="flex items-start group">
-                  <div className="w-10 h-10 rounded-2xl bg-surface-raised border border-[var(--glass-border)] flex items-center justify-center mr-6 flex-shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-500 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                    <span className="w-2.5 h-2.5 rounded-full bg-accent/70 group-hover:bg-accent group-hover:scale-150 group-hover:shadow-[0_0_12px_var(--accent-glow)] transition-all duration-500"></span>
-                  </div>
-                  <span className="text-[17px] leading-relaxed text-muted pt-1.5 group-hover:text-ink transition-colors duration-500">
-                    {bullet}
-                  </span>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </FadeIn>
+      <div key={activeTab} className="hidden min-h-[600px] flex-1 flex-col overflow-hidden p-8 md:flex md:px-14 md:pt-10 md:pb-14 lg:px-16 lg:pt-12 lg:pb-16">
+        <ServiceAreaContent serviceArea={activeContent} />
       </div>
     </div>
+  );
+}
+
+function ServiceAreaContent({ serviceArea, compact = false }: { serviceArea: ServiceArea; compact?: boolean }) {
+  return (
+    <FadeIn className={compact ? "" : "max-w-[46rem]"}>
+      <div className={`relative overflow-hidden rounded-[1.35rem] ${compact ? "mb-6 aspect-[16/9]" : "mb-8 aspect-[16/7]"}`}>
+        <Image
+          src={serviceArea.image}
+          alt={serviceArea.title}
+          fill
+          sizes={compact ? "100vw" : "(max-width: 768px) 100vw, 60vw"}
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,15,30,0.06),rgba(8,15,30,0.24))]" />
+      </div>
+      <div className="section-kicker">{serviceArea.subtitle}</div>
+
+      <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-accent/85 md:text-base">
+        {serviceArea.strapline}
+      </p>
+
+      <h2 className={compact ? "text-3xl font-black tracking-tight text-ink dark:text-white" : "section-title"}>{serviceArea.title}</h2>
+
+      <div className="section-rule"></div>
+
+      <div className={`${compact ? "mb-8 space-y-4" : "mb-10 space-y-5"}`}>
+        {serviceArea.paragraphs.map((paragraph) => (
+          <p key={paragraph} className={`section-copy mt-0 max-w-none ${compact ? "text-base" : "text-[17px]"}`}>
+            {paragraph}
+          </p>
+        ))}
+      </div>
+
+      <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-ink/80 mb-6">
+        {serviceArea.bulletsLabel}
+      </h3>
+
+      <StaggerContainer className={`${compact ? "space-y-4" : "space-y-6"} flex flex-col m-0 p-0`}>
+        {serviceArea.bullets.map((bullet, index) => (
+          <StaggerItem key={index}>
+            <div className="flex items-start group">
+              <div className={`${compact ? "mr-4 h-9 w-9 rounded-xl" : "mr-6 h-10 w-10 rounded-2xl"} bg-surface-raised border border-[var(--glass-border)] flex items-center justify-center flex-shrink-0 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-500 shadow-sm group-hover:shadow-md group-hover:-translate-y-1`}>
+                <span className="w-2.5 h-2.5 rounded-full bg-accent/70 group-hover:bg-accent group-hover:scale-150 group-hover:shadow-[0_0_12px_var(--accent-glow)] transition-all duration-500"></span>
+              </div>
+              <span className={`${compact ? "text-base" : "text-[17px]"} leading-relaxed text-muted pt-1.5 group-hover:text-ink transition-colors duration-500`}>
+                {bullet}
+              </span>
+            </div>
+          </StaggerItem>
+        ))}
+      </StaggerContainer>
+    </FadeIn>
   );
 }

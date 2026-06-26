@@ -202,6 +202,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
       { key: "service_locations_text", label: "Service Locations", type: "textarea", placeholder: "One city per line", section: "Head Office", width: "full" },
       { key: "linkedin_url", label: "LinkedIn URL", type: "text", section: "Social" },
       { key: "instagram_url", label: "Instagram URL", type: "text", section: "Social" },
+      { key: "facebook_url", label: "Facebook URL", type: "text", section: "Social" },
       { key: "footer_text", label: "Footer Text", type: "textarea", section: "Footer", width: "full" },
       { key: "disclaimers", label: "Disclaimers", type: "textarea", section: "Footer", width: "full" },
     ],
@@ -264,6 +265,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
     title: "Working Hours",
     table: "appointment_availability_rules",
     primaryLabel: "partner_name",
+    density: "compact",
     listColumns: [
       { key: "partner_name", label: "Partner" },
       { key: "location_name", label: "Location" },
@@ -299,6 +301,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
     title: "Occupied Blocks",
     table: "appointment_blocks",
     primaryLabel: "block_date",
+    density: "compact",
     listColumns: [
       { key: "partner_name", label: "Partner" },
       { key: "location_name", label: "Location" },
@@ -336,6 +339,7 @@ export const adminModules: Record<string, AdminModuleConfig> = {
     table: "appointment_requests",
     primaryLabel: "visitor_name",
     disableCreate: true,
+    density: "compact",
     listColumns: [
       { key: "visitor_name", label: "Name" },
       { key: "partner_name", label: "Partner" },

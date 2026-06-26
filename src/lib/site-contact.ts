@@ -2,12 +2,14 @@ import type { SiteSettings } from "@/types/cms";
 
 const DEFAULT_BRAND_NAME = "Sabs Marks JVS & Co";
 const DEFAULT_PHONE = "894-311-5500";
+const ADDITIONAL_PHONE = "+91 94470 35886";
 const DEFAULT_EMAIL = "info@sabsmarksjvs.com";
 const DEFAULT_HEAD_OFFICE_LABEL = "H.O";
 const DEFAULT_HEAD_OFFICE_ADDRESS = "Oonukallel Arcade, M C Road, Ettumanoor, Kottayam, 686632, Kerala";
 const DEFAULT_SOCIAL_LINKS = {
   linkedin: "https://www.linkedin.com/company/sabs-marks-jvs-co/",
   instagram: "https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ==",
+  facebook: "https://www.facebook.com/share/1CzbCGG5kg/?mibextid=wwXIfr",
 };
 const DEFAULT_SERVICE_LOCATIONS = [
   "Kochi",
@@ -49,16 +51,20 @@ export function normalizeServiceLocations(value: unknown) {
 export function getSiteContact(settings?: SiteSettings | null) {
   const socialLinks = isStringRecord(settings?.social_links) ? settings.social_links : {};
   const serviceLocations = normalizeServiceLocations(settings?.service_locations);
+  const primaryPhone = settings?.primary_phone ?? DEFAULT_PHONE;
+  const phoneNumbers = Array.from(new Set([primaryPhone, ADDITIONAL_PHONE].filter(Boolean)));
 
   return {
     brandName: settings?.brand_name ?? DEFAULT_BRAND_NAME,
     primaryEmail: settings?.primary_email ?? DEFAULT_EMAIL,
-    primaryPhone: settings?.primary_phone ?? DEFAULT_PHONE,
+    primaryPhone,
+    phoneNumbers,
     headOfficeLabel: settings?.head_office_label?.trim() || DEFAULT_HEAD_OFFICE_LABEL,
     headOfficeAddress: settings?.head_office_address?.trim() || DEFAULT_HEAD_OFFICE_ADDRESS,
     socialLinks: {
       linkedin: socialLinks.linkedin?.trim() || DEFAULT_SOCIAL_LINKS.linkedin,
       instagram: socialLinks.instagram?.trim() || DEFAULT_SOCIAL_LINKS.instagram,
+      facebook: socialLinks.facebook?.trim() || DEFAULT_SOCIAL_LINKS.facebook,
     },
     serviceLocations: serviceLocations.length > 0 ? serviceLocations : DEFAULT_SERVICE_LOCATIONS,
   };

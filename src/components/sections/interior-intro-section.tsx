@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 type IntroStat = {
   value: string;
   label: string;
+  text?: string;
 };
 
 interface InteriorIntroSectionProps {
@@ -60,6 +61,9 @@ export function InteriorIntroSection({
                   >
                     <div className="data-number text-4xl text-accent">{item.value}</div>
                     <div className="type-eyebrow mt-3 text-ink">{item.label}</div>
+                    {item.text ? (
+                      <p className="mt-4 text-sm leading-6 text-muted">{item.text}</p>
+                    ) : null}
                   </div>
                 ))}
               </div>

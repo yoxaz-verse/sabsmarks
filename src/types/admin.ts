@@ -23,6 +23,7 @@ export type AdminModuleConfig = {
   table: string;
   primaryLabel: string;
   fields: AdminFieldConfig[];
+  density?: "default" | "compact";
   readOnly?: boolean;
   disableCreate?: boolean;
   listColumns?: Array<{ key: string; label: string }>;

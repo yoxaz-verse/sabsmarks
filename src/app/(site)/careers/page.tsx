@@ -111,9 +111,6 @@ export default async function JoinUsPage() {
               <div className="site-card rounded-[1.75rem] p-8">
                 <p className="text-xs font-bold uppercase tracking-[0.28em] text-muted">Open Roles</p>
                 <p className="mt-4 text-4xl font-bold tracking-tight text-ink">{opportunities.length}</p>
-                <p className="mt-3 text-[15px] leading-7 text-muted">
-                  Published opportunities appear below automatically. Add new openings from the Careers module to keep this page current.
-                </p>
               </div>
             </div>
           </div>

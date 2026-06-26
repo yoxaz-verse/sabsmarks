@@ -131,6 +131,7 @@ function shapeSiteSettingsForm(record: AdminRecord) {
     service_locations_text: normalizeLocationsText(record.service_locations),
     linkedin_url: socialLinks.linkedin ?? "",
     instagram_url: socialLinks.instagram ?? "",
+    facebook_url: socialLinks.facebook ?? "",
   };
 }
 
@@ -138,6 +139,7 @@ function serializeSiteSettingsForm(form: AdminRecord) {
   const existingSocialLinks = isStringRecord(form.social_links) ? { ...form.social_links } : {};
   const linkedin = typeof form.linkedin_url === "string" ? form.linkedin_url.trim() : "";
   const instagram = typeof form.instagram_url === "string" ? form.instagram_url.trim() : "";
+  const facebook = typeof form.facebook_url === "string" ? form.facebook_url.trim() : "";
   const socialLinks = { ...existingSocialLinks };
 
   if (linkedin) socialLinks.linkedin = linkedin;
@@ -145,6 +147,9 @@ function serializeSiteSettingsForm(form: AdminRecord) {
 
   if (instagram) socialLinks.instagram = instagram;
   else delete socialLinks.instagram;
+
+  if (facebook) socialLinks.facebook = facebook;
+  else delete socialLinks.facebook;
 
   const serviceLocations = normalizeLocationsText(form.service_locations_text)
     .split(/\r?\n|,/)
@@ -289,6 +294,19 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
 
   const isEditing = typeof form.id === "string" && form.id.length > 0;
   const canCreate = !config.readOnly && !config.disableCreate;
+  const isCompact = config.density === "compact";
+  const sectionClass = isCompact ? "rounded-2xl border border-stone-200 bg-white p-4 md:p-5" : "rounded-2xl border border-stone-200 bg-white p-6";
+  const headingClass = isCompact ? "text-lg font-semibold text-stone-900" : "text-xl font-semibold text-stone-900";
+  const headerClass = isCompact ? "flex flex-wrap items-center justify-between gap-3" : "flex items-center justify-between";
+  const tableWrapClass = isCompact ? "mt-3 overflow-x-auto rounded-lg border border-stone-200" : "mt-4 overflow-x-auto rounded-xl border border-stone-200";
+  const tableClass = isCompact ? "w-full min-w-max table-auto text-xs md:text-sm" : "min-w-full text-sm";
+  const tableHeaderCellClass = isCompact ? "whitespace-nowrap px-3 py-2 text-left font-semibold text-stone-700" : "px-4 py-3 text-left font-semibold text-stone-700";
+  const tableCellClass = isCompact ? "whitespace-nowrap px-3 py-2 align-middle" : "px-4 py-3";
+  const emptyCellClass = isCompact ? "px-3 py-6 text-center text-stone-500" : "px-4 py-8 text-center text-stone-500";
+  const actionCellClass = isCompact ? "whitespace-nowrap px-3 py-2 align-middle" : "px-4 py-3";
+  const actionButtonClass = isCompact
+    ? "rounded-lg border border-stone-300 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-stone-700"
+    : "rounded-lg border border-stone-300 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-stone-700";
 
   async function load() {
     setLoading(true);
@@ -804,9 +822,9 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
   }
 
   return (
-    <section className="rounded-2xl border border-stone-200 bg-white p-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-stone-900">{config.title}</h2>
+    <section className={sectionClass}>
+      <div className={headerClass}>
+        <h2 className={headingClass}>{config.title}</h2>
         {canCreate ? (
           <button onClick={openNew} className="rounded-full bg-stone-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">
             Add New
@@ -818,16 +836,16 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
       {error ? <p className="mt-4 text-sm text-red-700">{error}</p> : null}
       {message ? <p className="mt-4 text-sm text-green-700">{message}</p> : null}
 
-      <div className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
-        <table className="min-w-full text-sm">
+      <div className={tableWrapClass}>
+        <table className={tableClass}>
           <thead className="bg-stone-50">
             <tr>
               {listColumns.map((column) => (
-                <th key={column.key} className="px-4 py-3 text-left font-semibold text-stone-700">
+                <th key={column.key} className={tableHeaderCellClass}>
                   {column.label}
                 </th>
               ))}
-              {!config.readOnly ? <th className="px-4 py-3 text-left font-semibold text-stone-700">Action</th> : null}
+              {!config.readOnly ? <th className={tableHeaderCellClass}>Action</th> : null}
             </tr>
           </thead>
           <tbody>
@@ -839,14 +857,14 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
                   const content = fieldConfig?.type === "datetime" || column.key.endsWith("_at") ? formatDateTime(value) : displayValue(value);
 
                   return (
-                    <td key={column.key} className={`px-4 py-3 ${column.key === config.primaryLabel ? "text-stone-800" : "text-stone-600"}`}>
+                    <td key={column.key} className={`${tableCellClass} ${column.key === config.primaryLabel ? "text-stone-800" : "text-stone-600"}`}>
                       {content}
                     </td>
                   );
                 })}
                 {!config.readOnly ? (
-                  <td className="px-4 py-3">
-                    <button onClick={() => openEdit(record)} className="rounded-lg border border-stone-300 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-stone-700">
+                  <td className={actionCellClass}>
+                    <button onClick={() => openEdit(record)} className={actionButtonClass}>
                       Edit
                     </button>
                     {config.table === "locations" ? (
@@ -864,7 +882,7 @@ export function ModuleManager({ config }: { config: AdminModuleConfig }) {
             ))}
             {!loading && records.length === 0 ? (
               <tr className="border-t border-stone-200">
-                <td colSpan={listColumns.length + (config.readOnly ? 0 : 1)} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={listColumns.length + (config.readOnly ? 0 : 1)} className={emptyCellClass}>
                   {config.readOnly || config.disableCreate ? "No records found yet." : <>No records yet. Click <span className="font-semibold">Add New</span> to create your first entry.</>}
                 </td>
               </tr>

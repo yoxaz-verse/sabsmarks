@@ -1,10 +1,14 @@
 import Link from "next/link";
-import { Mail, Phone } from "lucide-react";
+import { Clock, Mail, Phone } from "lucide-react";
 import { NewsletterForm } from "@/components/footer/newsletter-form";
 import { Logo } from "@/components/layout/logo";
 import { getSiteSettings } from "@/lib/content/service";
 import { getSiteContact } from "@/lib/site-contact";
 import { SiteOrnament } from "@/components/decorative/site-ornament";
+
+function phoneHref(phone: string) {
+  return `tel:${phone.replace(/[^\d+]/g, "")}`;
+}
 
 export async function Footer() {
   const settings = await getSiteSettings();
@@ -59,24 +63,28 @@ export async function Footer() {
           <SiteOrnament mode="section" className="opacity-70" />
           <div className="pointer-events-none absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-[0.03]" />
 
-          <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-wrap items-center gap-4">
+          <div className="relative z-10 grid gap-6 md:grid-cols-2 md:items-center xl:grid-cols-[1fr_1.15fr_1.2fr_auto]">
+            <div className="flex min-w-0 flex-wrap items-center gap-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-white shadow-[0_0_15px_var(--accent-glow)]">
                 <Phone className="h-6 w-6" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="type-eyebrow mb-1 text-muted">Call Us</p>
-                <a href={`tel:${contact.primaryPhone.replace(/\s+/g, "")}`} className="type-card-title text-lg text-ink transition-colors hover:text-accent md:text-xl">
-                  {contact.primaryPhone}
-                </a>
+                <div className="flex flex-col gap-1">
+                  {contact.phoneNumbers.map((phone) => (
+                    <a key={phone} href={phoneHref(phone)} className="type-card-title text-lg text-ink transition-colors hover:text-accent md:text-xl">
+                      {phone}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex min-w-0 flex-wrap items-center gap-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-white shadow-[0_0_15px_var(--accent-glow)]">
                 <Mail className="h-6 w-6" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="type-eyebrow mb-1 text-muted">Email Us</p>
                 <a href={`mailto:${contact.primaryEmail}`} className="type-card-title text-lg text-ink transition-colors hover:text-accent md:text-xl">
                   {contact.primaryEmail}
@@ -84,7 +92,19 @@ export async function Footer() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 flex-wrap items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-white shadow-[0_0_15px_var(--accent-glow)]">
+                <Clock className="h-6 w-6" />
+              </div>
+              <div className="min-w-0">
+                <p className="type-eyebrow mb-1 text-muted">Working Hours</p>
+                <p className="type-card-title text-lg text-ink md:text-xl">Monday to Saturday</p>
+                <p className="type-body-sm mt-1 text-muted">9:30 AM - 5:30 PM IST</p>
+                <p className="type-body-sm text-muted">Sunday Holiday</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 md:col-span-2 xl:col-span-1 xl:justify-end">
               <a
                 href={contact.socialLinks.linkedin}
                 target="_blank"
@@ -129,6 +149,16 @@ export async function Footer() {
                   <path d="M16 11.37a4 4 0 1 1-7.75 1.26 4 4 0 0 1 7.75-1.26z"></path>
                   <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                 </svg>
+              </a>
+
+              <a
+                href={contact.socialLinks.facebook}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook"
+                className="group/link flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--glass-border)] bg-surface-raised text-ink transition-colors hover:border-accent hover:text-accent"
+              >
+                <span className="text-2xl font-black leading-none transition-transform group-hover/link:scale-110">f</span>
               </a>
             </div>
           </div>

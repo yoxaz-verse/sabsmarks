@@ -185,6 +185,7 @@ export default async function ContactPage() {
   const orderedLocations = orderLocations(locations, contact.serviceLocations);
   const linkedInHandle = getSocialHandle(contact.socialLinks.linkedin, "sabs-marks-jvs-co");
   const instagramHandle = getSocialHandle(contact.socialLinks.instagram, "@sabsmarksjvs");
+  const facebookHandle = getSocialHandle(contact.socialLinks.facebook, "Facebook");
   const headOfficeMapUrl = buildGoogleMapsUrl(contact.headOfficeAddress);
 
   return (
@@ -301,6 +302,13 @@ export default async function ContactPage() {
                     icon={<AtSign className="h-5 w-5" />}
                     iconClassName="bg-[linear-gradient(135deg,#F58529,#DD2A7B,#8134AF,#515BD4)]"
                   />
+                  <SocialLink
+                    href={contact.socialLinks.facebook}
+                    label="Facebook"
+                    handle={facebookHandle}
+                    icon={<span className="text-xl font-black leading-none">f</span>}
+                    iconClassName="bg-[#1877F2]"
+                  />
                 </div>
 
                 <div className="mt-7 rounded-[1.6rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_74%,transparent)] p-5">
@@ -381,9 +389,6 @@ export default async function ContactPage() {
                   <p className="text-xs font-bold uppercase tracking-[0.28em] text-[color-mix(in_srgb,var(--accent-secondary)_28%,white)]">Branch Network</p>
                   <h3 className="mt-3 text-2xl font-bold">Find the branch closest to the conversation you need.</h3>
                 </div>
-                <p className="max-w-md text-sm leading-7 text-white/78">
-                  Published branch records drive this section, so local contact details and map links stay useful instead of decorative.
-                </p>
               </div>
 
               {orderedLocations.length > 0 ? (

@@ -41,6 +41,7 @@ export async function POST() {
         social_links: {
           linkedin: "https://www.linkedin.com/company/sabs-marks-jvs-co/",
           instagram: "https://www.instagram.com/sabsmarksjvs?igsh=MW5qeDBsbWN1dzhsaQ==",
+          facebook: "https://www.facebook.com/share/1CzbCGG5kg/?mibextid=wwXIfr",
         },
         service_locations: [
           "Kochi",
