@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
-import { CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Clock, MapPin, Send } from "lucide-react";
+import { CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Clock, MailCheck, MapPin, MessageSquareText, Send, UserRound } from "lucide-react";
 import type { AvailableAppointmentSlot, TeamMember } from "@/types/cms";
 
 type AppointmentBookingProps = {
@@ -277,6 +277,77 @@ export function AppointmentBooking({ slots, partners }: AppointmentBookingProps)
                 </div>
               </div>
             ) : null}
+
+            <div className="overflow-hidden rounded-[1.5rem] border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_82%,transparent)] shadow-[0_18px_45px_rgba(15,23,42,0.06)]">
+              <div className="border-b border-[var(--glass-border)] bg-accent/[0.06] p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted">Your appointment request</p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+                  <div className="rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_72%,transparent)] p-4">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-muted">
+                      <UserRound className="h-4 w-4 text-accent" />
+                      Partner
+                    </div>
+                    <p className="mt-2 text-sm font-semibold text-ink">
+                      {selectedGroup?.partner.name ?? "Choose a partner"}
+                    </p>
+                    <p className="mt-1 truncate text-xs text-muted">
+                      {selectedGroup
+                        ? selectedGroup.location?.office_name ?? selectedGroup.location?.city ?? selectedGroup.fallbackLocationLabel ?? "Location to be assigned"
+                        : "Select from the list above"}
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface-raised)_72%,transparent)] p-4">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-muted">
+                      <CalendarDays className="h-4 w-4 text-accent" />
+                      Date &amp; time
+                    </div>
+                    <p className="mt-2 text-sm font-semibold text-ink">
+                      {selectedDate ? dayLabel(selectedDate) : "Choose an available date"}
+                    </p>
+                    <p className="mt-1 text-xs text-muted">
+                      {selectedSlot ? timeLabel(selectedSlot) : "Select a time from the calendar"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted">What happens next</p>
+                <ol className="mt-5 space-y-5">
+                  <li className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-white shadow-[0_8px_20px_rgba(0,117,201,0.2)]">1</span>
+                    <div>
+                      <p className="text-sm font-semibold text-ink">Send your request</p>
+                      <p className="mt-1 text-sm leading-6 text-muted">Add your details and a short note about what you would like to discuss.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/25 bg-accent/10 text-xs font-bold text-accent">2</span>
+                    <div>
+                      <p className="text-sm font-semibold text-ink">We confirm availability</p>
+                      <p className="mt-1 text-sm leading-6 text-muted">Our team reviews the selected slot and contacts you to confirm it.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/25 bg-accent/10 text-xs font-bold text-accent">3</span>
+                    <div>
+                      <p className="text-sm font-semibold text-ink">Receive meeting details</p>
+                      <p className="mt-1 text-sm leading-6 text-muted">Once confirmed, we share the final appointment and joining information.</p>
+                    </div>
+                  </li>
+                </ol>
+
+                <div className="mt-6 flex gap-3 rounded-2xl border border-accent/15 bg-accent/[0.07] p-4">
+                  <MessageSquareText className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+                  <div>
+                    <p className="text-sm font-semibold text-ink">Prepare for your meeting</p>
+                    <p className="mt-1 text-sm leading-6 text-muted">Use the message field to share the topic and any context that will help the partner prepare.</p>
+                  </div>
+                  <MailCheck className="hidden h-5 w-5 shrink-0 self-end text-accent/50 sm:block" />
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-5">
