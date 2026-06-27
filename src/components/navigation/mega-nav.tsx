@@ -54,7 +54,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
 
   return (
     <nav ref={navRef} className="hidden xl:block">
-      <div className="flex items-center gap-1.5 rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_58%,transparent)] px-2.5 py-1.5 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+      <div className="flex items-center gap-1 rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_62%,transparent)] px-1.5 py-0.5 shadow-[0_10px_26px_rgba(15,23,42,0.07)] backdrop-blur-xl">
         {ordered.map((group) => {
           const items = groups[group] ?? [];
           if (!items.length) return null;
@@ -74,7 +74,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                   setHoverGroup(null);
                   setPinnedGroup(null);
                 }}
-                className={`rounded-full px-2.5 py-1.5 text-[12px] font-bold tracking-[0.11em] uppercase transition-colors duration-200 ${
+                className={`rounded-full px-2.5 py-1 text-[11px] font-bold uppercase transition-colors duration-200 ${
                   isActive ? "bg-accent/10 text-accent" : "text-ink hover:text-accent"
                 }`}
               >
@@ -86,7 +86,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
           return (
             <div
               key={group}
-              className="group relative py-2"
+              className="group relative py-0.5"
               onPointerEnter={(event) => {
                 if (event.pointerType === "mouse") setHoverGroup({ group, pathname });
               }}
@@ -99,7 +99,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                 aria-haspopup="menu"
                 aria-expanded={isOpen}
                 aria-controls={menuId}
-                className={`flex items-center gap-1 rounded-full px-2.5 py-1.5 text-[12px] font-bold tracking-[0.11em] uppercase transition-colors duration-200 ${
+                className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase transition-colors duration-200 ${
                   isActive || isOpen ? "bg-accent/10 text-accent" : "text-ink hover:text-accent"
                 }`}
                 onPointerDown={(event) => {
@@ -121,9 +121,9 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
               >
                 {group}
                 {isOpen ? (
-                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={3} />
+                  <ArrowUpRight className="h-3 w-3" strokeWidth={3} />
                 ) : (
-                  <ChevronDown className="h-3.5 w-3.5 opacity-60" strokeWidth={3} />
+                  <ChevronDown className="h-3 w-3 opacity-60" strokeWidth={3} />
                 )}
               </button>
 
@@ -136,9 +136,9 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="absolute left-0 top-[100%] z-50 min-w-[240px] pt-2 pointer-events-auto origin-top-left"
+                    className="absolute left-0 top-[100%] z-50 min-w-[220px] pt-1.5 pointer-events-auto origin-top-left"
                   >
-                    <div className="rounded-2xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_82%,transparent)] p-3 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-2xl">
+                    <div className="rounded-xl border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--surface)_84%,transparent)] p-2 shadow-[0_22px_52px_rgba(15,23,42,0.16)] backdrop-blur-2xl">
                       <div className="flex flex-col gap-1">
                         {items.map((item, index) => (
                           <motion.div
@@ -154,7 +154,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                                 setHoverGroup(null);
                                 setPinnedGroup(null);
                               }}
-                              className="block rounded-xl px-4 py-3 text-[14px] font-semibold text-ink hover:bg-surface-raised hover:text-accent transition-all duration-300 ease-out"
+                              className="block rounded-lg px-3 py-2.5 text-[13px] font-semibold text-ink hover:bg-surface-raised hover:text-accent transition-all duration-300 ease-out"
                             >
                               {item.label}
                             </Link>
