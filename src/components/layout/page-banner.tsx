@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { FadeInBannerImage } from "@/components/media/fade-in-banner-image";
 import {
   BookOpen,
   BriefcaseBusiness,
@@ -159,13 +160,7 @@ export function PageBanner({
     >
       <div aria-hidden="true" className="page-banner__background pointer-events-none absolute inset-0 z-0">
         {resolvedBackgroundImage ? (
-          <div
-            className="page-banner__image absolute inset-0"
-            style={{
-              backgroundImage: `url("${resolvedBackgroundImage}")`,
-              backgroundPosition: resolvedBackgroundPosition,
-            }}
-          ></div>
+          <FadeInBannerImage src={resolvedBackgroundImage} position={resolvedBackgroundPosition} />
         ) : null}
         {isVisualBanner ? (
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,8,18,0.9)_0%,rgba(4,24,44,0.78)_46%,rgba(0,79,134,0.42)_100%)]"></div>

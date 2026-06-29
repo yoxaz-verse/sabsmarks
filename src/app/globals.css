@@ -501,14 +501,27 @@ textarea:focus-visible {
 }
 
 .page-banner__image {
-  background-repeat: no-repeat;
-  background-size: cover;
   filter: saturate(0.9) contrast(1.05);
+  object-fit: cover;
+  opacity: 0;
   transform: scale(1.01);
+  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+
+.page-banner__image[data-loaded="true"] {
+  opacity: 1;
 }
 
 .page-banner--dark .page-banner__image {
   filter: saturate(0.82) contrast(1.08) brightness(0.78);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-banner__image {
+    opacity: 1;
+    transition: none;
+  }
 }
 
 .page-banner__photo-wash {
