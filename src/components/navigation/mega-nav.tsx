@@ -74,7 +74,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                   setHoverGroup(null);
                   setPinnedGroup(null);
                 }}
-                className={`rounded-full px-2.5 py-1 text-[11px] font-bold uppercase transition-colors duration-200 ${
+                className={`rounded-full px-2.5 py-1 text-[11px] font-bold transition-colors duration-200 ${
                   isActive ? "bg-accent/10 text-accent" : "text-ink hover:text-accent"
                 }`}
               >
@@ -99,7 +99,7 @@ export function MegaNav({ groups }: { groups: Record<string, MenuItem[]> }) {
                 aria-haspopup="menu"
                 aria-expanded={isOpen}
                 aria-controls={menuId}
-                className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase transition-colors duration-200 ${
+                className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold transition-colors duration-200 ${
                   isActive || isOpen ? "bg-accent/10 text-accent" : "text-ink hover:text-accent"
                 }`}
                 onPointerDown={(event) => {
